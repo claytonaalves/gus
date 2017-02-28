@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,7 +50,7 @@ public class TermosDeUso extends AppCompatActivity implements View.OnClickListen
     }
 
     private void iniciaTelaPrincipal() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, OfertasActivity.class);
         this.startActivity(intent);
         this.finishActivity(0);
     }
