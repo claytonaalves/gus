@@ -15,12 +15,12 @@ import java.util.List;
  * Created by clayton on 28/02/17.
  */
 
-public class OfertaAdapter extends BaseAdapter {
+public class CategoriasAdapter extends BaseAdapter {
 
     private final List<Categoria> categorias;
     private final Activity activity;
 
-    public OfertaAdapter(List<Categoria> categorias, Activity activity) {
+    public CategoriasAdapter(List<Categoria> categorias, Activity activity) {
         this.categorias = categorias;
         this.activity = activity;
     }

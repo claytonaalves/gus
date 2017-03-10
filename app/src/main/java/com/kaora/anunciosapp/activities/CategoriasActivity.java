@@ -1,33 +1,43 @@
-package com.kaora.anunciosapp;
+package com.kaora.anunciosapp.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.kaora.anunciosapp.adapters.OfertaAdapter;
+import com.kaora.anunciosapp.R;
+import com.kaora.anunciosapp.adapters.CategoriasAdapter;
+import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class OfertasActivity extends AppCompatActivity {
+public class CategoriasActivity extends AppCompatActivity {
+
+    MyDatabaseHelper database;
+    List<Categoria> categorias;
+
+    CategoriasAdapter categoriasAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ofertas);
+        setContentView(R.layout.activity_categorias);
 
-        List<Categoria> categorias = carregaCategorias();
+        database = new MyDatabaseHelper(this);
+        categorias = database.categoriasPreferidas();
 
-        OfertaAdapter adapter = new OfertaAdapter(categorias, this);
+        categoriasAdapter = new CategoriasAdapter(categorias, this);
         ListView lvOfertas = (ListView) findViewById(R.id.lvOfertas);
-        lvOfertas.setAdapter(adapter);
-
+        lvOfertas.setAdapter(categoriasAdapter);
     }
+
+//    private void atualizaListView() {
+//        categoriasAdapter.notifyDataSetChanged();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,12 +60,10 @@ public class OfertasActivity extends AppCompatActivity {
         return true;
     }
 
-
-    private List<Categoria> carregaCategorias() {
-        List<Categoria> categorias = new ArrayList<>();
-        categorias.add(new Categoria(1, "Anúncios"));
-        categorias.add(new Categoria(1, "Ofertas"));
-        return categorias;
+    @Override
+    protected void onDestroy() {
+        database.close();
+        super.onDestroy();
     }
 
 }

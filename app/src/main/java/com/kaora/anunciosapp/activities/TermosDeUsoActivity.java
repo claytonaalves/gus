@@ -1,4 +1,4 @@
-package com.kaora.anunciosapp;
+package com.kaora.anunciosapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,22 +10,22 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class TermosDeUso extends AppCompatActivity implements View.OnClickListener {
+import com.kaora.anunciosapp.R;
+
+public class TermosDeUsoActivity extends AppCompatActivity implements View.OnClickListener {
+
+    TextView txtTermosUso;
+
+    private boolean preferenciasDefinidas = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_termos_de_uso);
 
-        if (termosAceitos()) {
-            iniciaTelaPrincipal();
-        }
-
-        TextView txtTermosUso = (TextView) findViewById(R.id.txtTermosUso);
+        txtTermosUso = (TextView) findViewById(R.id.txtTermosUso);
         final CheckBox cbAceite = (CheckBox) findViewById(R.id.cbAceite);
         final Button btContinuar = (Button) findViewById(R.id.btContinuar);
-
-        txtTermosUso.setText(Html.fromHtml(getString(R.string.texto_termos_uso)));
 
         cbAceite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +38,37 @@ public class TermosDeUso extends AppCompatActivity implements View.OnClickListen
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (termosAceitos()) {
+            if (preferenciasDefinidas) {
+                iniciaActivityCategorias();
+                finish();
+            } else {
+                iniciaActivityPreferencias();
+                preferenciasDefinidas = true;
+            }
+        } else {
+            exibeTermosDeUso();
+        }
+    }
+
+    private void iniciaActivityPreferencias() {
+        Intent intent = new Intent(this, PreferenciasActivity.class);
+        this.startActivity(intent);
+//        this.finish();
+    }
+
+    private void iniciaActivityCategorias() {
+        Intent intent = new Intent(this, CategoriasActivity.class);
+        this.startActivity(intent);
+    }
+
+    private void exibeTermosDeUso() {
+        txtTermosUso.setText(Html.fromHtml(getString(R.string.texto_termos_uso)));
+    }
+
+    @Override
     public void onClick(View v) {
         // Salvar o aceite
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
@@ -46,13 +77,7 @@ public class TermosDeUso extends AppCompatActivity implements View.OnClickListen
         editor.commit();
 
         // ir para próximo intent
-        this.iniciaTelaPrincipal();
-    }
-
-    private void iniciaTelaPrincipal() {
-        Intent intent = new Intent(this, OfertasActivity.class);
-        this.startActivity(intent);
-        this.finishActivity(0);
+        this.iniciaActivityPreferencias();
     }
 
     private boolean termosAceitos() {

@@ -1,8 +1,7 @@
 package com.kaora.anunciosapp.models;
 
-/**
- * Created by clayton on 28/02/17.
- */
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Categoria {
 
@@ -13,6 +12,11 @@ public class Categoria {
     public Categoria(int idCategoria, String descricao) {
         this.idCategoria = idCategoria;
         this.descricao = descricao;
+    }
+
+    public Categoria(JSONObject json) throws JSONException {
+        this.idCategoria = json.getInt("_id");
+        this.descricao = json.getString("descricao");
     }
 
 }
