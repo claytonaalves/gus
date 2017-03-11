@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 
 public interface ApiRestInterface {
 
-    @GET("/activity_categorias")
+    @GET("/categoria")
     Call<List<Categoria>> obtemCategorias();
 
 }

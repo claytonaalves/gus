@@ -33,25 +33,11 @@ public class PreferenciasActivity extends AppCompatActivity {
 
         database = new MyDatabaseHelper(this);
 
-        if (exitePreferenciaConfigurada()) {
-            iniciaActivityCategorias();
-            finish();
-        }
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         preferencias = (LinearLayout) findViewById(R.id.preferencias_list);
-    }
-
-    private boolean exitePreferenciaConfigurada() {
-        return database.categoriasPreferidas().size()>0;
-    }
-
-    private void iniciaActivityCategorias() {
-        Intent intent = new Intent(this, CategoriasActivity.class);
-        this.startActivity(intent);
     }
 
     @Override
@@ -92,9 +78,10 @@ public class PreferenciasActivity extends AppCompatActivity {
     }
 
     private List<Categoria> preferenciasSelecionadas() {
+        CheckBox checkbox;
         List<Categoria> result = new ArrayList<>();
         for (int i=0; i<preferencias.getChildCount(); i++) {
-            CheckBox checkbox = (CheckBox) preferencias.getChildAt(i);
+            checkbox = (CheckBox) preferencias.getChildAt(i);
             if (checkbox.isChecked()) {
                 result.add((Categoria) checkbox.getTag());
             }

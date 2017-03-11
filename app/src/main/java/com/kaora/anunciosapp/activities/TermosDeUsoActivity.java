@@ -11,12 +11,14 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.kaora.anunciosapp.R;
+import com.kaora.anunciosapp.database.MyDatabaseHelper;
+import com.kaora.anunciosapp.models.Categoria;
+
+import java.util.List;
 
 public class TermosDeUsoActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView txtTermosUso;
-
-    private boolean preferenciasDefinidas = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +43,21 @@ public class TermosDeUsoActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         if (termosAceitos()) {
-            if (preferenciasDefinidas) {
+            if (preferenciasDefinidas()) {
                 iniciaActivityCategorias();
                 finish();
             } else {
                 iniciaActivityPreferencias();
-                preferenciasDefinidas = true;
             }
         } else {
             exibeTermosDeUso();
         }
+    }
+
+    private boolean preferenciasDefinidas() {
+        MyDatabaseHelper database = new MyDatabaseHelper(this);
+        List<Categoria> preferencias = database.categoriasPreferidas();
+        return preferencias.size()>0;
     }
 
     private void iniciaActivityPreferencias() {

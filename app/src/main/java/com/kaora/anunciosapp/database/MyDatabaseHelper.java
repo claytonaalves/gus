@@ -13,8 +13,8 @@ import java.util.List;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
-    private static MyDatabaseHelper instance = null;
-    private SQLiteDatabase database;
+//    private static MyDatabaseHelper instance = null;
+//    private SQLiteDatabase database;
 
     public static final String DATABASE_NAME = "anuncios_database";
 
@@ -58,7 +58,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database.execSQL("DELETE FROM categoria");
         for (Categoria categoria : categorias) {
             ContentValues values = new ContentValues();
-            values.put("_id", categoria.idCategoria);
+            values.put("_id", categoria._id);
             values.put("descricao", categoria.descricao);
             database.insert("categoria", null, values);
         }
@@ -69,22 +69,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database.execSQL("DELETE FROM preferencia");
         for (Categoria categoria : categorias) {
             ContentValues values = new ContentValues();
-            values.put("idcategoria", categoria.idCategoria);
+            values.put("idcategoria", categoria._id);
             database.insert("preferencia", null, values);
         }
     }
 
     public List<Categoria> categoriasPreferidas() {
         SQLiteDatabase db = getReadableDatabase();
-        String[] projection = new String[]{"_id", "descricao"};
-        Cursor cursor = db.query("categoria", projection, null, null, null, null, null);
-        List<Categoria> todas = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT c._id, c.descricao FROM categoria c JOIN preferencia p ON (c._id=p.idcategoria)", null);
+        List<Categoria> categorias = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Categoria categoria = new Categoria(cursor.getInt(0), cursor.getString(1));
-            todas.add(categoria);
+            categorias.add(new Categoria(cursor.getInt(0), cursor.getString(1)));
         }
         cursor.close();
-        return todas;
+        return categorias;
     }
 
 }
