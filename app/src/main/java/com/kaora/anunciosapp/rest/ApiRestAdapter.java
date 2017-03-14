@@ -1,5 +1,6 @@
 package com.kaora.anunciosapp.rest;
 
+import com.kaora.anunciosapp.models.Anunciante;
 import com.kaora.anunciosapp.models.Categoria;
 
 import java.util.List;
@@ -29,5 +30,9 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
+    public void anunciantesPorCategoria(Callback<List<Anunciante>> cb, int idCategoria) {
+        Call<List<Anunciante>> request = service.anunciantesPorCategoria(idCategoria);
+        request.enqueue(cb);
+    }
 
 }

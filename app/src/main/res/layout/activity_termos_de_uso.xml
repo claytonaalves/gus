@@ -12,13 +12,6 @@
     tools:context="com.kaora.anunciosapp.activities.TermosDeUsoActivity">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.45"
-        android:text="Termos de Uso" />
-
-    <TextView
         android:id="@+id/txtTermosUso"
         android:layout_width="match_parent"
         android:layout_height="337dp"

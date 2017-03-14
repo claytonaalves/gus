@@ -25,6 +25,8 @@ public class TermosDeUsoActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_termos_de_uso);
 
+        setTitle("Termos de uso");
+
         txtTermosUso = (TextView) findViewById(R.id.txtTermosUso);
         final CheckBox cbAceite = (CheckBox) findViewById(R.id.cbAceite);
         final Button btContinuar = (Button) findViewById(R.id.btContinuar);

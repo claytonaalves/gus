@@ -11,10 +11,6 @@ import com.kaora.anunciosapp.models.Categoria;
 
 import java.util.List;
 
-/**
- * Created by clayton on 28/02/17.
- */
-
 public class CategoriasAdapter extends BaseAdapter {
 
     private final List<Categoria> categorias;
@@ -44,11 +40,13 @@ public class CategoriasAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = activity.getLayoutInflater()
-                .inflate(R.layout.item_lista_ofertas, parent, false);
+                .inflate(R.layout.item_listview_categoria, parent, false);
         Categoria categoria = categorias.get(position);
 
         TextView nomeCategoria = (TextView) view.findViewById(R.id.tvNomeCategoria);
         nomeCategoria.setText(categoria.descricao);
+
+        view.setTag(categoria);
 
         return view;
     }

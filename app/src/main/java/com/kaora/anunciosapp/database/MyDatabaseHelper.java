@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.kaora.anunciosapp.models.Anunciante;
 import com.kaora.anunciosapp.models.Categoria;
 
 import java.util.ArrayList;
@@ -85,4 +86,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return categorias;
     }
 
+    public List<Anunciante> anunciantesPorCategoria(int idCategoria) {
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor cursor = db.query("anunciante")
+        return null;
+    }
 }

@@ -1,10 +1,14 @@
 package com.kaora.anunciosapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ExpandedMenuView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,8 +35,18 @@ public class CategoriasActivity extends AppCompatActivity {
         categorias = database.categoriasPreferidas();
 
         categoriasAdapter = new CategoriasAdapter(categorias, this);
-        ListView lvOfertas = (ListView) findViewById(R.id.lvOfertas);
-        lvOfertas.setAdapter(categoriasAdapter);
+        ListView lvCategorias = (ListView) findViewById(R.id.lvOfertas);
+        lvCategorias.setAdapter(categoriasAdapter);
+
+        lvCategorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Categoria categoriaSelecionada = (Categoria) view.getTag();
+                Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
+                intent.putExtra("idCategoria", categoriaSelecionada._id);
+                startActivity(intent);
+            }
+        });
     }
 
 //    private void atualizaListView() {
