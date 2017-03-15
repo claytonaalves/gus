@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Tela inicial"
-        android:id="@+id/action_tela_inicial" />
-    <item android:title="Configurações"
-        android:id="@+id/action_configuracoes" />
-    <item android:title="Termos de uso" />
+    <group android:id="@+id/group1">
+        <item
+            android:id="@+id/action_criar_anuncio"
+            android:title="@string/criar_anuncio" />
+        <item
+            android:id="@+id/action_meus_anuncios"
+            android:title="@string/meus_anuncios" />
+    </group>
+
+    <group android:id="@+id/group2">
+        <item
+            android:id="@+id/action_configuracoes"
+            android:title="@string/configuracoes" />
+        <item android:title="@string/termos_de_uso" />
+    </group>
 </menu>

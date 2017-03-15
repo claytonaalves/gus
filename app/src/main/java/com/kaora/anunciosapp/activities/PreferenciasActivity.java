@@ -55,7 +55,7 @@ public class PreferenciasActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Categoria>> call, Throwable t) {
-                Toast.makeText(PreferenciasActivity.this, "Não foi possível atualizar as activity_categorias!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PreferenciasActivity.this, "Não foi possível atualizar as activity_categorias!", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -3,14 +3,12 @@ package com.kaora.anunciosapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.ExpandedMenuView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.CategoriasAdapter;
@@ -49,10 +47,6 @@ public class CategoriasActivity extends AppCompatActivity {
         });
     }
 
-//    private void atualizaListView() {
-//        categoriasAdapter.notifyDataSetChanged();
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -63,15 +57,32 @@ public class CategoriasActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_tela_inicial:
-                Toast.makeText(this, "menu tela inicial clicado", Toast.LENGTH_SHORT)
-                        .show();
+            case R.id.action_criar_anuncio:
+                iniciaActivityNovoAnuncio();
+                break;
+            case R.id.action_meus_anuncios:
+                iniciaActivityMeusAnuncios();
                 break;
             case R.id.action_configuracoes:
-                // abrir activity de configurações
+                iniciaActivityPreferencias();
                 break;
         }
         return true;
+    }
+
+    private void iniciaActivityPreferencias() {
+        Intent intent = new Intent(this, PreferenciasActivity.class);
+        startActivity(intent);
+    }
+
+    private void iniciaActivityMeusAnuncios() {
+        Intent intent = new Intent(this, MeusAnunciosActivity.class);
+        startActivity(intent);
+    }
+
+    private void iniciaActivityNovoAnuncio() {
+        Intent intent = new Intent(this, NovoAnuncioActivity.class);
+        startActivity(intent);
     }
 
     @Override

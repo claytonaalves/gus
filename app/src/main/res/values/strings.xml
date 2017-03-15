@@ -15,7 +15,257 @@
         completions."
     </string>
     <string name="texto_termos_uso">
-        <![CDATA[ <h1>Titulo <b>Clayton</b>teste</h1><p>Teste 5555</p><br></br><p>Teste 5555</p> ]]>
+        <![CDATA[
+<div class="container terms">
+      <h1>Termos de uso do aplicativo</h1>
+      <p class="tab-1">O presente instrumento (“Termo”) regula as condições para utilização do SITE e dos APLICATIVOS pelo USUÁRIO.</p>
+
+      <ol>
+        <!-- 1. DEFINIÇÕES GERAIS -->
+        <li>
+          DEFINIÇÕES GERAIS
+
+          <ol>
+            <li>
+              1.1. Para os fins deste Termo, devem se considerar as seguintes definições e descrições para o melhor entendimento, grafados no singular ou plural:
+
+              <ul>
+                <li><strong>APLICATIVOS:</strong> são os programas de computador disponibilizados pelo IBA, pagos ou gratuitos, que possibilitam ao USUÁRIO realizar o acesso e leitura dos PRODUTOS;</li>
+                <li><strong>EQUIPAMENTOS:</strong> são os microcomputadores fixos e móveis, tablets e/ou celulares e demais aparelhos móveis ligados à internet utilizados pelo USUÁRIO para acessar o SITE ou os APLICATIVOS;</li>
+                <li><strong>IBA:</strong> denominação utilizada neste Termo para identificar o administrador e titular do SITE e dos APLICATIVOS, IBA COMERCIAL E DISTRIBUIÇÃO S.A., com sede na Avenida das Nações Unidas, n.º 7.221, 9º andar, Setor A, Pinheiros, na Cidade de São Paulo, Estado de São Paulo, devidamente inscrito no CNPJ/MF sob n.º 14.457.336/0001-92;</li>
+                <li><strong>GO READ:</strong> denominação utilizada neste Termo para Identificar a ferramenta por meio da qual determinados PRODUTOS são reproduzidos e disponibilizados temporariamente ao USUÁRIO, de forma conjunta, simultânea e organizada, sujeito às Condições Específicas do GO READ delimitadas na seção abaixo;</li>
+                <li><strong>PRODUTOS:</strong> o GO READ e outros produtos e serviços que venham a ser comercializados pela IBA nos SITES e/ou APLICATIVOS;</li>
+                <li><strong>SITE:</strong> ambientes eletrônicos administrados pelo IBA e de titularidade deste, incluindo, sem limitação, os domínios&nbsp;www.iba.com.br, www.ibaclube.com.br e www.goread.com.br, desenvolvidos especialmente para a comercialização dos PRODUTOS; e</li>
+                <li><strong>USUÁRIO:</strong> qualquer pessoa que venha a acessar o SITE e/ou os APLICATIVOS, bem como aquela que contrate os PRODUTOS.</li>
+              </ul>
+            </li>
+          </ol>
+        </li>
+
+        <!-- 2. DO ACEITE -->
+        <li>
+          DO ACEITE
+
+          <ol>
+            <li>2.1. O USUÁRIO, ao marcar a caixa de seleção “li e concordo com os termos de uso” ao final do formolário de cadastro, (i) declara ter cuidadosamente examinado e incondicionalmente concordado com as condições constantes deste Termo; e (ii) estará autorizado a utilizar os APLICATIVOS em seu EQUIPAMENTO, para o acesso e leitura dos PRODUTOS, no formato digital.</li>
+
+            <li>2.2. Os clientes IBA CLUBE com conta ativa em 27 de outubro de 2016 migrados para GO READ foram informados via e-mail antecipadamente sobre as alterações nos termos de uso.</li>
+
+            <li>2.3. As condições deste Termo aplicam-se ao SITE e aos APLICATIVOS, não sendo válidas, portanto, para outros endereços eletrônicos, incluindo aqueles que eventualmente venham a ser indicados pelo IBA no SITE. Ao aceitar este Termo o USUÁRIO também concorda com as Condições Específicas do GO READ.</li>
+          </ol>
+        </li>
+
+        <!-- 3. SITE -->
+        <li>
+          SITE
+
+          <ol>
+            <li>3.1. O SITE reúne PRODUTOS das mais variadas editoras do Brasil e do exterior, possibilitando ao USUÁRIO, se assim desejar, adquirir o acesso a todos esses PRODUTOS por meio do GO READ.</li>
+
+            <li>3.2. O acesso aos PRODUTOS somente poderá ser contratado por maiores de 18 (dezoito) anos ou emancipados ou, ainda, que estejam assistidos ou representados por seus respectivos responsáveis, mesmo quando tais PRODUTOS forem ofertados gratuitamente.</li>
+
+            <li>3.3. O USUÁRIO está ciente e concorda que a utilização de seus dados, incluindo, sem limitação, nome, sobrenome, idade, sexo, endereço postal e eletrônico, geolocalização, direção de face, rota, endereço de Internet Protocol (IP), sistema operacional do dispositivo do USUÁRIO, softwares instalados no dispositivo do USUÁRIO, velocidade de conexão (upload e download), páginas eventualmente acessadas e/ou redirecionadas por meio do SITE e dos APLICATIVOS, cliques feitos dentro do SITE e dos APLICATIVOS, interações e comentários feitos em fóruns e/ou itens interativos do SITE e/ou dos APLICATIVOS, informações coletadas por meio de cookies HTML, Flash cookies, web beacons, e tecnologias similares e quaisquer outros dados que possam ser gerados e/ou coletados durante o uso principal ou secundário do SITE e/ou dos APLICATIVOS.</li>
+
+            <li>3.4. Os dados coletados poderão ser empregados para (i) a melhoria do SITE e dos APLICATIVOS e da experiência do USUÁRIO em sua navegação e/ou utilização dos PRODUTOS; (ii) para fins de análise estratégica de segmentação de mercado; (iii) a elaboração e entrega de publicidade direcionada por meio do SITE e/ou do APLICATIVO e/ou por meio de mala direta, pela via postal ou eletrônica; (iv) a compilação e organização de base de dados para fins demográficos, estatísticos e comerciais em geral, incluindo, sem limitação, exploração econômica da base de dados de titularidade do IBA e/ou suas empresas coligadas, por quaisquer meios não defesos em lei; e (v) a prevenção de qualquer ilegalidade, bem como para o cumprimento de qualquer exigência legal, administrativa e/ou judicial, ainda que em procedimento investigativo, cautelar ou preparatório.</li>
+
+            <li>3.5. É assegurado ao USUÁRIO o direito de manifestar a sua oposição aos procedimentos acima, bem como solicitar a exclusão dos dados do USUÁRIO dos registros do IBA,&nbsp;clicando aqui por meio de comunicação à Central de Atendimento IBA, localizada no SITE.</li>
+
+            <li>3.6. O IBA procederá à exclusão dos dados do USUÁRIO em prazo razoável.</li>
+
+            <li>3.7. <strong>Mesmo após uma solicitação de exclusão de dados, manteremos, contudo, os dados agregados e não identificáveis, para fins estatísticos.</strong></li>
+
+            <li>3.8. O IBA pode ser obrigado por lei a manter o registro de acesso de USUÁRIOS ao SITE e aos APLICATIVOS por um prazo determinado. Após o término desse prazo legal, o IBA promoverá a exclusão de tais registros, caso o USUÁRIO tenha feito a solicitação de exclusão.</li>
+          </ol>
+        </li>
+
+        <!-- 4. CADASTRO -->
+        <li>
+          CADASTRO
+
+          <ol>
+            <li>4.1. O cadastro, indispensável para que o USUÁRIO possa contratar PRODUTOS ou utilizá-los, poderá ser realizado através do SITE ou dos APLICATIVOS.</li>
+
+            <li>4.2. Uma vez que o USUÁRIO tenha preenchido seus dados, da forma como solicitados pelo IBA, e aceitado este Termo, seu cadastro estará concluído, oportunidade na qual o IBA concederá, ao USUÁRIO, login e senha, pessoal e intransferível, que corresponderá a sua identificação junto ao SITE para contratar os PRODUTOS ou utilizá-los. O USUÁRIO deverá se responsabilizar pela veracidade das informações fornecidas neste cadastro, bem como pela atualização dessas.</li>
+
+            <li>4.3. O USUÁRIO se declara ciente de que, a partir da conclusão de seu cadastro, suas informações passarão a fazer parte do banco de dados do IBA e/ou de qualquer outra empresa integrante do Grupo Abril, podendo o USUÁRIO receber informações promocionais ou conteúdos informativos (lançamentos, promoções, newsletters, comunicações de relacionamento etc.) do IBA e/ou de outras empresas idôneas com as quais o IBA mantenha relacionamento. O USUÁRIO também poderá receber informações relacionadas ao pós-venda (cartas de boas-vindas, ofertas de renovação da assinatura, cobranças etc.), depois de ter contratado um PRODUTO. Se o USUÁRIO não tiver interesse em receber as informações promocionais ou conteúdos informativos, fica a ele assegurado o direito de manifestar sua oposição por meio de comunicação à Central de Atendimento IBA, localizada no SITE.</li>
+
+            <li>4.4. O USUÁRIO declara que entende e concorda que, exclusivamente para realizar a verificação da correição e veracidade das informações do cartão de crédito fornecidas pelo USUÁRIO no momento do cadastro, o IBA validará o cartão de crédito informado, podendo, se necessário, cobrar o valor de R$ 22,90 (vinte e dois reais e noventa centavos), e efetuar o imediato estorno do valor cobrado, após a confirmação das informações.</li>
+
+            <li>4.5. O IBA assegura ao USUÁRIO a inviolabilidade e o segredo de seus dados cadastrais. Todas as suas informações serão armazenadas de acordo com os mais rígidos critérios de segurança no banco de dados do IBA e serão tratadas de acordo com o código de ética da ABEMD - Associação Brasileira de Marketing Direto. Em nenhuma hipótese serão fornecidas informações pessoais para terceiros, somente dados genéricos utilizados para envio de mala direta, e-mail, newsletters e desde que autorizado pelo USUÁRIO.</li>
+          </ol>
+        </li>
+
+        <!-- 5. CONTEÚDO -->
+        <li>
+          CONTEÚDO
+
+          <ol>
+            <li>5.1. O IBA declara ao USUÁRIO que não possui qualquer interferência no conteúdo dos PRODUTOS e que esse conteúdo é de total responsabilidade do respectivo editor.</li>
+
+            <li>5.2. Alguns conteúdos não estão disponíveis para todas as plataformas de leitura devido a especificidades técnicas. O USUARIO deve verificar no momento da contratação do serviço para quais dispositivos cada conteúdo está disponível na página de catálogo.</li>
+          </ol>
+        </li>
+
+        <!-- 6. APLICATIVOS -->
+        <li>
+          APLICATIVOS
+
+          <ol>
+            <li>6.1. O conteúdo dos PRODUTOS somente poderá ser lido pelo USUÁRIO através dos APLICATIVOS.</li>
+
+            <li>6.2. O USUÁRIO precisará realizar o download (transferência eletrônica) desses APLICATIVOS para o seu EQUIPAMENTO, de acordo com os seguintes procedimentos:
+
+              <ol class="alphabetic">
+                <li>Para os EQUIPAMENTOS da Apple (iPads, iPhones, iPods e outros, conforme a disponibilidade para cada recurso do IBA), o download dos APLICATIVOS terá de ser realizado mediante o acesso à Apple Store;</li>
+
+                <li>Para os EQUIPAMENTOS tablets e celulares (conforme a disponibilidade para cada recurso do IBA) cujo sistema operacional seja Android, o download dos APLICATIVOS terá de ser realizado mediante o acesso à Google Play; e</li>
+
+                <li>Para os demais EQUIPAMENTOS (microcomputadores fixos e móveis), a leitura será realizada pelo próprio SITE por meio do acesso a sua conta com o login e senha cadastrada.</li>
+              </ol>
+            </li>
+
+            <li>6.3. O acesso ao APLICATIVO é permitido pelo IBA por tempo indeterminado e a título de licenciamento gratuito e não exclusivo. Esse acesso poderá ser cancelado pelo IBA a qualquer momento, caso haja infração às condições deste Termo.</li>
+          </ol>
+        </li>
+
+        <!-- 7. UTILIZAÇÃO DOS APLICATIVOS-->
+        <li>
+          UTILIZAÇÃO DOS APLICATIVOS
+
+          <ol>
+            <li>7.1. Para a correta utilização dos APLICATIVOS, o USUÁRIO deverá observar as orientações/restrições previstas no SITE, principalmente no que tange à possibilidade de funcionamento dos APLICATIVOS em cada sistema operacional de determinado EQUIPAMENTO.</li>
+
+            <li>7.2. O USUÁRIO declara estar ciente de que o acesso e a utilização dos APLICATIVOS dependerá da manutenção, pelo USUÁRIO, de uma conta de acesso à Internet, através de qualquer provedor de acesso, cabendo ao USUÁRIO a aquisição e manutenção de equipamentos necessários para utilização dos APLICATIVOS e sua integração com a rede de comunicações.</li>
+
+            <li>7.3. O USUÁRIO poderá encerrar a utilização dos APLICATIVOS a qualquer momento, independentemente de aviso prévio ao IBA.</li>
+          </ol>
+        </li>
+
+        <!-- 8. ASSISTÊNCIA TÉCNICA E ATUALIZAÇÕES PARA OS APLICATIVOS -->
+        <li>
+          ASSISTÊNCIA TÉCNICA E ATUALIZAÇÕES PARA OS APLICATIVOS
+
+          <ol>
+            <li>8.1. O IBA fornecerá, ao USUÁRIO, serviço de assistência técnica aos APLICATIVOS, por meio de contato efetuado pelo USUÁRIO à Central de Atendimento IBA, caso os APLICATIVOS venham a apresentar falhas técnicas, de acordo com os horários e serviços descritos no SITE.</li>
+
+            <li>8.2.O IBA poderá, ao seu exclusivo critério, disponibilizar atualizações para os APLICATIVOS.</li>
+          </ol>
+        </li>
+
+        <!-- 9. SENHAS DE ACESSO -->
+        <li>
+          SENHAS DE ACESSO
+
+          <ol>
+            <li>9.1. Todas as senhas de acesso cadastradas pelo USUÁRIO, para a conclusão de seu cadastro ou para a utilização dos APLICATIVOS, são de uso pessoal e intransferível. O USUÁRIO assume integral responsabilidade pela sua guarda e sigilo, bem como pelo uso indevido por terceiros.</li>
+
+            <li>9.2. <strong>No caso de perda de senha, ou conhecimento da senha pessoal do USUÁRIO por terceiros, o USUÁRIO se obriga a comunicar o fato imediatamente ao IBA, por meio da Central de Atendimento IBA, para que o IBA proceda ao bloqueio do acesso, sob pena de o USUÁRIO responder por todas as transações que venham a ser realizadas.</strong></li>
+          </ol>
+        </li>
+
+        <!-- 10. RESPONSABILIDADES -->
+        <li>
+          RESPONSABILIDADES
+
+          <ol>
+            <li>10.1. O USUÁRIO tem ciência de que todas as informações, revistas, materiais, imagens, textos, arquivos digitais, marcas, tecnologias, softwares, sinais distintivos e demais bens imateriais constantes do SITE e/ou dos APLICATIVOS são protegidos pela legislação de propriedade intelectual vigente, sendo de domínio do IBA e destinados ao uso pessoal e intransferível de cada USUÁRIO, portanto,&nbsp;o USUÁRIO não poderá, em qualquer hipótese (i) utilizar os PRODUTOS fora dos parâmetros estabelecidos pela licença final concedida ao USUÁRIO, sendo vedado inclusive, mas não limitado, copiar, reproduzir, republicar, codificar, descodificar, transmitir ou distribuir de qualquer outra forma, parcial ou integralmente, os PRODUTOS; (ii) copiar, reproduzir, republicar, enviar, publicar, apresentar publicamente, codificar, descodificar, traduzir, transmitir ou distribuir de qualquer outra forma, parcial ou integralmente o SITE e seus conteúdos para qualquer outro computador, servidor, página da internet ou qualquer outro suporte para publicação ou distribuição ou para quaisquer fins comerciais; (iii) alugar, transferir, modificar, adaptar, vender, distribuir, sublicenciar, criar obras derivadas e/ou realizar engenharia reversa nos APLICATIVOS e/ou em seus códigos fonte e/ou praticar qualquer ato que afete o seu desempenho ou quaisquer de seus recursos; (iv) difundir código malicioso ou projetado para coletar dados sem autorização (malware, spyware etc.) ao utilizar o SITE e/ou os APLICATIVOS; (v) interferir com a arquitetura do SITE ou dos APLICATIVOS e (vi) utilizar o SITE e/ou os APLICATIVOS em desacordo com este Termo, bem como à legislação vigente, especialmente as de origem civil e criminal, bem como de forma contrária aos preceitos morais e éticos e da boa-fé.</li>
+
+            <li>10.2. Além do estabelecido neste Termo, em nenhuma circunstância o IBA será responsabilizado pelas consequências decorrentes de imprevistos ou problemas que impeçam a disponibilidade do SITE e/ou dos APLICATIVOS que possam decorrer (i) de problemas, falhas ou funcionamento técnico, de qualquer tipo, em redes e equipamentos de computadores ou de linhas telefônicas, servidores ou provedores, hardware ou software, ou erro, interrupção, defeito, atraso ou falha em operações ou transmissões, inclusive de terceiros, para o correto processamento do SITE e/ou dos APLICATIVOS; e/ou (ii) de invasões de hackers.</li>
+
+            <li>10.3. <strong>A violação, pelo USUÁRIO, de qualquer das disposições constantes deste Termo, ensejará a imediata responsabilidade civil e/ou criminal, sem prejuízo de o IBA suspender ou terminar definitivamente o fornecimento de quaisquer PRODUTOS a tal USUÁRIO.</strong></li>
+          </ol>
+        </li>
+
+        <!-- 11. DISPOSIÇÕES FINAIS -->
+        <li>
+          DISPOSIÇÕES FINAIS
+
+          <ol>
+            <li>11.1. O presente Termo é celebrado por tempo indeterminado, podendo ser rescindido (i) pelo IBA, a qualquer momento; e (ii) na hipótese de infração de qualquer das condições deste Termo.</li>
+
+            <li>11.2. Caso o USUÁRIO deseje contribuir com melhorias ou sugestões para o SITE ou relacionadas ao GO READ, bem como na hipótese de dúvidas e reclamações relacionadas aos APLICATIVOS, disponível no SITE. Eventuais sugestões, dúvidas e reclamações poderão ser encaminhadas para a Central de Atendimento IBA.</li>
+
+            <li>11.3. O IBA poderá, a qualquer momento e de acordo com seu exclusivo critério, alterar o presente Termo, bem como as regras expostas no SITE. Os USUÁRIOS cadastrados serão notificados a cada alteração do Termo. O uso continuado pelo USUÁRIO após a publicação de qualquer alteração implicará a sua concordância e aceitação.</li>
+
+            <li>11.4. Eventuais divergências serão dirimidas perante o Foro da Capital do Estado de São Paulo, por uma de suas Varas Centrais.</li>
+          </ol>
+        </li>
+      </ol>
+
+      <h2>CONDIÇÕES ESPECÍFICAS DO GO READ</h2>
+      <p class="tab-1">Aplicam-se ao uso do PRODUTO GO READ todas as condições acima e as condições específicas desta seção.</p>
+
+      <ol class="list-style-2">
+        <li>
+          <strong>Utilização.</strong> Ao utilizar o GO READ, o USUÁRIO poderá contratar o acesso às revistas disponíveis no catálogo, podendo:
+
+          <ol class="alphabetic">
+            <li>Acessar as novas edições de cada revista publicadas ou disponibilizadas periodicamente, conforme o caso; e</li>
+
+            <li>Acessar as edições anteriores das revistas disponíveis, conforme disponibilizadas pelo IBA.</li>
+          </ol>
+        </li>
+
+        <li><strong>Serviço.</strong> A contratação dos acessos acima com referência a todas as revistas é chamada nestes Termos como “SERVIÇO”, que poderá ter restrições acerca da disponibilidade para determinados dispositivos informada no momento da contratação na página de catálogo.</li>
+
+        <li><strong>Continuidade do Acesso.</strong> O Serviço que o USUÁRIO contratar será contínuo, e o acesso será mantido mediante pagamento mensal do Preço, conforme definido abaixo, a não ser que o USUÁRIO faça o cancelamento do Serviço na seção “Perfil” do GO READ. Os pagamentos mensais do Preço serão lançados no valor integral na forma de pagamento (cartão de crédito ou outra forma, conforme abaixo) informada ao IBA no momento do cadastro. Caso o IBA não identifique o pagamento do PREÇO, o Serviço poderá ser suspensa (leia abaixo para mais informações sobre a suspensão por falta de pagamento).</li>
+
+        <li><strong>Preço.</strong> Ao contratar um Serviço, o USUÁRIO declara que pagará o respectivo preço mensal cobrado pelo Serviço. O USUÁRIO também poderá incluir novos títulos e poderá conferir o preço de inclusão de determinada revista no Plano (o “Preço”) antes da efetiva inclusão, pela consulta às informações no SITE e/ou nos APLICATIVOS.</li>
+
+        <li><strong>Reajuste.</strong> O Preço será reajustado pelo IBA a cada 12 (doze) meses, ou na menor periodicidade permitida pela lei brasileira, de acordo com a variação do índice IGP-M/FGV nesse período. O IBA comunicará esse reajuste com a máxima antecedência possível.</li>
+
+        <li><strong>Alteração do catálogo.</strong> O IBA poderá alterar revistas do catálogo de um USUÁRIO caso o IBA seja impedido, por qualquer motivo, de realizar a distribuição delas ou de permitir o acesso dessas revistas a terceiros. A alteração da disponibilidade de uma revista será comunicada aos USUÁRIOS contratantes com a maior antecedência possível.</li>
+
+        <li>
+          <strong>Forma de Pagamento.</strong> O USUÁRIO entende e concorda que, para utilizar o GO READ o USUÁRIO deve ter acesso à internet e deve fornecer uma forma de pagamento aceita, válida e atual, de acordo com as condições gerais dos Termos.
+
+          <ol class="alphabetic">
+            <li>Os cartões crédito aceitos pelo GO READ são: Visa, Mastercard, American Express e Dinners Club.</li>
+
+            <li>Os usuários também poderão utilizar uma conta no PayPal.</li>
+          </ol>
+        </li>
+
+        <li><strong>Cobranças.</strong> As cobranças serão feitas na forma de pagamento informada, mês a mês. As cobranças serão feitas de forma antecipada em relação ao mês de uso da Seleção. O IBA fará cada cobrança mensal no dia correspondente ao aniversário de cada SERVIÇO. O IBA se reserva ao direito de mudar o dia de cobrança, especialmente, conforme indicado abaixo, se a cobrança na forma de pagamento não puder ser liquidada, mas o IBA não será obrigado a reagendar qualquer cobrança. Caso um SERVIÇO tenha começado em um dia não existente em outros meses, o IBA poderá fazer a cobrança do Preço em um dia do mês aplicável ou em outro dia, a critério do IBA. Por exemplo, se o USUÁRIO tiver iniciado a SERVIÇO em 31 de janeiro, sua próxima data de cobrança e pagamento provavelmente será 28 de fevereiro. Sua data de cobrança pode mudar devido a mudanças no SERVIÇO.&nbsp;Para ver a data de início do próximo período de cobrança, o USUÁRIO deverá estar logado no SITE, selecionar “perfil” e clicar no item “GO READ”.&nbsp;&nbsp;Referências a cobranças nestas Condições Específicas incluem, além da forma de pagamento que o USUÁRIO informou no momento do cadastro, qualquer outra forma de liquidação de pagamento, sendo que o IBA poderá utilizar qualquer meio legalmente válido para proceder à cobrança, caso a cobrança na sua forma de pagamento informada seja impossível em determinado período.</li>
+
+        <li><strong>Cancelamento.</strong> O cancelamento sempre será processado e válido para o mês seguinte ao da última cobrança. Ou seja: se o SERVIÇO foi paga para um determinado mês (por exemplo, em 15 de fevereiro), e dentro desse mês de acesso o USUÁRIO efetuar o cancelamento do SERVIÇO, o USUÁRIO continuará com o SERVIÇO válida e acessível até a data de expiração desse período mensal (no exemplo, 14 de março), e o PLANO se tornará não acessível depois do término desse período.&nbsp;<span><strong>PARA CANCELAR O SEU PLANO DO GO READ, O USUÁRIO DEVERÁ ESTAR LOGADO NO SITE, SELECIONAR “PERFIL”, CLICAR NO ITEM “GO READ” E EM SEGUIDA CLICAR EM “CANCELAR GO READ”. O USUÁRIO DEVERÁ FAZER O CANCELAMENTO ATÉ 24 (VINTE E QUATRO) HORAS ANTES DA PRÓXIMA DATA DE COBRANÇA, CASO CONTRÁRIO, SEU PLANO SERÁ ESTENDIDO POR MAIS UM MÊS, E O PAGAMENTO DO PREÇO POR TAL PERÍODO SERÁ DEVIDO.&nbsp;O IBA NÃO FARÁ REEMBOLSO DE VALORES PAGOS, AINDA QUE O USUÁRIO REALIZE O CANCELAMENTO IMEDIATAMENTE APÓS A COBRANÇA POR DETERMINADO PERÍODO.</strong></span></li>
+
+        <li><strong>Gratuidade.</strong> O SERVIÇO GO READ poderá começar com 1 (um) mês grátis, ou por período especificado no momento da contratação, e continuará mediante pagamento, com cobrança automática caso você não cancele o SERVIÇO antes do término do período. Consulte as Plataformas para saber se o IBA está ofertando, na data da consulta, o primeiro mês de acesso ao SERVIÇO gratuitamente. O USUÁRIO poderá cancelar o SERVIÇO durante o período grátis, sem qualquer custo, no site do IBA (www.goread.com.br), no perfil, item “GO READ”. O USUÁRIO entende e concorda que, ao efetuar o cancelamento do SERVIÇO, o USUÁRIO perderá o acesso ao SERVIÇO por completo. O USUÁRIO entende e concorda que cada oferta individual de utilização gratuita do GO READ só pode ser consumida pelo o USUÁRIO uma única vez, ou seja: caso o USUÁRIO contrate o GO READ em um período gratuito e esse período chegue ao fim, ou o USUÁRIO cancele o SERVIÇO antes do término do período, o USUÁRIO não terá direito a uma nova contratação com essa mesma oferta.</li>
+
+        <li>
+          <strong>Ações Promocionais.</strong> O GO READ poderá oferecer ao USUÁRIO, em caráter promocional, acesso temporário e gratuito ao SERVIÇO (“Acesso Temporário e Gratuito”), de acordo com os termos abaixo:
+
+          <ol class="alphabetic">
+            <li>O Acesso Temporário e Gratuito ao SERVIÇO deverá ser resgatado mediante cadastro de um código promocional num hotsite específico. O período e os critérios para concessão do Acesso Temporário Gratuito ao USUARIO serão detalhados no hotsite específico da ação, devendo ser verificados pelo USUÁRIO no momento de cadastro do código promocional.</li>
+
+            <li>O período de utilização do Acesso Temporário Gratuito será creditado na conta GO READ que o USUARIO indicar no momento do cadastro do voucher, não podendo ser alterado posteriormente.</li>
+
+            <li>Terminado o período do Acesso Temporário Gratuito, caso o USUARIO não realize o CANCELAMENTO de seu SERVIÇO no seu perfil do SITE, a cobrança pelo SERVIÇO continuará a ser feita no cartão de crédito cadastrado.</li>
+
+            <li>Os clientes oriundos de parcerias realizadas via IBA CLUBE com conta ativa em 27 de outubro de 2016 migrados para GO READ continuarão a ter acesso ao conteúdo restrito aos termos de sua parceria. Caso queiram acessar o conteúdo GO READ, deverão contratar o serviço separadamente.</li>
+          </ol>
+        </li>
+
+        <li><strong>Utilização Efetiva.</strong> O fato de o USUÁRIO não utilizar o GO READ ou parte dele por qualquer período não significará que o SERVIÇO foi suspensa, nem que o pagamento do Preço referente a esse período será devolvido, no todo nem em parte.</li>
+
+        <li><strong>Ausência de Pagamento.</strong> O IBA poderá suspender o SERVIÇO, caso o USUÁRIO deixe de pagar qualquer mensalidade do Preço ou qualquer outra quantia que o USUÁRIO deva ao IBA, mesmo que não ligadas ao GO READ, e apenas depois de 24 (vinte e quatro) horas da comunicação ao USUÁRIO de que seu pagamento não foi identificado.</li>
+
+        <li><strong>Suspensão.</strong> A suspensão do SERVIÇO significa que o USUÁRIO não poderá acessar qualquer revista do GO READ nem suas demais funcionalidades. O IBA poderá suspender um SERVIÇO, além da hipótese acima, em razão da suspeita e/ou comprovação de descumprimento de uma ou mais condições das condições gerais dos Termos ou das Condições Específicas ou envolvimento com uso ilegal ou inadequado do GO READ, até identificarmos a regularização da situação.</li>
+
+        <li><strong>Limitação de Aparelhos por PLANO.</strong> O USUÁRIO pode utilizar até o número máximo de 4 (quatro) aparelhos simultaneamente para acessar o SERVIÇO.</li>
+
+        <li><strong>Atualização, Estudo e Melhorias.</strong> O IBA realiza seus melhores esforços para atualizar o catálogo do GO READ e continuamente testa vários aspectos de suas propriedades, incluindo as interfaces de USUÁRIO, os níveis de serviço, planos, recursos promocionais, disponibilidade de revistas, entrega e preços.</li>
+
+        <li><strong>Velocidade de Recursos.</strong> A capacidade de realização de acesso inicial a uma revista ou de sua navegação pode variar de um aparelho para outro e pode ser afetada por diversos fatores, como o local, a largura de banda disponível e/ou velocidade da conexão de internet do USUÁRIO.</li>
+
+        <li><strong>Ausência de Declarações.</strong> Todos os conteúdos das revistas e os softwares associados, bem como quaisquer outros recursos ou funcionalidades associadas ao&nbsp;GO READ&nbsp;são entregues como se encontram e conforme disponibilizados pelos licenciadores ou fornecedores do IBA. O IBA não oferece qualquer declaração ou garantia de que o uso do GO READ será contínuo ou livre de erros, nem presta nenhuma declaração ou garantia de responsabilidade editorial sobre as revistas.</li>
+
+        <li><strong>Responsabilidade do IBA.</strong> Até a máxima extensão permitida em lei, em nenhuma hipótese o IBA, suas empresas controladas, controladoras ou sob controle comum, acionistas, diretores, funcionários ou representantes serão responsáveis em relação ao USUÁRIO por qualquer dano especial, incidental, indireto ou consequenciais de qualquer natureza.</li>
+
+        <li><strong>Alegação de infração de direitos autorais.</strong> Se o USUÁRIO acredita que seu trabalho foi reproduzido ou distribuído de forma que constitui infração de direitos autorais ou se o USUÁRIO tem conhecimento de material que infrinja as leis de direitos autorais por meio do GO READ, deverá entrar em contato com o IBA por meio da Central de Atendimento do IBA -&nbsp;www.goread.com.br/ajuda</li>
+      </ol>
+    </div>
+     ]]>
         </string>
     <string name="title_activity_settings">Settings</string>
 
@@ -91,4 +341,9 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_teste">TesteActivity</string>
+    <string name="criar_anuncio">Criar anúncio</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="termos_de_uso">Termos de uso</string>
+    <string name="meus_anuncios">Meus anúncios</string>
+    <string name="eu_aceito">Eu aceito</string>
 </resources>

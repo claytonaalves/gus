@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +16,8 @@ import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
 
 import java.util.List;
+
+import static android.text.Html.fromHtml;
 
 public class TermosDeUsoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,6 +31,8 @@ public class TermosDeUsoActivity extends AppCompatActivity implements View.OnCli
         setTitle("Termos de uso");
 
         txtTermosUso = (TextView) findViewById(R.id.txtTermosUso);
+        txtTermosUso.setMovementMethod(new ScrollingMovementMethod());
+
         final CheckBox cbAceite = (CheckBox) findViewById(R.id.cbAceite);
         final Button btContinuar = (Button) findViewById(R.id.btContinuar);
 

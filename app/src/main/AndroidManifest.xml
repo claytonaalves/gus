@@ -30,7 +30,9 @@
         <activity
             android:name=".activities.TesteActivity"
             android:label="@string/title_activity_teste"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.NovoAnuncioActivity" />
+        <activity android:name=".activities.MeusAnunciosActivity"></activity>
     </application>
 
 </manifest>
