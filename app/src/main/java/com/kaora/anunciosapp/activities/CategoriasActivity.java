@@ -2,6 +2,7 @@ package com.kaora.anunciosapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.CategoriasAdapter;
@@ -43,6 +45,14 @@ public class CategoriasActivity extends AppCompatActivity {
                 Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
                 intent.putExtra("idCategoria", categoriaSelecionada._id);
                 startActivity(intent);
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CategoriasActivity.this, "Funciona", Toast.LENGTH_LONG).show();
             }
         });
     }
