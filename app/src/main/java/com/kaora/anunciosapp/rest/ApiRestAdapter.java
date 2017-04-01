@@ -13,9 +13,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiRestAdapter {
 
     private static Retrofit retrofit;
-    public static final String BASE_URL = "http://10.1.1.105:5000";
+//    public static final String BASE_URL = "http://200.252.200.154/anuncios/";
+    public static final String BASE_URL = "http://10.0.2.16:5000/";
 
-    ApiRestInterface service;
+    private ApiRestInterface service;
 
     public ApiRestAdapter() {
         retrofit = new Retrofit.Builder()

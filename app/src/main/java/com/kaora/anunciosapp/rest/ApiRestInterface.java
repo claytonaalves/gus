@@ -11,10 +11,10 @@ import retrofit2.http.Path;
 
 public interface ApiRestInterface {
 
-    @GET("/categoria")
+    @GET("categoria")
     Call<List<Categoria>> obtemCategorias();
 
-    @GET("/categoria/{id}")
+    @GET("categoria/{id}")
     Call<List<Anunciante>> anunciantesPorCategoria(@Path("id") int idCategoria);
 
 }
