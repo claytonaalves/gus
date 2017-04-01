@@ -3,6 +3,7 @@ package com.kaora.anunciosapp.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.kaora.anunciosapp.R;
@@ -22,6 +23,10 @@ public class AnuncianteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anunciante);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         Intent intent = getIntent();
         anunciante = (Anunciante) intent.getSerializableExtra("anunciante");
 
@@ -39,4 +44,11 @@ public class AnuncianteActivity extends AppCompatActivity {
         tvEndereco.setText(anunciante.logradouro);
         tvNumero.setText(anunciante.numero);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return true;
+    }
+
 }

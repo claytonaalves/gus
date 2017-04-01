@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.AnuncianteAdapter;
@@ -32,6 +34,10 @@ public class AnunciantesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anunciantes);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         Intent intent = getIntent();
         idCategoria = intent.getIntExtra("idCategoria", 0);
 
@@ -48,6 +54,12 @@ public class AnunciantesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AnuncianteActivity.class);
         intent.putExtra("anunciante", anunciante);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return true;
     }
 
     @Override
