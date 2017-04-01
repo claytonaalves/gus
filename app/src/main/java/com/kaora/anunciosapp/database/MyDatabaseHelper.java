@@ -86,6 +86,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return categorias;
     }
 
+    public List<Categoria> todasCategorias() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM categoria", null);
+        List<Categoria> categorias = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            categorias.add(new Categoria(cursor.getInt(cursor.getColumnIndex("_id")), cursor.getString(cursor.getColumnIndex("descricao"))));
+        }
+        cursor.close();
+        return categorias;
+    }
+
     public List<Anunciante> anunciantesPorCategoria(int idCategoria) {
 //        SQLiteDatabase db = getReadableDatabase();
 //        Cursor cursor = db.query("anunciante")
