@@ -27,12 +27,8 @@
             android:name=".activities.AnunciantesActivity"
             android:label="Anunciantes" />
         <activity android:name=".activities.AnuncianteActivity" />
-        <activity
-            android:name=".activities.TesteActivity"
-            android:label="@string/title_activity_teste"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.NovoAnuncioActivity" />
-        <activity android:name=".activities.MeusAnunciosActivity"></activity>
+        <activity android:name=".activities.MeusAnunciosActivity" />
     </application>
 
 </manifest>
