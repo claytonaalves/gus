@@ -14,4 +14,9 @@ public class Categoria {
         this.descricao = descricao;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Categoria && ((Categoria) object)._id == this._id;
+    }
+
 }

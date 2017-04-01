@@ -1,12 +1,9 @@
 package com.kaora.anunciosapp.activities;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -97,6 +94,16 @@ public class CategoriasActivity extends AppCompatActivity {
     private void iniciaActivityNovoAnuncio() {
         Intent intent = new Intent(this, NovoAnuncioActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        categorias.clear();
+        for (Categoria categoria : database.categoriasPreferidas()) {
+            categorias.add(categoria);
+        }
+        categoriasAdapter.notifyDataSetChanged();
     }
 
     @Override

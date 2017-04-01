@@ -43,7 +43,11 @@ public class PreferenciasActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        preencheListaDePreferencias(database.todasCategorias());
+        obtemCategoriasDaAPI();
+    }
 
+    private void obtemCategoriasDaAPI() {
         ApiRestAdapter restApi = new ApiRestAdapter();
 
         restApi.obtemCategorias(new Callback<List<Categoria>>() {
@@ -61,18 +65,20 @@ public class PreferenciasActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem intem) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         database.salvaPreferencias(preferenciasSelecionadas());
         this.finish();
         return true;
     }
 
     private void preencheListaDePreferencias(List<Categoria> categorias) {
+        List<Categoria> categoriasPreferidas = database.categoriasPreferidas();
         preferencias.removeAllViews();
         for (Categoria categoria : categorias) {
             CheckBox checkbox = new CheckBox(this);
             checkbox.setText(categoria.descricao);
             checkbox.setTag(categoria);
+            checkbox.setChecked(categoriasPreferidas.contains(categoria));
             preferencias.addView(checkbox);
         }
     }

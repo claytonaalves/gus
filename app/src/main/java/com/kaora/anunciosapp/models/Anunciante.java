@@ -14,4 +14,9 @@ public class Anunciante implements Serializable {
     public String email;
     public int idcategoria;
 
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Anunciante && ((Anunciante)object)._id==this._id;
+    }
+
 }
