@@ -4,6 +4,12 @@
 
     <group android:id="@+id/group1">
         <item
+            android:id="@+id/search"
+            android:title="@string/pesquisar"
+            android:icon="@drawable/ic_search_white_24dp"
+            android:actionViewClass="android.support.v7.widget.SearchView"
+            app:showAsAction="collapseActionView|ifRoom" />
+        <item
             android:id="@+id/action_criar_anuncio"
             android:title="@string/criar_anuncio" />
         <item
