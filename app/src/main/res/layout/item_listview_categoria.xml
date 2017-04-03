@@ -3,24 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginBottom="50px">
 
     <ImageView
         android:layout_width="0px"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:srcCompat="@mipmap/ic_launcher"
         android:id="@+id/imageView"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"/>
 
     <TextView
         android:text="TextView"
         android:layout_width="0px"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/tvNomeCategoria"
-        android:layout_weight="5"
+        android:layout_weight="10"
         android:paddingLeft="30px"
         android:textSize="24sp"
-        android:gravity="center_vertical" />
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_marginRight="16dp"
+        android:text=" 15 "
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_background"
+        android:layout_gravity="center_vertical"/>
 </LinearLayout>
