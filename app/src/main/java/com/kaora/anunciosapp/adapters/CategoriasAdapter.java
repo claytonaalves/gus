@@ -53,6 +53,10 @@ public class CategoriasAdapter extends BaseAdapter {
         TextView nomeCategoria = (TextView) view.findViewById(R.id.tvNomeCategoria);
         nomeCategoria.setText(categoria.descricao);
 
+        TextView qtdeAnunciantes = (TextView) view.findViewById(R.id.qtdeAnunciantes);
+        qtdeAnunciantes.setVisibility(categoria.qtdeAnunciantes>0 ? View.VISIBLE : View.INVISIBLE);
+        qtdeAnunciantes.setText(Integer.toString(categoria.qtdeAnunciantes));
+
         view.setTag(categoria);
 
         return view;

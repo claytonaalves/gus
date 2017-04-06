@@ -5,6 +5,7 @@ public class Categoria {
     public int _id;
     public String descricao;
     public String imagem;
+    public int qtdeAnunciantes;
 
     public Categoria(int _id, String descricao, String imagem) {
         this._id = _id;

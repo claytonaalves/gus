@@ -32,6 +32,30 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "idcategoria INTEGER, " +
             "FOREIGN KEY (idcategoria) REFERENCES categoria(_id))";
 
+    private static final String TABELA_ANUNCIANTE = "" +
+            "CREATE TABLE anunciante ( " +
+            "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "nome_fantasia TEXT, " +
+            "telefone TEXT, " +
+            "endereco TEXT, " +
+            "idcategoria INTEGER, " +
+            "FOREIGN KEY (idcategoria) REFERENCES categoria(_id) )";
+
+    private static final String TABELA_PERFIL_ANUNCIANTE = "" +
+            "CREATE TABLE perfil_anunciante ( " +
+            "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "nome_fantasia TEXT, " +
+            "telefone TEXT, " +
+            "celular TEXT, " +
+            "email TEXT, " +
+            "endereco TEXT, " +
+            "estado TEXT " +
+            "cidade TEXT, " +
+            "bairro TEXT, " +
+            "idcategoria INTEGER, " +
+            "FOREIGN KEY (idcategoria) REFERENCES categoria(_id) )";
+
+
     public MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -47,6 +71,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABELA_CATEGORIA);
         db.execSQL(TABELA_PREFERENCIA);
+        db.execSQL(TABELA_ANUNCIANTE);
+        db.execSQL(TABELA_PERFIL_ANUNCIANTE);
     }
 
     @Override
@@ -78,10 +104,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Categoria> categoriasPreferidas() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT c._id, c.descricao, c.imagem FROM categoria c JOIN preferencia p ON (c._id=p.idcategoria)", null);
+        Cursor cursor = db.rawQuery(
+                "SELECT c._id, c.descricao, c.imagem, COALESCE(q.qtde, 0) AS qtde " +
+                "FROM preferencia p " +
+                "LEFT JOIN categoria c ON (c._id=p.idcategoria) " +
+                "LEFT JOIN (SELECT idcategoria, COUNT(*) as qtde FROM anunciante GROUP BY idcategoria) q ON (q.idcategoria=c._id)"
+        , null);
         List<Categoria> categorias = new ArrayList<>();
         while (cursor.moveToNext()) {
-            categorias.add(new Categoria(cursor.getInt(0), cursor.getString(1), cursor.getString(2)));
+            Categoria categoria = new Categoria(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+            categoria.qtdeAnunciantes = cursor.getInt(3);
+            categorias.add(categoria);
         }
         cursor.close();
         return categorias;
