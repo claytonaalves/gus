@@ -61,6 +61,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("_id", categoria._id);
             values.put("descricao", categoria.descricao);
+            values.put("imagem", categoria.imagem);
             database.insert("categoria", null, values);
         }
     }
@@ -77,10 +78,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Categoria> categoriasPreferidas() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT c._id, c.descricao FROM categoria c JOIN preferencia p ON (c._id=p.idcategoria)", null);
+        Cursor cursor = db.rawQuery("SELECT c._id, c.descricao, c.imagem FROM categoria c JOIN preferencia p ON (c._id=p.idcategoria)", null);
         List<Categoria> categorias = new ArrayList<>();
         while (cursor.moveToNext()) {
-            categorias.add(new Categoria(cursor.getInt(0), cursor.getString(1)));
+            categorias.add(new Categoria(cursor.getInt(0), cursor.getString(1), cursor.getString(2)));
         }
         cursor.close();
         return categorias;
@@ -91,7 +92,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM categoria", null);
         List<Categoria> categorias = new ArrayList<>();
         while (cursor.moveToNext()) {
-            categorias.add(new Categoria(cursor.getInt(cursor.getColumnIndex("_id")), cursor.getString(cursor.getColumnIndex("descricao"))));
+            categorias.add(
+                    new Categoria(
+                        cursor.getInt(cursor.getColumnIndex("_id")),
+                        cursor.getString(cursor.getColumnIndex("descricao")),
+                        cursor.getString(cursor.getColumnIndex("imagem"))
+                    )
+            );
         }
         cursor.close();
         return categorias;

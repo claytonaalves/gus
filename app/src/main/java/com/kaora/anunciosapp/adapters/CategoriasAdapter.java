@@ -1,13 +1,16 @@
 package com.kaora.anunciosapp.adapters;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.List;
 
@@ -42,6 +45,10 @@ public class CategoriasAdapter extends BaseAdapter {
         View view = activity.getLayoutInflater()
                 .inflate(R.layout.item_listview_categoria, parent, false);
         Categoria categoria = categorias.get(position);
+
+        Uri uri = Uri.parse(ApiRestAdapter.BASE_URL + categoria.imagem);
+        SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(R.id.imagem);
+        draweeView.setImageURI(uri);
 
         TextView nomeCategoria = (TextView) view.findViewById(R.id.tvNomeCategoria);
         nomeCategoria.setText(categoria.descricao);

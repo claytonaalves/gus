@@ -1,17 +1,15 @@
 package com.kaora.anunciosapp.models;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Categoria {
 
     public int _id;
     public String descricao;
-    // imagem
+    public String imagem;
 
-    public Categoria(int _id, String descricao) {
+    public Categoria(int _id, String descricao, String imagem) {
         this._id = _id;
         this.descricao = descricao;
+        this.imagem = imagem;
     }
 
     @Override
