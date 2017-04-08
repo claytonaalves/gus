@@ -52,9 +52,26 @@ public class CategoriasActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CategoriasActivity.this, "Funciona", Toast.LENGTH_LONG).show();
+                if (existePerfilConfigurado()) {
+                    mostraActivitySelecaoPerfil();
+                } else {
+                    mostraActivityCriacaoPerfil();
+                }
             }
         });
+    }
+
+    private void mostraActivityCriacaoPerfil() {
+        Intent intent = new Intent(this, AvisoPerfilActivity.class);
+        startActivity(intent);
+    }
+
+    private void mostraActivitySelecaoPerfil() {
+
+    }
+
+    private boolean existePerfilConfigurado() {
+        return database.todosPerfis().size()>0;
     }
 
     @Override

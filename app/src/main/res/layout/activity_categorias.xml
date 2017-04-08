@@ -41,7 +41,7 @@
         android:layout_margin="16dp"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
-        app:srcCompat="@drawable/bullhorn"
+        app:srcCompat="@drawable/advertising_fab"
         tools:ignore="UnusedAttribute" />
 
 </android.support.design.widget.CoordinatorLayout>

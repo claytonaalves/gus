@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.kaora.anunciosapp.models.Anunciante;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PerfilAnunciante;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,5 +148,27 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 //        SQLiteDatabase db = getReadableDatabase();
 //        Cursor cursor = db.query("anunciante")
         return null;
+    }
+
+    public List<PerfilAnunciante> todosPerfis() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM perfil_anunciante", null);
+        List<PerfilAnunciante> perfis = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            PerfilAnunciante perfil = new PerfilAnunciante();
+            perfil._id = cursor.getInt(cursor.getColumnIndex("_id"));
+            perfil.nome_fantasia = cursor.getString(cursor.getColumnIndex("nome_fantasia"));
+//            public String telefone;
+//            public String celular;
+//            public String email;
+//            public String endereco;
+//            public String estado;
+//            public String cidade;
+//            public String bairro;
+//            public int idcategoria;
+            perfis.add(perfil);
+        }
+        cursor.close();
+        return perfis;
     }
 }
