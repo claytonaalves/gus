@@ -55,7 +55,7 @@ public class CategoriasAdapter extends BaseAdapter {
 
         TextView qtdeAnunciantes = (TextView) view.findViewById(R.id.qtdeAnunciantes);
         qtdeAnunciantes.setVisibility(categoria.qtdeAnunciantes>0 ? View.VISIBLE : View.INVISIBLE);
-        qtdeAnunciantes.setText(Integer.toString(categoria.qtdeAnunciantes));
+        qtdeAnunciantes.setText(" " + Integer.toString(categoria.qtdeAnunciantes) + " ");
 
         view.setTag(categoria);
 

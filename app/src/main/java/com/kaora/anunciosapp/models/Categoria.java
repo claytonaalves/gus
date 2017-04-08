@@ -4,12 +4,13 @@ public class Categoria {
 
     public int _id;
     public String descricao;
-    public String imagem;
     public int qtdeAnunciantes;
+    public String imagem;
 
-    public Categoria(int _id, String descricao, String imagem) {
+    public Categoria(int _id, String descricao, int qtdeAnunciantes, String imagem) {
         this._id = _id;
         this.descricao = descricao;
+        this.qtdeAnunciantes = qtdeAnunciantes;
         this.imagem = imagem;
     }
 

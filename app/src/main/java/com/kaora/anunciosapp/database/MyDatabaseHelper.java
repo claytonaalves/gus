@@ -25,6 +25,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE categoria ( " +
             "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
             "descricao TEXT NOT NULL, " +
+            "qtde_anunciantes INTEGER, " +
             "imagem TEXT)";
 
     private static final String TABELA_PREFERENCIA = "" +
@@ -87,33 +88,27 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("_id", categoria._id);
             values.put("descricao", categoria.descricao);
+            values.put("qtde_anunciantes", categoria.qtdeAnunciantes);
             values.put("imagem", categoria.imagem);
             database.insert("categoria", null, values);
-        }
-    }
-
-    public void salvaPreferencias(List<Categoria> categorias) {
-        SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM preferencia");
-        for (Categoria categoria : categorias) {
-            ContentValues values = new ContentValues();
-            values.put("idcategoria", categoria._id);
-            database.insert("preferencia", null, values);
         }
     }
 
     public List<Categoria> categoriasPreferidas() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT c._id, c.descricao, c.imagem, COALESCE(q.qtde, 0) AS qtde " +
+                "SELECT c._id, c.descricao, c.qtde_anunciantes, c.imagem " +
                 "FROM preferencia p " +
-                "LEFT JOIN categoria c ON (c._id=p.idcategoria) " +
-                "LEFT JOIN (SELECT idcategoria, COUNT(*) as qtde FROM anunciante GROUP BY idcategoria) q ON (q.idcategoria=c._id)"
+                "LEFT JOIN categoria c ON (c._id=p.idcategoria)"
         , null);
         List<Categoria> categorias = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Categoria categoria = new Categoria(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
-            categoria.qtdeAnunciantes = cursor.getInt(3);
+            Categoria categoria = new Categoria(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getString(3)
+            );
             categorias.add(categoria);
         }
         cursor.close();
@@ -129,12 +124,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                     new Categoria(
                         cursor.getInt(cursor.getColumnIndex("_id")),
                         cursor.getString(cursor.getColumnIndex("descricao")),
+                        cursor.getInt(cursor.getColumnIndex("qtde_anunciantes")),
                         cursor.getString(cursor.getColumnIndex("imagem"))
                     )
             );
         }
         cursor.close();
         return categorias;
+    }
+
+    public void salvaPreferencias(List<Categoria> categorias) {
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("DELETE FROM preferencia");
+        for (Categoria categoria : categorias) {
+            ContentValues values = new ContentValues();
+            values.put("idcategoria", categoria._id);
+            database.insert("preferencia", null, values);
+        }
     }
 
     public List<Anunciante> anunciantesPorCategoria(int idCategoria) {
