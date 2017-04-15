@@ -157,7 +157,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             PerfilAnunciante perfil = new PerfilAnunciante();
             perfil._id = cursor.getInt(cursor.getColumnIndex("_id"));
-            perfil.nome_fantasia = cursor.getString(cursor.getColumnIndex("nome_fantasia"));
+            perfil.nome = cursor.getString(cursor.getColumnIndex("nome_fantasia"));
 //            public String telefone;
 //            public String celular;
 //            public String email;

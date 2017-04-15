@@ -30,7 +30,10 @@
         <activity android:name=".activities.AnuncianteActivity" />
         <activity android:name=".activities.NovoAnuncioActivity" />
         <activity android:name=".activities.MeusAnunciosActivity" />
-        <activity android:name=".activities.AvisoPerfilActivity"></activity>
+        <activity android:name=".activities.AvisoPerfilActivity" />
+        <activity
+            android:name=".activities.NovoPerfilActivity"
+            android:label="Novo perfil" />
     </application>
 
 </manifest>
