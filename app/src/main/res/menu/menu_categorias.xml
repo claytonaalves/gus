@@ -13,6 +13,10 @@
             android:id="@+id/action_criar_anuncio"
             android:title="@string/criar_anuncio" />
         <item
+            android:id="@+id/action_perfis"
+            android:title="@string/perfis"
+            />
+        <item
             android:id="@+id/action_meus_anuncios"
             android:title="@string/meus_anuncios" />
     </group>

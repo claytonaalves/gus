@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.CategoriasAdapter;
@@ -31,7 +30,7 @@ public class CategoriasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categorias);
 
-        database = new MyDatabaseHelper(this);
+        database = MyDatabaseHelper.getInstance(this);
         categorias = database.categoriasPreferidas();
 
         categoriasAdapter = new CategoriasAdapter(categorias, this);
@@ -52,13 +51,21 @@ public class CategoriasActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (existePerfilConfigurado()) {
-                    mostraActivitySelecaoPerfil();
-                } else {
+                int qtdePerfisCadastrados = database.todosPerfis().size();
+                if (qtdePerfisCadastrados==0) {
                     mostraActivityCriacaoPerfil();
+                } else if (qtdePerfisCadastrados==1) {
+                    mostraActivityNovoAnuncio();
+                } else {
+                    mostraActivitySelecaoPerfil();
                 }
             }
         });
+    }
+
+    private void mostraActivityNovoAnuncio() {
+        Intent intent = new Intent(this, NovoAnuncioActivity.class);
+        startActivity(intent);
     }
 
     private void mostraActivityCriacaoPerfil() {
@@ -67,11 +74,8 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void mostraActivitySelecaoPerfil() {
-
-    }
-
-    private boolean existePerfilConfigurado() {
-        return database.todosPerfis().size()>0;
+        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -121,12 +125,6 @@ public class CategoriasActivity extends AppCompatActivity {
             categorias.add(categoria);
         }
         categoriasAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onDestroy() {
-        database.close();
-        super.onDestroy();
     }
 
 }

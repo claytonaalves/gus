@@ -31,7 +31,7 @@ public class PreferenciasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferencias);
 
-        database = new MyDatabaseHelper(this);
+        database = MyDatabaseHelper.getInstance(this);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

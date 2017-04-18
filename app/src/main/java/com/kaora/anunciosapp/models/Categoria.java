@@ -19,4 +19,9 @@ public class Categoria {
         return object instanceof Categoria && ((Categoria) object)._id == this._id;
     }
 
+    @Override
+    public String toString() {
+        return this.descricao;
+    }
+
 }

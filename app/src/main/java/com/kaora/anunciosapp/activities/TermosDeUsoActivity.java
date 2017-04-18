@@ -62,7 +62,7 @@ public class TermosDeUsoActivity extends AppCompatActivity implements View.OnCli
     }
 
     private boolean preferenciasDefinidas() {
-        MyDatabaseHelper database = new MyDatabaseHelper(this);
+        MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
         List<Categoria> preferencias = database.categoriasPreferidas();
         return preferencias.size()>0;
     }

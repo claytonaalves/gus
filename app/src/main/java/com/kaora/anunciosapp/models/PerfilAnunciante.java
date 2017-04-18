@@ -7,8 +7,14 @@ public class PerfilAnunciante {
     public String celular;
     public String email;
     public String endereco;
+    public String numero;
     public String estado;
     public String cidade;
     public String bairro;
     public int idcategoria;
+
+    @Override
+    public String toString() {
+        return this.nome;
+    }
 }

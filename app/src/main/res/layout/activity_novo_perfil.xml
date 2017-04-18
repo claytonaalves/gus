@@ -24,16 +24,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/camera"
-                android:onClick="selecionarImagem"/>
+                android:onClick="selecionarImagem"
+                android:src="@drawable/camera" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E0E0E0"
+                android:gravity="center"
                 android:text="Dados principais"
-                android:textSize="20dp"
-                android:gravity="center"/>
+                android:textSize="20dp" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -96,21 +96,22 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
                 android:background="#E0E0E0"
-                android:text="Endereço"
-                android:textSize="20dp"
                 android:gravity="center"
-                android:layout_marginTop="25dp"/>
+                android:text="Endereço"
+                android:textSize="20dp" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/etEstado"
+                    android:id="@+id/etEndereco"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nome" />
+                    android:hint="Endereço" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -118,10 +119,10 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/etCidade"
+                    android:id="@+id/etNumero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Cidade" />
+                    android:hint="Número" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -135,11 +136,33 @@
                     android:hint="Bairro" />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etCidade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cidade" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Estado" />
+
+            <Spinner
+                android:id="@+id/spEstado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Confirmar" />
+                android:text="Confirmar"
+                android:onClick="salvaPerfil"/>
 
         </LinearLayout>
     </ScrollView>

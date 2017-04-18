@@ -1,4 +1,4 @@
-package com.kaora.anunciosapp.database;
+    package com.kaora.anunciosapp.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,8 +15,7 @@ import java.util.List;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
-//    private static MyDatabaseHelper instance = null;
-//    private SQLiteDatabase database;
+    private static MyDatabaseHelper instance = null;
 
     public static final String DATABASE_NAME = "anuncios_database";
 
@@ -46,28 +45,29 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TABELA_PERFIL_ANUNCIANTE = "" +
             "CREATE TABLE perfil_anunciante ( " +
             "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "nome_fantasia TEXT, " +
+            "nome TEXT, " +
             "telefone TEXT, " +
             "celular TEXT, " +
             "email TEXT, " +
             "endereco TEXT, " +
-            "estado TEXT " +
+            "numero TEXT, " +
+            "estado TEXT, " +
             "cidade TEXT, " +
             "bairro TEXT, " +
             "idcategoria INTEGER, " +
             "FOREIGN KEY (idcategoria) REFERENCES categoria(_id) )";
 
 
-    public MyDatabaseHelper(Context context) {
+    private MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-//    public MyDatabaseHelper getInstance(Context context) {
-//        if (instance == null) {
-//            instance = new MyDatabaseHelper(context);
-//        }
-//        return instance;
-//    }
+    public static synchronized MyDatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new MyDatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -150,6 +150,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public void salvaPerfil(PerfilAnunciante perfil) {
+        ContentValues values = new ContentValues();
+        values.put("nome", perfil.nome);
+        values.put("telefone", perfil.telefone);
+        values.put("celular", perfil.celular);
+        values.put("email", perfil.email);
+        values.put("endereco", perfil.endereco);
+        values.put("numero", perfil.numero);
+        values.put("bairro", perfil.bairro);
+        values.put("cidade", perfil.cidade);
+        values.put("estado", perfil.estado);
+        values.put("idcategoria", perfil.idcategoria);
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert("perfil_anunciante", null, values);
+    }
+
     public List<PerfilAnunciante> todosPerfis() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM perfil_anunciante", null);
@@ -157,7 +173,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             PerfilAnunciante perfil = new PerfilAnunciante();
             perfil._id = cursor.getInt(cursor.getColumnIndex("_id"));
-            perfil.nome = cursor.getString(cursor.getColumnIndex("nome_fantasia"));
+            perfil.nome = cursor.getString(cursor.getColumnIndex("nome"));
 //            public String telefone;
 //            public String celular;
 //            public String email;
@@ -171,4 +187,5 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return perfis;
     }
+
 }
