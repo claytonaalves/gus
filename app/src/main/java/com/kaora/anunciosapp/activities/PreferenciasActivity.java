@@ -48,7 +48,7 @@ public class PreferenciasActivity extends AppCompatActivity {
     }
 
     private void obtemCategoriasDaAPI() {
-        ApiRestAdapter restApi = new ApiRestAdapter();
+        ApiRestAdapter restApi = ApiRestAdapter.getInstance();
 
         restApi.obtemCategorias(new Callback<List<Categoria>>() {
             @Override

@@ -65,7 +65,7 @@ public class AnunciantesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ApiRestAdapter api = new ApiRestAdapter();
+        ApiRestAdapter api = ApiRestAdapter.getInstance();
         api.anunciantesPorCategoria(new Callback<List<Anunciante>>() {
             @Override
             public void onResponse(Call<List<Anunciante>> call, Response<List<Anunciante>> response) {

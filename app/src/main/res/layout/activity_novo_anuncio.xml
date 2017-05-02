@@ -1,23 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_novo_anuncio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context="com.kaora.anunciosapp.activities.NovoAnuncioActivity">
 
     <TextView
-        android:text="Nesta tela o anunciante fará o anúncio"
+        android:id="@+id/tvNomeAnunciante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="242dp"
-        android:id="@+id/textView"
-        android:textSize="24sp"
-        android:textAlignment="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        android:layout_gravity="center"
+        android:text="Nome do Anunciante"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Título"/>
+
+    <EditText
+        android:id="@+id/etTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:inputType="textCapWords" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descrição"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/etDescricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Válido até"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/etValidoAte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="date" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicionar foto"
+            android:layout_weight="1"
+            android:onClick="adicionaFoto"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Publicar"
+            android:layout_weight="1"
+            android:onClick="publicaAnuncio"/>
+    </LinearLayout>
+
+</LinearLayout>

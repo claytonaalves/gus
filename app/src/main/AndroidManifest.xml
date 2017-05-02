@@ -28,7 +28,6 @@
             android:name=".activities.AnunciantesActivity"
             android:label="Anunciantes" />
         <activity android:name=".activities.AnuncianteActivity" />
-        <activity android:name=".activities.NovoAnuncioActivity" />
         <activity android:name=".activities.MeusAnunciosActivity" />
         <activity android:name=".activities.AvisoPerfilActivity" />
         <activity
@@ -37,6 +36,9 @@
         <activity
             android:name=".activities.SelecionarPerfilActivity"
             android:label="Selecione o perfil" />
+        <activity
+            android:name=".activities.NovoAnuncioActivity"
+            android:label="Novo anúncio"/>
     </application>
 
 </manifest>

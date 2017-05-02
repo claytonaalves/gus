@@ -15,6 +15,7 @@ import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.CategoriasAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PerfilAnunciante;
 
 import java.util.List;
 
@@ -51,31 +52,19 @@ public class CategoriasActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int qtdePerfisCadastrados = database.todosPerfis().size();
-                if (qtdePerfisCadastrados==0) {
-                    mostraActivityCriacaoPerfil();
-                } else if (qtdePerfisCadastrados==1) {
-                    mostraActivityNovoAnuncio();
-                } else {
-                    mostraActivitySelecaoPerfil();
-                }
+                criarNovoAnuncio();
             }
         });
     }
 
-    private void mostraActivityNovoAnuncio() {
-        Intent intent = new Intent(this, NovoAnuncioActivity.class);
-        startActivity(intent);
-    }
-
-    private void mostraActivityCriacaoPerfil() {
-        Intent intent = new Intent(this, AvisoPerfilActivity.class);
-        startActivity(intent);
-    }
-
-    private void mostraActivitySelecaoPerfil() {
-        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
-        startActivity(intent);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        categorias.clear();
+        for (Categoria categoria : database.categoriasPreferidas()) {
+            categorias.add(categoria);
+        }
+        categoriasAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -90,41 +79,55 @@ public class CategoriasActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_criar_anuncio:
-                iniciaActivityNovoAnuncio();
+                criarNovoAnuncio();
                 break;
             case R.id.action_meus_anuncios:
-                iniciaActivityMeusAnuncios();
+                mostraActivityMeusAnuncios();
                 break;
             case R.id.action_configuracoes:
-                iniciaActivityPreferencias();
+                mostraActivityPreferencias();
                 break;
         }
         return true;
     }
 
-    private void iniciaActivityPreferencias() {
-        Intent intent = new Intent(this, PreferenciasActivity.class);
+    private void criarNovoAnuncio() {
+        int qtdePerfisCadastrados = database.todosPerfis().size();
+        if (qtdePerfisCadastrados==0) {
+            mostraActivityCriacaoPerfil();
+        } else if (qtdePerfisCadastrados==1) {
+            mostraActivityNovoAnuncio();
+        } else {
+            mostraActivitySelecaoPerfil();
+        }
+    }
+
+    private void mostraActivityCriacaoPerfil() {
+        Intent intent = new Intent(this, AvisoPerfilActivity.class);
         startActivity(intent);
     }
 
-    private void iniciaActivityMeusAnuncios() {
+    private void mostraActivitySelecaoPerfil() {
+        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
+        startActivity(intent);
+    }
+
+    private void mostraActivityMeusAnuncios() {
         Intent intent = new Intent(this, MeusAnunciosActivity.class);
         startActivity(intent);
     }
 
-    private void iniciaActivityNovoAnuncio() {
+    private void mostraActivityNovoAnuncio() {
         Intent intent = new Intent(this, NovoAnuncioActivity.class);
+        intent.putExtra("idPerfil", 1); // id do primeiro perfil
         startActivity(intent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        categorias.clear();
-        for (Categoria categoria : database.categoriasPreferidas()) {
-            categorias.add(categoria);
-        }
-        categoriasAdapter.notifyDataSetChanged();
+    private void mostraActivityPreferencias() {
+        PerfilAnunciante perfil = database.selecionaPerfil();
+        Intent intent = new Intent(this, PreferenciasActivity.class);
+        intent.putExtra("idperfil", perfil._id);
+        startActivity(intent);
     }
 
 }

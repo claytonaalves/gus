@@ -122,7 +122,15 @@ public class NovoPerfilActivity extends AppCompatActivity {
         perfil.idcategoria = ((Categoria) spCategorias.getSelectedItem())._id;
 
         database.salvaPerfil(perfil);
+        mostraActivityNovoAnuncio(perfil._id);
 
         finish();
     }
+
+    private void mostraActivityNovoAnuncio(long idPerfil) {
+        Intent intent = new Intent(this, NovoAnuncioActivity.class);
+        intent.putExtra("idPerfil", idPerfil);
+        startActivity(intent);
+    }
+
 }

@@ -1,4 +1,4 @@
-    package com.kaora.anunciosapp.database;
+package com.kaora.anunciosapp.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.kaora.anunciosapp.models.Anunciante;
+import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 
@@ -57,6 +58,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "idcategoria INTEGER, " +
             "FOREIGN KEY (idcategoria) REFERENCES categoria(_id) )";
 
+    private static final String TABELA_ANUNCIOS = "" +
+            "CREATE TABLE anuncio ( " +
+            "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "titulo TEXT, " +
+            "descricao TEXT, " +
+            "valido_ate TEXT, " +
+            "imagem TEXT, " +
+            "idcategoria INTEGER, " +
+            "publicado INTEGER )";
 
     private MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -75,6 +85,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TABELA_PREFERENCIA);
         db.execSQL(TABELA_ANUNCIANTE);
         db.execSQL(TABELA_PERFIL_ANUNCIANTE);
+        db.execSQL(TABELA_ANUNCIOS);
     }
 
     @Override
@@ -163,7 +174,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put("estado", perfil.estado);
         values.put("idcategoria", perfil.idcategoria);
         SQLiteDatabase db = getWritableDatabase();
-        db.insert("perfil_anunciante", null, values);
+        perfil._id = db.insert("perfil_anunciante", null, values);
+    }
+
+    public void salvaAnuncio(Anuncio anuncio) {
+        ContentValues values = new ContentValues();
+        values.put("titulo", anuncio.titulo);
+        values.put("descricao", anuncio.descricao);
+        values.put("id_categoria", anuncio.idCategoria);
+        values.put("valido_ate", anuncio.dataFormatada());
+        SQLiteDatabase db = getWritableDatabase();
+        anuncio._id = db.insert("anuncio", null, values);
+    }
+
+    public void marcaAnuncioComoPublicado(long idAnuncio) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE anuncio SET publicado=1 WHERE _id="+idAnuncio);
     }
 
     public List<PerfilAnunciante> todosPerfis() {
@@ -186,6 +212,25 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return perfis;
+    }
+
+    public PerfilAnunciante selecionaPerfil() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id FROM perfil_anunciante LIMIT 1", null);
+        cursor.moveToNext();
+        PerfilAnunciante perfil = new PerfilAnunciante();
+        perfil._id = cursor.getInt(0);
+        return perfil;
+    }
+
+    public PerfilAnunciante selecionaPerfil(int idPerfil) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id, nome FROM perfil_anunciante WHERE _id="+idPerfil, null);
+        cursor.moveToNext();
+        PerfilAnunciante perfil = new PerfilAnunciante();
+        perfil._id = cursor.getInt(0);
+        perfil.nome = cursor.getString(1);
+        return perfil;
     }
 
 }

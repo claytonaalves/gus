@@ -1,7 +1,7 @@
 package com.kaora.anunciosapp.models;
 
 public class PerfilAnunciante {
-    public int _id;
+    public long _id;
     public String nome;
     public String telefone;
     public String celular;
