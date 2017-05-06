@@ -39,7 +39,7 @@ public class AnuncianteActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tvNomeAnunciante.setText(anunciante.nome);
+        tvNomeAnunciante.setText(anunciante.nomeFantasia);
         tvTelefone.setText(anunciante.telefone);
         tvEndereco.setText(anunciante.logradouro);
         tvNumero.setText(anunciante.numero);

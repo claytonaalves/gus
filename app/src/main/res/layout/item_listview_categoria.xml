@@ -13,7 +13,9 @@
         android:layout_weight="2"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        fresco:viewAspectRatio="1.33"/>
+        fresco:actualImageScaleType="center"
+        fresco:viewAspectRatio="1.33"
+        />
 
     <TextView
         android:text="TextView"

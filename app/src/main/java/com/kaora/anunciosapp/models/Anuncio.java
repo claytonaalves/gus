@@ -10,7 +10,7 @@ public class Anuncio {
     public String descricao;
     public Date validoAte;
     public String imagem;
-    public int idCategoria;
+    public long idCategoria;
 //    public boolean publicado;
 
     public String dataFormatada() {

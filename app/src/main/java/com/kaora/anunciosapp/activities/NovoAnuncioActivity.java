@@ -57,7 +57,7 @@ public class NovoAnuncioActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        int idPerfil = intent.getIntExtra("idPerfil", 0);
+        long idPerfil = intent.getLongExtra("idPerfil", 0);
         perfilSelecionado = database.selecionaPerfil(idPerfil);
 
         tvNomeAnunciante.setText(perfilSelecionado.nome);
@@ -87,6 +87,7 @@ public class NovoAnuncioActivity extends AppCompatActivity {
         anuncio.titulo = etTitulo.getText().toString();
         anuncio.descricao = etDescricao.getText().toString();
         anuncio.validoAte = extraiData(etValidoAte.getText().toString());
+        anuncio.idCategoria = perfilSelecionado.idCategoria;
         database.salvaAnuncio(anuncio);
         publicaAnuncioRemotamente(anuncio);
     }

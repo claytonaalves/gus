@@ -11,7 +11,7 @@ public class PerfilAnunciante {
     public String estado;
     public String cidade;
     public String bairro;
-    public int idcategoria;
+    public long idCategoria;
 
     @Override
     public String toString() {

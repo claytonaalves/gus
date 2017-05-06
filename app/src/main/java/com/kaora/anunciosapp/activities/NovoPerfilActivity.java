@@ -119,7 +119,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
         perfil.bairro = etBairro.getText().toString();
         perfil.cidade = etCidade.getText().toString();
         perfil.estado = spEstados.getSelectedItem().toString().substring(0, 2);
-        perfil.idcategoria = ((Categoria) spCategorias.getSelectedItem())._id;
+        perfil.idCategoria = ((Categoria) spCategorias.getSelectedItem())._id;
 
         database.salvaPerfil(perfil);
         mostraActivityNovoAnuncio(perfil._id);

@@ -31,8 +31,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABELA_PREFERENCIA = "" +
             "CREATE TABLE preferencia ( " +
-            "idcategoria INTEGER, " +
-            "FOREIGN KEY (idcategoria) REFERENCES categoria(_id))";
+            "id_categoria INTEGER, " +
+            "FOREIGN KEY (id_categoria) REFERENCES categoria(_id))";
 
     private static final String TABELA_ANUNCIANTE = "" +
             "CREATE TABLE anunciante ( " +
@@ -40,8 +40,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "nome_fantasia TEXT, " +
             "telefone TEXT, " +
             "endereco TEXT, " +
-            "idcategoria INTEGER, " +
-            "FOREIGN KEY (idcategoria) REFERENCES categoria(_id) )";
+            "id_categoria INTEGER, " +
+            "FOREIGN KEY (id_categoria) REFERENCES categoria(_id) )";
 
     private static final String TABELA_PERFIL_ANUNCIANTE = "" +
             "CREATE TABLE perfil_anunciante ( " +
@@ -55,8 +55,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "estado TEXT, " +
             "cidade TEXT, " +
             "bairro TEXT, " +
-            "idcategoria INTEGER, " +
-            "FOREIGN KEY (idcategoria) REFERENCES categoria(_id) )";
+            "id_categoria INTEGER, " +
+            "FOREIGN KEY (id_categoria) REFERENCES categoria(_id) )";
 
     private static final String TABELA_ANUNCIOS = "" +
             "CREATE TABLE anuncio ( " +
@@ -65,7 +65,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "descricao TEXT, " +
             "valido_ate TEXT, " +
             "imagem TEXT, " +
-            "idcategoria INTEGER, " +
+            "id_categoria INTEGER, " +
             "publicado INTEGER )";
 
     private MyDatabaseHelper(Context context) {
@@ -111,7 +111,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(
                 "SELECT c._id, c.descricao, c.qtde_anunciantes, c.imagem " +
                 "FROM preferencia p " +
-                "LEFT JOIN categoria c ON (c._id=p.idcategoria)"
+                "LEFT JOIN categoria c ON (c._id=p.id_categoria)"
         , null);
         List<Categoria> categorias = new ArrayList<>();
         while (cursor.moveToNext()) {
@@ -150,12 +150,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database.execSQL("DELETE FROM preferencia");
         for (Categoria categoria : categorias) {
             ContentValues values = new ContentValues();
-            values.put("idcategoria", categoria._id);
+            values.put("id_categoria", categoria._id);
             database.insert("preferencia", null, values);
         }
     }
 
-    public List<Anunciante> anunciantesPorCategoria(int idCategoria) {
+    public List<Anunciante> anunciantesPorCategoria(long idCategoria) {
 //        SQLiteDatabase db = getReadableDatabase();
 //        Cursor cursor = db.query("anunciante")
         return null;
@@ -172,7 +172,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put("bairro", perfil.bairro);
         values.put("cidade", perfil.cidade);
         values.put("estado", perfil.estado);
-        values.put("idcategoria", perfil.idcategoria);
+        values.put("id_categoria", perfil.idCategoria);
         SQLiteDatabase db = getWritableDatabase();
         perfil._id = db.insert("perfil_anunciante", null, values);
     }
@@ -223,13 +223,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return perfil;
     }
 
-    public PerfilAnunciante selecionaPerfil(int idPerfil) {
+    public PerfilAnunciante selecionaPerfil(long idPerfil) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, nome FROM perfil_anunciante WHERE _id="+idPerfil, null);
+        Cursor cursor = db.rawQuery("SELECT _id, nome, id_categoria FROM perfil_anunciante WHERE _id="+idPerfil, null);
         cursor.moveToNext();
         PerfilAnunciante perfil = new PerfilAnunciante();
         perfil._id = cursor.getInt(0);
         perfil.nome = cursor.getString(1);
+        perfil.idCategoria = cursor.getLong(2);
         return perfil;
     }
 

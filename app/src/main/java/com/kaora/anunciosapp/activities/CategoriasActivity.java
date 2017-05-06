@@ -84,6 +84,9 @@ public class CategoriasActivity extends AppCompatActivity {
             case R.id.action_meus_anuncios:
                 mostraActivityMeusAnuncios();
                 break;
+            case R.id.action_perfis:
+                mostraActivityPerfis();
+                break;
             case R.id.action_configuracoes:
                 mostraActivityPreferencias();
                 break;
@@ -112,6 +115,12 @@ public class CategoriasActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void mostraActivityPerfis() {
+        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
+        intent.putExtra("modoEdicao", 1);
+        startActivity(intent);
+    }
+
     private void mostraActivityMeusAnuncios() {
         Intent intent = new Intent(this, MeusAnunciosActivity.class);
         startActivity(intent);
@@ -119,7 +128,7 @@ public class CategoriasActivity extends AppCompatActivity {
 
     private void mostraActivityNovoAnuncio() {
         Intent intent = new Intent(this, NovoAnuncioActivity.class);
-        intent.putExtra("idPerfil", 1); // id do primeiro perfil
+        intent.putExtra("idPerfil", 1L); // id do primeiro perfil
         startActivity(intent);
     }
 
