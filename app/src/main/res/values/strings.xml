@@ -348,4 +348,5 @@
     <string name="eu_aceito">Eu aceito</string>
     <string name="pesquisar">Pesquisar</string>
     <string name="perfis">Perfis</string>
+    <string name="title_activity_anuncio_publicado">AnuncioPublicadoActivity</string>
 </resources>

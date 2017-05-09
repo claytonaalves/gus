@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "442406342383",
+    "firebase_url": "https://anunciosapp-66a65.firebaseio.com",
+    "project_id": "anunciosapp-66a65",
+    "storage_bucket": "anunciosapp-66a65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442406342383:android:e810636c04b38519",
+        "android_client_info": {
+          "package_name": "com.kaora.anunciosapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442406342383-7ean3qrttm0ej7k42hl3vula5okf7onv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kaora.anunciosapp",
+            "certificate_hash": "2520b132575b64fc66640d3951d0e348be20dcb5"
+          }
+        },
+        {
+          "client_id": "442406342383-m0flbrcbcgrigmh3uj15v63k6a4bc2o5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgxs_L4qSzLsLWXtA5B3WRj9-TMAO51l8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442406342383-m0flbrcbcgrigmh3uj15v63k6a4bc2o5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
