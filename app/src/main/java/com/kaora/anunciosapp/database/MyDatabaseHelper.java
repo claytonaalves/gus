@@ -32,8 +32,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABELA_PREFERENCIA = "" +
             "CREATE TABLE preferencia ( " +
-            "id_categoria INTEGER, " +
-            "FOREIGN KEY (id_categoria) REFERENCES categoria(_id))";
+            "id_categoria INTEGER)";
 
     private static final String TABELA_ANUNCIANTE = "" +
             "CREATE TABLE anunciante ( " +
@@ -41,8 +40,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "nome_fantasia TEXT, " +
             "telefone TEXT, " +
             "endereco TEXT, " +
-            "id_categoria INTEGER, " +
-            "FOREIGN KEY (id_categoria) REFERENCES categoria(_id) )";
+            "id_categoria INTEGER)";
 
     private static final String TABELA_PERFIL_ANUNCIANTE = "" +
             "CREATE TABLE perfil_anunciante ( " +
@@ -58,8 +56,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "bairro TEXT, " +
             "id_categoria INTEGER, " +
             "guid TEXT, " +
-            "publicado INTEGER, " +
-            "FOREIGN KEY (id_categoria) REFERENCES categoria(_id) )";
+            "publicado INTEGER)";
 
     private static final String TABELA_ANUNCIOS = "" +
             "CREATE TABLE anuncio ( " +

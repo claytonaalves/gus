@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.kaora.anunciosapp.R;
@@ -16,8 +17,13 @@ import com.kaora.anunciosapp.adapters.CategoriasAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CategoriasActivity extends AppCompatActivity {
 
@@ -60,6 +66,27 @@ public class CategoriasActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        obtemCategoriasDaAPI();
+    }
+
+    private void obtemCategoriasDaAPI() {
+        ApiRestAdapter restApi = ApiRestAdapter.getInstance();
+
+        restApi.obtemCategorias(new Callback<List<Categoria>>() {
+            @Override
+            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+                database.atualizaCategorias(response.body());
+                atualizaListagemCategorias();
+            }
+
+            @Override
+            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+//                Toast.makeText(PreferenciasActivity.this, "Não foi possível atualizar as activity_categorias!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void atualizaListagemCategorias() {
         categorias.clear();
         for (Categoria categoria : database.categoriasPreferidas()) {
             categorias.add(categoria);
