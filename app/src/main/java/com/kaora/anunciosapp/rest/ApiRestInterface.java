@@ -3,6 +3,7 @@ package com.kaora.anunciosapp.rest;
 import com.kaora.anunciosapp.models.Anunciante;
 import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PerfilAnunciante;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface ApiRestInterface {
 
     @POST("anuncio")
     Call<Anuncio> publicaAnuncio(@Body Anuncio anuncio);
+
+    @POST("anunciante")
+    Call<PerfilAnunciante> publicaAnunciante(@Body PerfilAnunciante anunciante);
 }

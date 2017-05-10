@@ -13,6 +13,7 @@ import com.kaora.anunciosapp.models.PerfilAnunciante;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
@@ -56,6 +57,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "cidade TEXT, " +
             "bairro TEXT, " +
             "id_categoria INTEGER, " +
+            "guid TEXT, " +
+            "publicado INTEGER, " +
             "FOREIGN KEY (id_categoria) REFERENCES categoria(_id) )";
 
     private static final String TABELA_ANUNCIOS = "" +
@@ -162,6 +165,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void salvaPerfil(PerfilAnunciante perfil) {
+        perfil.guid = UUID.randomUUID().toString();
         ContentValues values = new ContentValues();
         values.put("nome", perfil.nome);
         values.put("telefone", perfil.telefone);
@@ -234,4 +238,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return perfil;
     }
 
+    public void marcaPerfilComoPublicado(long idPerfil) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE perfil_anunciante SET publicado=1 WHERE _id="+idPerfil);
+    }
 }

@@ -18,10 +18,15 @@ import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NovoPerfilActivity extends AppCompatActivity {
 
@@ -122,15 +127,47 @@ public class NovoPerfilActivity extends AppCompatActivity {
         perfil.idCategoria = ((Categoria) spCategorias.getSelectedItem())._id;
 
         database.salvaPerfil(perfil);
+        publicaAnunciante(perfil);
         mostraActivityNovoAnuncio(perfil._id);
+    }
 
-        finish();
+    private void publicaAnunciante(PerfilAnunciante perfil) {
+        final long idPerfil = perfil._id;
+        ApiRestAdapter api = ApiRestAdapter.getInstance();
+        api.publicaAnunciante(perfil, new Callback<PerfilAnunciante>() {
+            @Override
+            public void onResponse(Call<PerfilAnunciante> call, Response<PerfilAnunciante> response) {
+                database.marcaPerfilComoPublicado(idPerfil);
+                Toast.makeText(NovoPerfilActivity.this, "Perfil publicado!", Toast.LENGTH_LONG).show();
+                fechaActivity();
+            }
+
+            @Override
+            public void onFailure(Call<PerfilAnunciante> call, Throwable t) {
+                Toast.makeText(NovoPerfilActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void mostraActivityNovoAnuncio(long idPerfil) {
         Intent intent = new Intent(this, NovoAnuncioActivity.class);
         intent.putExtra("idPerfil", idPerfil);
         startActivity(intent);
+    }
+
+    private void fechaActivity() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3500);
+                    NovoPerfilActivity.this.finish();
+                } catch (Exception e) {
+
+                }
+            }
+        };
+        thread.start();
     }
 
 }
