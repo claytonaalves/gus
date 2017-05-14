@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.kaora.anunciosapp.Config;
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
@@ -33,6 +34,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(final String token) {
         // sending gcm token to server
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
         Log.e(TAG, "sendRegistrationToServer: " + token);
     }
 
