@@ -87,6 +87,7 @@ public class NovoAnuncioActivity extends AppCompatActivity {
         anuncio.titulo = etTitulo.getText().toString();
         anuncio.descricao = etDescricao.getText().toString();
         anuncio.validoAte = extraiData(etValidoAte.getText().toString());
+        anuncio.guidAnunciante = perfilSelecionado.guid;
         anuncio.idCategoria = perfilSelecionado.idCategoria;
         database.salvaAnuncio(anuncio);
         publicaAnuncioRemotamente(anuncio);

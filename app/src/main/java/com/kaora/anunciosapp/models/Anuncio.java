@@ -6,10 +6,12 @@ import java.util.Date;
 
 public class Anuncio {
     public long _id;
+    public String guid;
     public String titulo;
     public String descricao;
     public Date validoAte;
     public String imagem;
+    public String guidAnunciante;
     public long idCategoria;
 //    public boolean publicado;
 

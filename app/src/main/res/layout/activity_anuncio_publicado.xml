@@ -11,7 +11,7 @@
     tools:context=".activities.AnuncioPublicado">
 
     <TextView
-        android:id="@+id/txt_push_message"
+        android:id="@+id/tvTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -19,11 +19,15 @@
         android:layout_marginTop="40dp"
         android:gravity="center_horizontal"
         android:textColor="@color/colorPrimary"
+        android:text="Anuncio xxx"
         android:textSize="26dp" />
 
     <TextView
-        android:id="@+id/txt_reg_id"
+        android:id="@+id/tvDescricao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:text="Conteudo"
+        android:layout_below="@+id/tvTitulo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp" />
 </RelativeLayout>

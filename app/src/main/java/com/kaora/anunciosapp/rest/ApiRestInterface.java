@@ -21,9 +21,13 @@ public interface ApiRestInterface {
     @GET("categoria/{id}")
     Call<List<Anunciante>> anunciantesPorCategoria(@Path("id") int idCategoria);
 
+    @POST("anunciante")
+    Call<PerfilAnunciante> publicaAnunciante(@Body PerfilAnunciante anunciante);
+
     @POST("anuncio")
     Call<Anuncio> publicaAnuncio(@Body Anuncio anuncio);
 
-    @POST("anunciante")
-    Call<PerfilAnunciante> publicaAnunciante(@Body PerfilAnunciante anunciante);
+    @GET("anuncio/{guid}")
+    Call<Anuncio> obtemAnuncio(@Path("guid") String guidAnuncio);
+
 }

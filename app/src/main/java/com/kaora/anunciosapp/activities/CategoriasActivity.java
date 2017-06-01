@@ -1,23 +1,30 @@
 package com.kaora.anunciosapp.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.CategoriasAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
+import com.kaora.anunciosapp.utils.NotificationUtils;
 
 import java.util.List;
 
@@ -31,6 +38,7 @@ public class CategoriasActivity extends AppCompatActivity {
     List<Categoria> categorias;
 
     CategoriasAdapter categoriasAdapter;
+    private BroadcastReceiver notificationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +69,35 @@ public class CategoriasActivity extends AppCompatActivity {
                 criarNovoAnuncio();
             }
         });
+
+        preparaBroadcastReceiver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         obtemCategoriasDaAPI();
+        registraBroadcastReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(notificationBroadcastReceiver);
+        super.onPause();
+    }
+
+    private void registraBroadcastReceiver() {
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(notificationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(notificationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
     }
 
     private void obtemCategoriasDaAPI() {
@@ -164,6 +195,25 @@ public class CategoriasActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PreferenciasActivity.class);
         intent.putExtra("idperfil", perfil._id);
         startActivity(intent);
+    }
+
+    private void preparaBroadcastReceiver() {
+        notificationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+//                    String message = intent.getStringExtra("message");
+                    Toast.makeText(getApplicationContext(), "Novo anúncio ", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
     }
 
 }

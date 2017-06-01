@@ -18,9 +18,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiRestAdapter {
 
     private static Retrofit retrofit;
-//    public static final String BASE_URL = "http://200.252.200.154/anuncios/";
+    public static final String BASE_URL = "http://177.221.202.42/anuncios/";
 //    public static final String BASE_URL = "http://10.0.2.16:5000/";
-    public static final String BASE_URL = "http://10.1.1.101:5000/";
+//    public static final String BASE_URL = "http://10.1.1.102:5000/";
     private static ApiRestAdapter instance;
 
     private ApiRestInterface service;
@@ -55,14 +55,19 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
-    public void publicaAnuncio(Anuncio anuncio, Callback<Anuncio> cb) {
-        Call<Anuncio> request = service.publicaAnuncio(anuncio);
-        request.enqueue(cb);
-    }
-
     public void publicaAnunciante(PerfilAnunciante anunciante, Callback<PerfilAnunciante> cb) {
         Call<PerfilAnunciante> request = service.publicaAnunciante(anunciante);
         request.enqueue(cb);
     }
 
+    public void publicaAnuncio(Anuncio anuncio, Callback<Anuncio> cb) {
+        Call<Anuncio> request = service.publicaAnuncio(anuncio);
+        request.enqueue(cb);
+    }
+
+    public void obtemAnuncio(String guidAnuncio, Callback<Anuncio> cb) {
+        Call<Anuncio> request = service.obtemAnuncio(guidAnuncio);
+        request.enqueue(cb);
+
+    }
 }

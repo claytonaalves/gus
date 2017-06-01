@@ -45,6 +45,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TABELA_PERFIL_ANUNCIANTE = "" +
             "CREATE TABLE perfil_anunciante ( " +
             "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "guid TEXT, " +
             "nome TEXT, " +
             "telefone TEXT, " +
             "celular TEXT, " +
@@ -55,12 +56,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "cidade TEXT, " +
             "bairro TEXT, " +
             "id_categoria INTEGER, " +
-            "guid TEXT, " +
-            "publicado INTEGER)";
+            "publicado INTEGER )";
 
     private static final String TABELA_ANUNCIOS = "" +
             "CREATE TABLE anuncio ( " +
             "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "guid TEXT, " +
             "titulo TEXT, " +
             "descricao TEXT, " +
             "valido_ate TEXT, " +
@@ -164,6 +165,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void salvaPerfil(PerfilAnunciante perfil) {
         perfil.guid = UUID.randomUUID().toString();
         ContentValues values = new ContentValues();
+        values.put("guid", perfil.guid);
         values.put("nome", perfil.nome);
         values.put("telefone", perfil.telefone);
         values.put("celular", perfil.celular);
@@ -179,7 +181,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void salvaAnuncio(Anuncio anuncio) {
+        anuncio.guid = UUID.randomUUID().toString();
         ContentValues values = new ContentValues();
+        values.put("guid", anuncio.guid);
         values.put("titulo", anuncio.titulo);
         values.put("descricao", anuncio.descricao);
         values.put("id_categoria", anuncio.idCategoria);
@@ -217,21 +221,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public PerfilAnunciante selecionaPerfil() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id FROM perfil_anunciante LIMIT 1", null);
+        Cursor cursor = db.rawQuery("SELECT _id, guid FROM perfil_anunciante LIMIT 1", null);
         cursor.moveToNext();
         PerfilAnunciante perfil = new PerfilAnunciante();
         perfil._id = cursor.getInt(0);
+        perfil.guid = cursor.getString(1);
         return perfil;
     }
 
     public PerfilAnunciante selecionaPerfil(long idPerfil) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, nome, id_categoria FROM perfil_anunciante WHERE _id="+idPerfil, null);
+        Cursor cursor = db.rawQuery("SELECT _id, nome, id_categoria, guid FROM perfil_anunciante WHERE _id="+idPerfil, null);
         cursor.moveToNext();
         PerfilAnunciante perfil = new PerfilAnunciante();
         perfil._id = cursor.getInt(0);
         perfil.nome = cursor.getString(1);
         perfil.idCategoria = cursor.getLong(2);
+        perfil.guid = cursor.getString(3);
         return perfil;
     }
 
