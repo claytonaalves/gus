@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.kaora.anunciosapp.activities.CidadesActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/texto_destaque"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:text="Gostaria de receber anúncios e promoções de qual cidade ?" />
+
+    <ListView
+        android:layout_marginTop="30dp"
+        android:id="@+id/lvCidades"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" />
+
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.kaora.anunciosapp.rest;
 import com.kaora.anunciosapp.models.Anunciante;
 import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 
 import java.util.List;
@@ -12,11 +13,9 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiRestInterface {
-
-    @GET("categoria")
-    Call<List<Categoria>> obtemCategorias();
 
     @GET("categoria/{id}")
     Call<List<Anunciante>> anunciantesPorCategoria(@Path("id") int idCategoria);
@@ -29,5 +28,11 @@ public interface ApiRestInterface {
 
     @GET("anuncio/{guid}")
     Call<Anuncio> obtemAnuncio(@Path("guid") String guidAnuncio);
+
+    @GET("cidades/")
+    Call<List<Cidade>> obtemCidades();
+
+    @GET("categorias/")
+    Call<List<Categoria>> obtemCategorias(@Query("id_cidade") int idCidade);
 
 }

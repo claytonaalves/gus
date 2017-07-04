@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.kaora.anunciosapp.models.Anunciante;
 import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiRestAdapter {
 
     private static Retrofit retrofit;
-    public static final String BASE_URL = "http://177.221.202.42/anuncios/";
+//    public static final String BASE_URL = "http://177.221.202.42/anuncios/";
 //    public static final String BASE_URL = "http://10.0.2.16:5000/";
-//    public static final String BASE_URL = "http://10.1.1.102:5000/";
+    public static final String BASE_URL = "http://10.1.1.102:5000/";
     private static ApiRestAdapter instance;
 
     private ApiRestInterface service;
@@ -45,11 +46,6 @@ public class ApiRestAdapter {
         service = retrofit.create(ApiRestInterface.class);
     }
 
-    public void obtemCategorias(Callback<List<Categoria>> cb) {
-        Call<List<Categoria>> request = service.obtemCategorias();
-        request.enqueue(cb);
-    }
-
     public void anunciantesPorCategoria(Callback<List<Anunciante>> cb, int idCategoria) {
         Call<List<Anunciante>> request = service.anunciantesPorCategoria(idCategoria);
         request.enqueue(cb);
@@ -68,6 +64,16 @@ public class ApiRestAdapter {
     public void obtemAnuncio(String guidAnuncio, Callback<Anuncio> cb) {
         Call<Anuncio> request = service.obtemAnuncio(guidAnuncio);
         request.enqueue(cb);
-
     }
+
+    public void obtemCidades(Callback<List<Cidade>> cb) {
+        Call<List<Cidade>> request = service.obtemCidades();
+        request.enqueue(cb);
+    }
+
+    public void obtemCategorias(int idCidade, Callback<List<Categoria>> cb) {
+        Call<List<Categoria>> request = service.obtemCategorias(idCidade);
+        request.enqueue(cb);
+    }
+
 }
