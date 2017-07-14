@@ -57,7 +57,7 @@ public class CategoriasActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Categoria categoriaSelecionada = (Categoria) view.getTag();
                 Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
-                intent.putExtra("idCategoria", categoriaSelecionada._id);
+                intent.putExtra("idCategoria", categoriaSelecionada.idCategoria);
                 startActivity(intent);
             }
         });
@@ -103,7 +103,7 @@ public class CategoriasActivity extends AppCompatActivity {
     private void obtemCategoriasDaAPI() {
         ApiRestAdapter restApi = ApiRestAdapter.getInstance();
 
-        restApi.obtemCategorias(new Callback<List<Categoria>>() {
+        restApi.obtemCategorias(1, new Callback<List<Categoria>>() {
             @Override
             public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
                 database.atualizaCategorias(response.body());

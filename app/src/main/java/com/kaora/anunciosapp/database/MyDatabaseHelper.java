@@ -10,6 +10,7 @@ import com.kaora.anunciosapp.models.Anunciante;
 import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.models.Preferencia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABELA_CATEGORIA = "" +
             "CREATE TABLE categoria ( " +
-            "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "id_categoria INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "id_cidade INTEGER NOT NULL, " +
             "descricao TEXT NOT NULL, " +
             "qtde_anunciantes INTEGER, " +
             "imagem TEXT)";
@@ -99,7 +101,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database.execSQL("DELETE FROM categoria");
         for (Categoria categoria : categorias) {
             ContentValues values = new ContentValues();
-            values.put("_id", categoria._id);
+            values.put("_id", categoria.idCategoria);
             values.put("descricao", categoria.descricao);
             values.put("qtde_anunciantes", categoria.qtdeAnunciantes);
             values.put("imagem", categoria.imagem);
@@ -146,14 +148,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return categorias;
     }
 
-    public void salvaPreferencias(List<Categoria> categorias) {
+    public void salvaPreferencia(Preferencia preferencia) {
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM preferencia");
-        for (Categoria categoria : categorias) {
+        database.execSQL("DELETE FROM preferencia WHERE id_categoria="+preferencia.idCategoria);
+        if (preferencia.selecionanda) {
             ContentValues values = new ContentValues();
-            values.put("id_categoria", categoria._id);
+            values.put("id_categoria", preferencia.idCategoria);
             database.insert("preferencia", null, values);
         }
+    }
+
+    public boolean preferenciasDefinidas() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM preferencia", null);
+        cursor.moveToFirst();
+        return cursor.getInt(0)>0;
     }
 
     public List<Anunciante> anunciantesPorCategoria(long idCategoria) {

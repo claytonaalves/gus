@@ -349,4 +349,5 @@
     <string name="pesquisar">Pesquisar</string>
     <string name="perfis">Perfis</string>
     <string name="title_activity_anuncio_publicado">AnuncioPublicadoActivity</string>
+    <string name="nome_cidade">Nome Cidade</string>
 </resources>

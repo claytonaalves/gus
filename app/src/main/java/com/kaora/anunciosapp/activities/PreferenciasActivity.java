@@ -1,16 +1,16 @@
 package com.kaora.anunciosapp.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.Cidade;
+import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.ArrayList;
@@ -22,76 +22,103 @@ import retrofit2.Response;
 
 public class PreferenciasActivity extends AppCompatActivity {
 
-    private MyDatabaseHelper database;
+    public static final int SELECIONAR_PREFFERENCIAS = 1;
+    public static final int PREFERENCIA_SELECIONADA = 1;
+    public static final int NENHUMA_PREFERENCIA_SELECIONADA = 2;
 
-    private LinearLayout preferencias;
+    //    private MyDatabaseHelper database;
+    private ListView lvPreferencias;
+    private TextView tvNomeCidade;
+    PreferenciasAdapter preferenciasAdapter;
+    private List<Preferencia> preferencias;
+    private Cidade cidade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferencias);
 
-        database = MyDatabaseHelper.getInstance(this);
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        preferencias = (LinearLayout) findViewById(R.id.preferencias_list);
+        cidade = getIntent().getParcelableExtra("cidade");
+
+        tvNomeCidade = (TextView) findViewById(R.id.tvNomeCidade);
+        tvNomeCidade.setText(cidade.nome);
+
+        preparaListaDePreferencias();
+    }
+
+    private void preparaListaDePreferencias() {
+        preferencias = new ArrayList<>();
+//        database = MyDatabaseHelper.getInstance(this);
+        lvPreferencias = (ListView) findViewById(R.id.lvPreferencias);
+        preferenciasAdapter = new PreferenciasAdapter(this, preferencias);
+        lvPreferencias.setAdapter(preferenciasAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        preencheListaDePreferencias(database.todasCategorias());
+//        preencheListaDePreferencias(database.todasCategorias());
         obtemCategoriasDaAPI();
     }
 
-    private void obtemCategoriasDaAPI() {
-        ApiRestAdapter restApi = ApiRestAdapter.getInstance();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (usuarioSelecionouAlgumaPreferencia()) {
+            setResult(PREFERENCIA_SELECIONADA);
+        } else {
+            setResult(NENHUMA_PREFERENCIA_SELECIONADA);
+        }
+        this.finish();
+        return true;
+    }
 
-        restApi.obtemCategorias(new Callback<List<Categoria>>() {
+    private void obtemCategoriasDaAPI() {
+        ApiRestAdapter webservice = ApiRestAdapter.getInstance();
+
+        webservice.obtemCategorias(cidade.idCidade, new Callback<List<Categoria>>() {
             @Override
             public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
-                database.atualizaCategorias(response.body());
                 preencheListaDePreferencias(response.body());
             }
 
             @Override
             public void onFailure(Call<List<Categoria>> call, Throwable t) {
-//                Toast.makeText(PreferenciasActivity.this, "Não foi possível atualizar as activity_categorias!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PreferenciasActivity.this, "Não foi possível obter a lista de categorias!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        database.salvaPreferencias(preferenciasSelecionadas());
-        this.finish();
-        return true;
+    private boolean usuarioSelecionouAlgumaPreferencia() {
+        for (Preferencia preferencia : preferencias) {
+            if (preferencia.selecionanda)
+                return true;
+        }
+        return false;
     }
 
     private void preencheListaDePreferencias(List<Categoria> categorias) {
-        List<Categoria> categoriasPreferidas = database.categoriasPreferidas();
-        preferencias.removeAllViews();
-        for (Categoria categoria : categorias) {
-            CheckBox checkbox = new CheckBox(this);
-            checkbox.setText(categoria.descricao);
-            checkbox.setTag(categoria);
-            checkbox.setChecked(categoriasPreferidas.contains(categoria));
-            preferencias.addView(checkbox);
+//                database.atualizaCategorias(response.body());
+        preferencias.clear();
+        for (Categoria categoria: categorias) {
+            preferencias.add(new Preferencia(categoria.idCategoria, categoria.descricao));
         }
+        preferenciasAdapter.notifyDataSetChanged();
     }
 
     private List<Categoria> preferenciasSelecionadas() {
-        CheckBox checkbox;
-        List<Categoria> result = new ArrayList<>();
-        for (int i=0; i<preferencias.getChildCount(); i++) {
-            checkbox = (CheckBox) preferencias.getChildAt(i);
-            if (checkbox.isChecked()) {
-                result.add((Categoria) checkbox.getTag());
-            }
-        }
-        return result;
+//        CheckBox checkbox;
+//        List<Categoria> result = new ArrayList<>();
+//        for (int i=0; i<preferencias.getChildCount(); i++) {
+//            checkbox = (CheckBox) preferencias.getChildAt(i);
+//            if (checkbox.isChecked()) {
+//                result.add((Categoria) checkbox.getTag());
+//            }
+//        }
+//        return result;
+        return null;
     }
 }

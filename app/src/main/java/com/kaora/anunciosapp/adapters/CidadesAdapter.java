@@ -1,7 +1,6 @@
 package com.kaora.anunciosapp.adapters;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ public class CidadesAdapter extends ArrayAdapter<Cidade> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Cidade cidade = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.cidade_listview_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.li_cidade, parent, false);
         }
         TextView tvCidade = (TextView) convertView.findViewById(R.id.tvNomeCidade);
         tvCidade.setText(cidade.nome);

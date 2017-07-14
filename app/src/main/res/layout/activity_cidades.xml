@@ -8,11 +8,10 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/texto_destaque"
+        style="@style/titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_marginTop="15dp"
         android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:text="Gostaria de receber anúncios e promoções de qual cidade ?" />

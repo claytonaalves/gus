@@ -3,7 +3,6 @@
     package="com.kaora.anunciosapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".MyApplication"
@@ -12,19 +11,25 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.TermosDeUsoActivity">
+        <activity
+            android:name=".activities.LaunchActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.CidadesActivity"
+            android:label="Anúncios App"/>
+        <activity
+            android:name=".activities.PublicacoesActivity"
+            android:label="Publicações" />
         <activity
             android:name=".activities.CategoriasActivity"
             android:label="Categorias" />
         <activity
             android:name=".activities.PreferenciasActivity"
-            android:label="Interesses" />
+            android:label="Preferências" />
         <activity
             android:name=".activities.AnunciantesActivity"
             android:label="Anunciantes" />
@@ -46,6 +51,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="ACTION_NOVO_ANUNCIO" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

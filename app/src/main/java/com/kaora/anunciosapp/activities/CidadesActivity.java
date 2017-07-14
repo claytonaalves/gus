@@ -4,10 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,16 +21,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-class CidadesActivity extends AppCompatActivity {
+public class CidadesActivity extends AppCompatActivity {
 
     List<Cidade> cidades;
     CidadesAdapter cidadesAdapter;
+    private boolean configuracaoInicial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cidades);
-        setTitle("Cidades");
+
+        Intent intent = getIntent();
+        configuracaoInicial = intent.getBooleanExtra("configuracaoInicial", false);
 
         cidades = obtemCidades();
         preparaListaDeCidades(cidades);
@@ -81,11 +80,24 @@ class CidadesActivity extends AppCompatActivity {
         return cidades;
     }
 
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode == PreferenciasActivity.PREFERENCIA_SELECIONADA) {
+            if (configuracaoInicial) {
+                Intent intent = new Intent(this, PublicacoesActivity.class);
+                startActivity(intent);
+            }
+            finish();
+        }
+    }
+
     private class CidadeItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
+            Cidade cidade = cidades.get(position);
+            Intent intent = new Intent(CidadesActivity.this, PreferenciasActivity.class);
+            intent.putExtra("cidade", cidade);
+            startActivityForResult(intent, PreferenciasActivity.SELECIONAR_PREFFERENCIAS);
         }
     }
 }
