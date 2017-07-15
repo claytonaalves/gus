@@ -1,6 +1,8 @@
 package com.kaora.anunciosapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -98,12 +100,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void obtemPublicacoesDoServidor() {
-        Date ultimaAtualizacao;
-        try {
-            ultimaAtualizacao = (new SimpleDateFormat("dd/MM/yyyy")).parse("01/07/2017");
-        } catch (ParseException e) {
-            ultimaAtualizacao = new Date();
-        }
+        Date ultimaAtualizacao = obtemDataDaUltimaAtualizacao();
         List<Preferencia> preferencias = database.peferenciasSelecionadas();
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
         webservice.obtemPublicacoes(ultimaAtualizacao, preferencias, new Callback<List<Publicacao>>() {
@@ -128,6 +125,24 @@ public class PublicacoesActivity extends AppCompatActivity {
         } else {
             publicacoesAdapter.notifyDataSetChanged();
         }
+        salvaDataDaUltimaAtualizacao();
+    }
+
+    private Date obtemDataDaUltimaAtualizacao() {
+        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        long ultimaAtualizacao = preferences.getLong("ultima_atualizacao", 0);
+        if (ultimaAtualizacao==0) {
+            return new Date();
+        } else {
+            return new Date(ultimaAtualizacao);
+        }
+    }
+
+    private void salvaDataDaUltimaAtualizacao() {
+        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong("ultima_atualizacao", new Date().getTime());
+        editor.apply();
     }
 
     @Override
