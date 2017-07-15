@@ -34,7 +34,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABELA_PREFERENCIA = "" +
             "CREATE TABLE preferencia ( " +
-            "id_categoria INTEGER)";
+            "id_categoria INTEGER, " +
+            "descricao TEXT NOT NULL)";
 
     private static final String TABELA_ANUNCIANTE = "" +
             "CREATE TABLE anunciante ( " +
@@ -154,6 +155,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         if (preferencia.selecionanda) {
             ContentValues values = new ContentValues();
             values.put("id_categoria", preferencia.idCategoria);
+            values.put("descricao", preferencia.descricao);
             database.insert("preferencia", null, values);
         }
     }
@@ -163,6 +165,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM preferencia", null);
         cursor.moveToFirst();
         return cursor.getInt(0)>0;
+    }
+
+    public List<Preferencia> preferenciasSelecionadasPorCidade(int idCidade) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia", null);
+        List<Preferencia> preferencias = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
+            preferencia.selecionanda = true;
+            preferencias.add(preferencia);
+        }
+        cursor.close();
+        return preferencias;
     }
 
     public List<Anunciante> anunciantesPorCategoria(long idCategoria) {
