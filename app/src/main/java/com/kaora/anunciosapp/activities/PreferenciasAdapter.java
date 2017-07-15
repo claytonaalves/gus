@@ -36,6 +36,11 @@ public class PreferenciasAdapter extends ArrayAdapter<Preferencia> {
 
         TextView tvPreferencia = (TextView) convertView.findViewById(R.id.descricaoPreferencia);
         SwitchButton switchButton = (SwitchButton) convertView.findViewById(R.id.switchButton);
+        switchButton.setOnCheckedChangeListener(null);
+
+        assert preferencia != null;
+        tvPreferencia.setText(preferencia.descricao);
+        switchButton.setChecked(preferencia.selecionanda);
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -46,10 +51,6 @@ public class PreferenciasAdapter extends ArrayAdapter<Preferencia> {
                 }
             }
         });
-
-        assert preferencia != null;
-        tvPreferencia.setText(preferencia.descricao);
-        switchButton.setChecked(preferencia.selecionanda);
 
         return convertView;
 

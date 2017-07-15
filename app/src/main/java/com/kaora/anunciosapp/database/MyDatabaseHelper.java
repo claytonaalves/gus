@@ -149,37 +149,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return categorias;
     }
 
-    public void salvaPreferencia(Preferencia preferencia) {
-        SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM preferencia WHERE id_categoria="+preferencia.idCategoria);
-        if (preferencia.selecionanda) {
-            ContentValues values = new ContentValues();
-            values.put("id_categoria", preferencia.idCategoria);
-            values.put("descricao", preferencia.descricao);
-            database.insert("preferencia", null, values);
-        }
-    }
-
-    public boolean preferenciasDefinidas() {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM preferencia", null);
-        cursor.moveToFirst();
-        return cursor.getInt(0)>0;
-    }
-
-    public List<Preferencia> preferenciasSelecionadasPorCidade(int idCidade) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia", null);
-        List<Preferencia> preferencias = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
-            preferencia.selecionanda = true;
-            preferencias.add(preferencia);
-        }
-        cursor.close();
-        return preferencias;
-    }
-
     public List<Anunciante> anunciantesPorCategoria(long idCategoria) {
 //        SQLiteDatabase db = getReadableDatabase();
 //        Cursor cursor = db.query("anunciante")
@@ -268,5 +237,53 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void marcaPerfilComoPublicado(long idPerfil) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE perfil_anunciante SET publicado=1 WHERE _id="+idPerfil);
+    }
+
+    // ========================================================================
+    // Preferências
+    // ========================================================================
+
+    public void salvaPreferencia(Preferencia preferencia) {
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("DELETE FROM preferencia WHERE id_categoria="+preferencia.idCategoria);
+        if (preferencia.selecionanda) {
+            ContentValues values = new ContentValues();
+            values.put("id_categoria", preferencia.idCategoria);
+            values.put("descricao", preferencia.descricao);
+            database.insert("preferencia", null, values);
+        }
+    }
+
+    public boolean preferenciasDefinidas() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM preferencia", null);
+        cursor.moveToFirst();
+        return cursor.getInt(0)>0;
+    }
+
+    public List<Preferencia> preferenciasSelecionadasPorCidade(int idCidade) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia", null);
+        List<Preferencia> preferencias = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
+            preferencia.selecionanda = true;
+            preferencias.add(preferencia);
+        }
+        cursor.close();
+        return preferencias;
+    }
+
+    public List<Preferencia> peferenciasSelecionadas() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia", null);
+        List<Preferencia> preferencias = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
+            preferencia.selecionanda = true;
+            preferencias.add(preferencia);
+        }
+        cursor.close();
+        return preferencias;
     }
 }

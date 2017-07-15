@@ -10,4 +10,10 @@ public class Preferencia {
         this.idCategoria = idCategoria;
         this.descricao = descricao;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Preferencia && ((Preferencia) object).idCategoria == this.idCategoria;
+    }
+
 }

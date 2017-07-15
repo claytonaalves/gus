@@ -1,5 +1,7 @@
 package com.kaora.anunciosapp.rest;
 
+import android.text.TextUtils;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,7 +10,11 @@ import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.models.Preferencia;
+import com.kaora.anunciosapp.models.Publicacao;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,7 +27,7 @@ public class ApiRestAdapter {
     private static Retrofit retrofit;
 //    public static final String BASE_URL = "http://177.221.202.42/anuncios/";
 //    public static final String BASE_URL = "http://10.0.2.16:5000/";
-    public static final String BASE_URL = "http://10.1.1.102:5000/";
+    public static final String BASE_URL = "http://10.1.1.43:5000/";
     private static ApiRestAdapter instance;
 
     private ApiRestInterface service;
@@ -73,6 +79,16 @@ public class ApiRestAdapter {
 
     public void obtemCategorias(int idCidade, Callback<List<Categoria>> cb) {
         Call<List<Categoria>> request = service.obtemCategorias(idCidade);
+        request.enqueue(cb);
+    }
+
+    public void obtemPublicacoes(Date desde, List<Preferencia> preferencias, Callback<List<Publicacao>> cb) {
+        List<Integer> idsCategorias = new ArrayList<>();
+        for (Preferencia preferencia : preferencias) {
+            idsCategorias.add(preferencia.idCategoria);
+        }
+        String listaDeIdsCategorias = TextUtils.join(",", idsCategorias);
+        Call<List<Publicacao>> request = service.obtemPublicacoes(desde.getTime()/1000, listaDeIdsCategorias);
         request.enqueue(cb);
     }
 

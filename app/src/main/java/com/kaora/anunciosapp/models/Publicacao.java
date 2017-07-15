@@ -9,8 +9,8 @@ public class Publicacao {
     public int idCategoria;
     public String titulo;
     public String descricao;
-    public Date dataPublicacao;
-    public Date dataValidade;
+    public long dataPublicacao;
+    public long dataValidade;
     public String imagem;
 
     public Publicacao(String titulo, String descricao) {

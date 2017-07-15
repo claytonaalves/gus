@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
+import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.Preferencia;
@@ -26,12 +27,13 @@ public class PreferenciasActivity extends AppCompatActivity {
     public static final int PREFERENCIA_SELECIONADA = 1;
     public static final int NENHUMA_PREFERENCIA_SELECIONADA = 2;
 
-    //    private MyDatabaseHelper database;
+    private MyDatabaseHelper database;
     private ListView lvPreferencias;
     private TextView tvNomeCidade;
-    PreferenciasAdapter preferenciasAdapter;
-    private List<Preferencia> preferencias;
+    private PreferenciasAdapter preferenciasAdapter;
     private Cidade cidade;
+    private List<Preferencia> preferencias;
+    private List<Preferencia> preferenciasSelecionadas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,26 +44,18 @@ public class PreferenciasActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        database = MyDatabaseHelper.getInstance(this);
+
         cidade = getIntent().getParcelableExtra("cidade");
 
         tvNomeCidade = (TextView) findViewById(R.id.tvNomeCidade);
         tvNomeCidade.setText(cidade.nome);
-
-        preparaListaDePreferencias();
-    }
-
-    private void preparaListaDePreferencias() {
-        preferencias = new ArrayList<>();
-//        database = MyDatabaseHelper.getInstance(this);
-        lvPreferencias = (ListView) findViewById(R.id.lvPreferencias);
-        preferenciasAdapter = new PreferenciasAdapter(this, preferencias);
-        lvPreferencias.setAdapter(preferenciasAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        preencheListaDePreferencias(database.todasCategorias());
+        preparaListaDePreferencias();
         obtemCategoriasDaAPI();
     }
 
@@ -74,6 +68,14 @@ public class PreferenciasActivity extends AppCompatActivity {
         }
         this.finish();
         return true;
+    }
+
+    private void preparaListaDePreferencias() {
+        preferenciasSelecionadas = database.preferenciasSelecionadasPorCidade(1);
+        preferencias = new ArrayList<>();
+        lvPreferencias = (ListView) findViewById(R.id.lvPreferencias);
+        preferenciasAdapter = new PreferenciasAdapter(this, preferencias);
+        lvPreferencias.setAdapter(preferenciasAdapter);
     }
 
     private void obtemCategoriasDaAPI() {
@@ -92,6 +94,16 @@ public class PreferenciasActivity extends AppCompatActivity {
         });
     }
 
+    private void preencheListaDePreferencias(List<Categoria> categorias) {
+        preferencias.clear();
+        for (Categoria categoria: categorias) {
+            Preferencia preferencia = new Preferencia(categoria.idCategoria, categoria.descricao);
+            preferencia.selecionanda = preferenciasSelecionadas.contains(preferencia);
+            preferencias.add(preferencia);
+        }
+        preferenciasAdapter.notifyDataSetChanged();
+    }
+
     private boolean usuarioSelecionouAlgumaPreferencia() {
         for (Preferencia preferencia : preferencias) {
             if (preferencia.selecionanda)
@@ -100,25 +112,4 @@ public class PreferenciasActivity extends AppCompatActivity {
         return false;
     }
 
-    private void preencheListaDePreferencias(List<Categoria> categorias) {
-//                database.atualizaCategorias(response.body());
-        preferencias.clear();
-        for (Categoria categoria: categorias) {
-            preferencias.add(new Preferencia(categoria.idCategoria, categoria.descricao));
-        }
-        preferenciasAdapter.notifyDataSetChanged();
-    }
-
-    private List<Categoria> preferenciasSelecionadas() {
-//        CheckBox checkbox;
-//        List<Categoria> result = new ArrayList<>();
-//        for (int i=0; i<preferencias.getChildCount(); i++) {
-//            checkbox = (CheckBox) preferencias.getChildAt(i);
-//            if (checkbox.isChecked()) {
-//                result.add((Categoria) checkbox.getTag());
-//            }
-//        }
-//        return result;
-        return null;
-    }
 }
