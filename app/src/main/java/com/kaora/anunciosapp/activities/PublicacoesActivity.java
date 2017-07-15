@@ -66,7 +66,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void preparaListaDePublicacoes() {
-        publicacoes = new ArrayList<>();
+        publicacoes = database.publicacoesSalvas();
         publicacoesAdapter = new PublicacoesAdapter(this, publicacoes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         CustomRecyclerView rvPublicacoes = (CustomRecyclerView) findViewById(R.id.rvPublicacoes);
@@ -94,7 +94,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void marcaPublicacaoComoVista(int position) {
-        // TODO: atualizar banco de dados
+        database.arquivaPublicacao(publicacoes.get(position));
         publicacoes.remove(position);
         publicacoesAdapter.notifyItemRemoved(position);
     }
@@ -106,6 +106,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         webservice.obtemPublicacoes(ultimaAtualizacao, preferencias, new Callback<List<Publicacao>>() {
             @Override
             public void onResponse(Call<List<Publicacao>> call, Response<List<Publicacao>> response) {
+                database.salvaPublicacoes(response.body());
                 atualizaListaDePublicacoes(response.body());
             }
 
@@ -132,7 +133,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         long ultimaAtualizacao = preferences.getLong("ultima_atualizacao", 0);
         if (ultimaAtualizacao==0) {
-            return new Date();
+            return new Date(0);
         } else {
             return new Date(ultimaAtualizacao);
         }

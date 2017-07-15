@@ -13,6 +13,10 @@ public class Publicacao {
     public long dataValidade;
     public String imagem;
 
+    public Publicacao() {
+
+    }
+
     public Publicacao(String titulo, String descricao) {
         this.titulo = titulo;
         this.descricao = descricao;

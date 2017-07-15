@@ -45,32 +45,32 @@ public class CategoriasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categorias);
 
-        database = MyDatabaseHelper.getInstance(this);
-        categorias = database.categoriasPreferidas();
-
-        categoriasAdapter = new CategoriasAdapter(categorias, this);
-        ListView lvCategorias = (ListView) findViewById(R.id.lvOfertas);
-        lvCategorias.setAdapter(categoriasAdapter);
-
-        lvCategorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Categoria categoriaSelecionada = (Categoria) view.getTag();
-                Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
-                intent.putExtra("idCategoria", categoriaSelecionada.idCategoria);
-                startActivity(intent);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                criarNovoAnuncio();
-            }
-        });
-
-        preparaBroadcastReceiver();
+//        database = MyDatabaseHelper.getInstance(this);
+//        categorias = database.categoriasPreferidas();
+//
+//        categoriasAdapter = new CategoriasAdapter(categorias, this);
+//        ListView lvCategorias = (ListView) findViewById(R.id.lvOfertas);
+//        lvCategorias.setAdapter(categoriasAdapter);
+//
+//        lvCategorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Categoria categoriaSelecionada = (Categoria) view.getTag();
+//                Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
+//                intent.putExtra("idCategoria", categoriaSelecionada.idCategoria);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                criarNovoAnuncio();
+//            }
+//        });
+//
+//        preparaBroadcastReceiver();
     }
 
     @Override
@@ -118,11 +118,11 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void atualizaListagemCategorias() {
-        categorias.clear();
-        for (Categoria categoria : database.categoriasPreferidas()) {
-            categorias.add(categoria);
-        }
-        categoriasAdapter.notifyDataSetChanged();
+//        categorias.clear();
+//        for (Categoria categoria : database.categoriasPreferidas()) {
+//            categorias.add(categoria);
+//        }
+//        categoriasAdapter.notifyDataSetChanged();
     }
 
     @Override
