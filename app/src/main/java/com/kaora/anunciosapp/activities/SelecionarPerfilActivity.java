@@ -51,9 +51,9 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void mostraActivityNovoAnuncio(long idPerfil) {
-        Intent intent = new Intent(this, NovoAnuncioActivity.class);
-        intent.putExtra("idPerfil", idPerfil);
+    private void mostraActivityNovaPublicacao(String guidAnunciante) {
+        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
+        intent.putExtra("guid_anunciante", guidAnunciante);
         startActivity(intent);
         finish();
     }
@@ -62,7 +62,7 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             PerfilAnunciante perfil = (PerfilAnunciante) view.getTag();
-            mostraActivityNovoAnuncio(perfil._id);
+            mostraActivityNovaPublicacao(perfil.guidAnunciante);
         }
     }
 

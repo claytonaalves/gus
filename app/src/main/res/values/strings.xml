@@ -350,4 +350,6 @@
     <string name="perfis">Perfis</string>
     <string name="title_activity_anuncio_publicado">AnuncioPublicadoActivity</string>
     <string name="nome_cidade">Nome Cidade</string>
+    <string name="selecione_cidade">Selecione a Cidade</string>
+    <string name="selecione_categoria">Selecione a Categoria</string>
 </resources>

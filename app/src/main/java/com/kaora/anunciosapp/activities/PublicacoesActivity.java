@@ -18,14 +18,12 @@ import android.widget.Toast;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
+import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.components.CustomRecyclerView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +50,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                criarNovoAnuncio();
+                criaNovaPublicacao();
             }
         });
 
@@ -158,7 +156,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_criar_anuncio:
-                criarNovoAnuncio();
+                criaNovaPublicacao();
                 break;
             case R.id.action_meus_anuncios:
 //                mostraActivityMeusAnuncios();
@@ -177,16 +175,27 @@ public class PublicacoesActivity extends AppCompatActivity {
         startActivity(new Intent(this, CidadesActivity.class));
     }
 
-    private void criarNovoAnuncio() {
-        publicacoesAdapter.notifyItemRemoved(0);
-//        int qtdePerfisCadastrados = database.todosPerfis().size();
-//        if (qtdePerfisCadastrados==0) {
-//            mostraActivityCriacaoPerfil();
-//        } else if (qtdePerfisCadastrados==1) {
-//            mostraActivityNovoAnuncio();
-//        } else {
+    private void criaNovaPublicacao() {
+        int qtdePerfisCadastrados = database.todosPerfis().size();
+        if (qtdePerfisCadastrados==0) {
+            mostraActivityCriacaoPerfil();
+        } else if (qtdePerfisCadastrados==1) {
+            mostraActivityNovoAnuncio();
+        } else {
 //            mostraActivitySelecaoPerfil();
-//        }
+        }
+    }
+
+    private void mostraActivityCriacaoPerfil() {
+        Intent intent = new Intent(this, AvisoPerfilActivity.class);
+        startActivity(intent);
+    }
+
+    private void mostraActivityNovoAnuncio() {
+        PerfilAnunciante perfil = database.todosPerfis().get(0); // Pega o primeiro perfil
+        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
+        intent.putExtra("guid_anunciante", perfil.guidAnunciante);
+        startActivity(intent);
     }
 
 }

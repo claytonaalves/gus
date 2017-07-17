@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.kaora.anunciosapp.models.Anunciante;
-import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Preferencia;
@@ -40,25 +38,24 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABELA_ANUNCIANTE = "" +
             "CREATE TABLE anunciante ( " +
-            "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
             "nome_fantasia TEXT, " +
             "telefone TEXT, " +
             "endereco TEXT, " +
             "id_categoria INTEGER)";
 
+    // Armazena os perfis de anunciante criados no aparelho
     private static final String TABELA_PERFIL_ANUNCIANTE = "" +
             "CREATE TABLE perfil_anunciante ( " +
-            "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "guid TEXT, " +
-            "nome TEXT, " +
+            "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
+            "nome_fantasia TEXT, " +
             "telefone TEXT, " +
             "celular TEXT, " +
             "email TEXT, " +
             "endereco TEXT, " +
             "numero TEXT, " +
-            "estado TEXT, " +
-            "cidade TEXT, " +
             "bairro TEXT, " +
+            "id_cidade INTEGER, " +
             "id_categoria INTEGER, " +
             "publicado INTEGER )";
 
@@ -113,61 +110,25 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Categoria> todasCategorias() {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM categoria", null);
-        List<Categoria> categorias = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            categorias.add(
-                    new Categoria(
-                            cursor.getInt(cursor.getColumnIndex("_id")),
-                            cursor.getString(cursor.getColumnIndex("descricao")),
-                            cursor.getInt(cursor.getColumnIndex("qtde_anunciantes")),
-                            cursor.getString(cursor.getColumnIndex("imagem"))
-                    )
-            );
-        }
-        cursor.close();
-        return categorias;
-    }
-
-    public void salvaAnuncio(Anuncio anuncio) {
-        anuncio.guid = UUID.randomUUID().toString();
-        ContentValues values = new ContentValues();
-        values.put("guid", anuncio.guid);
-        values.put("titulo", anuncio.titulo);
-        values.put("descricao", anuncio.descricao);
-        values.put("id_categoria", anuncio.idCategoria);
-        values.put("valido_ate", anuncio.dataFormatada());
-        SQLiteDatabase db = getWritableDatabase();
-        anuncio._id = db.insert("anuncio", null, values);
-    }
-
-    public void marcaAnuncioComoPublicado(long idAnuncio) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE anuncio SET publicado=1 WHERE _id=" + idAnuncio);
-    }
-
     // ========================================================================
     // Perfis
     // ========================================================================
 
     public void salvaPerfil(PerfilAnunciante perfil) {
-        perfil.guid = UUID.randomUUID().toString();
+        perfil.guidAnunciante = UUID.randomUUID().toString();
         ContentValues values = new ContentValues();
-        values.put("guid", perfil.guid);
-        values.put("nome", perfil.nome);
+        values.put("guid_anunciante", perfil.guidAnunciante);
+        values.put("nome_fantasia", perfil.nomeFantasia);
         values.put("telefone", perfil.telefone);
         values.put("celular", perfil.celular);
         values.put("email", perfil.email);
         values.put("endereco", perfil.endereco);
         values.put("numero", perfil.numero);
         values.put("bairro", perfil.bairro);
-        values.put("cidade", perfil.cidade);
-        values.put("estado", perfil.estado);
+        values.put("id_cidade", perfil.idCidade);
         values.put("id_categoria", perfil.idCategoria);
         SQLiteDatabase db = getWritableDatabase();
-        perfil._id = db.insert("perfil_anunciante", null, values);
+        db.insert("perfil_anunciante", null, values);
     }
 
     public List<PerfilAnunciante> todosPerfis() {
@@ -176,47 +137,29 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         List<PerfilAnunciante> perfis = new ArrayList<>();
         while (cursor.moveToNext()) {
             PerfilAnunciante perfil = new PerfilAnunciante();
-            perfil._id = cursor.getInt(cursor.getColumnIndex("_id"));
-            perfil.nome = cursor.getString(cursor.getColumnIndex("nome"));
-//            public String telefone;
-//            public String celular;
-//            public String email;
-//            public String endereco;
-//            public String estado;
-//            public String cidade;
-//            public String bairro;
-//            public int idcategoria;
+            perfil.guidAnunciante = cursor.getString(cursor.getColumnIndex("guid_anunciante"));
+            perfil.nomeFantasia = cursor.getString(cursor.getColumnIndex("nome_fantasia"));
             perfis.add(perfil);
         }
         cursor.close();
         return perfis;
     }
 
-    public PerfilAnunciante selecionaPerfil() {
+    public PerfilAnunciante selecionaPerfil(String guidAnunciante) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, guid FROM perfil_anunciante LIMIT 1", null);
+        Cursor cursor = db.rawQuery("SELECT guid_anunciante, nome_fantasia, id_categoria FROM perfil_anunciante WHERE guid_anunciante='" + guidAnunciante + "'", null);
         cursor.moveToNext();
         PerfilAnunciante perfil = new PerfilAnunciante();
-        perfil._id = cursor.getInt(0);
-        perfil.guid = cursor.getString(1);
+        perfil.guidAnunciante = cursor.getString(0);
+        perfil.nomeFantasia = cursor.getString(1);
+        perfil.idCategoria = cursor.getInt(2);
+        cursor.close();
         return perfil;
     }
 
-    public PerfilAnunciante selecionaPerfil(long idPerfil) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, nome, id_categoria, guid FROM perfil_anunciante WHERE _id=" + idPerfil, null);
-        cursor.moveToNext();
-        PerfilAnunciante perfil = new PerfilAnunciante();
-        perfil._id = cursor.getInt(0);
-        perfil.nome = cursor.getString(1);
-        perfil.idCategoria = cursor.getLong(2);
-        perfil.guid = cursor.getString(3);
-        return perfil;
-    }
-
-    public void marcaPerfilComoPublicado(long idPerfil) {
+    public void marcaPerfilComoPublicado(String guidAnunciante) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE perfil_anunciante SET publicado=1 WHERE _id=" + idPerfil);
+        db.execSQL("UPDATE perfil_anunciante SET publicado=1 WHERE guid_anunciante='" + guidAnunciante + "'");
     }
 
     // ========================================================================
@@ -238,7 +181,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM preferencia", null);
         cursor.moveToFirst();
-        return cursor.getInt(0) > 0;
+        boolean result = cursor.getInt(0) > 0;
+        cursor.close();
+        return result;
     }
 
     public List<Preferencia> preferenciasSelecionadasPorCidade(int idCidade) {
@@ -271,6 +216,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // Publicações
     // ========================================================================
 
+    public void salvaPublicacao(Publicacao publicacao) {
+        publicacao.guidPublicacao = UUID.randomUUID().toString();
+        ContentValues values = new ContentValues();
+        values.put("guid_publicacao", publicacao.guidPublicacao);
+        values.put("guid_anunciante", publicacao.guidAnunciante);
+        values.put("titulo", publicacao.titulo);
+        values.put("descricao", publicacao.descricao);
+        values.put("id_categoria", publicacao.idCategoria);
+        values.put("data_validade", publicacao.dataFormatada());
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert("publicacao", null, values);
+    }
+
     // Retorna a lista de publicações não arquivadas
     public List<Publicacao> publicacoesSalvas() {
         SQLiteDatabase db = getReadableDatabase();
@@ -295,6 +253,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void arquivaPublicacao(Publicacao publicacao) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE publicacao SET arquivado=1 WHERE guid_publicacao='" + publicacao.guidPublicacao + "'");
+    }
+
+    public void marcaAnuncioComoPublicado(String guidAnuncio) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE publicacao SET publicado=1 WHERE guid_publicacao='" + guidAnuncio + "'");
     }
 
     public void salvaPublicacoes(List<Publicacao> publicacoes) {

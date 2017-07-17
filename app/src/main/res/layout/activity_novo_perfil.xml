@@ -35,6 +35,33 @@
                 android:text="Dados principais"
                 android:textSize="20dp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="3dp"
+                android:text="Cidade" />
+
+            <Spinner
+                android:id="@+id/spCidade"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                style="@android:style/Widget.Spinner"
+                android:prompt="@string/selecione_cidade"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="Categoria" />
+
+            <Spinner
+                android:id="@+id/spCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                style="@android:style/Widget.Spinner"
+                android:prompt="@string/selecione_categoria"/>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -91,16 +118,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Categoria" />
-
-            <Spinner
-                android:id="@+id/spCategoria"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="10dp"
                 android:background="#E0E0E0"
@@ -136,39 +153,16 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <EditText
                     android:id="@+id/etBairro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Bairro"
-                    android:inputType="textCapWords"
-                    android:imeOptions="actionNext" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords" />
             </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etCidade"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Cidade"
-                    android:inputType="textCapWords"
-                    android:imeOptions="actionNext" />
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Estado" />
-
-            <Spinner
-                android:id="@+id/spEstado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <Button
                 android:layout_width="match_parent"

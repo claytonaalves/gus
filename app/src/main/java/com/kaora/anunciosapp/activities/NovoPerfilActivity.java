@@ -17,11 +17,13 @@ import android.widget.Toast;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,18 +42,29 @@ public class NovoPerfilActivity extends AppCompatActivity {
     EditText etEndereco;
     EditText etNumero;
     EditText etBairro;
-    EditText etCidade;
     Spinner spCategorias;
-    Spinner spEstados;
+    Spinner spCidades;
 
-    MyDatabaseHelper database;
+    private MyDatabaseHelper database;
+    private ApiRestAdapter webservice;
+    private ArrayAdapter<Cidade> cidadeAdapter;
+    private ArrayAdapter<Categoria> categoriaAdapter;
+    final private List<Cidade> cidades = new ArrayList<>();
+    final private List<Categoria> categorias = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novo_perfil);
         database = MyDatabaseHelper.getInstance(this);
+        webservice = ApiRestAdapter.getInstance();
         inicializaInterface();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        obtemListaDeCidadesDoWebservice();
     }
 
     private void inicializaInterface() {
@@ -63,19 +76,33 @@ public class NovoPerfilActivity extends AppCompatActivity {
         etEndereco = (EditText) findViewById(R.id.etEndereco);
         etNumero = (EditText) findViewById(R.id.etNumero);
         etBairro = (EditText) findViewById(R.id.etBairro);
-        etCidade = (EditText) findViewById(R.id.etCidade);
+        criaSpinnerCidades();
+        criaSpinnerCategorias();
+    }
 
-        List<Categoria> categorias = database.todasCategorias();
+    private void criaSpinnerCidades() {
+        cidadeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
+        cidadeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCidades = (Spinner) findViewById(R.id.spCidade);
+        spCidades.setAdapter(cidadeAdapter);
+        spCidades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                obtemListaDeCategoriasDoWebservice(cidades.get(position).idCidade);
+            }
 
-        ArrayAdapter<Categoria> adapterCategorias = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorias);
-        adapterCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.estados, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            }
+        });
+    }
 
+    private void criaSpinnerCategorias() {
+        categoriaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorias);
+        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategorias = (Spinner) findViewById(R.id.spCategoria);
-        spCategorias.setAdapter(adapterCategorias);
-
+        spCategorias.setAdapter(categoriaAdapter);
         spCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -88,9 +115,50 @@ public class NovoPerfilActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        spEstados = (Spinner) findViewById(R.id.spEstado);
-        spEstados.setAdapter(adapter);
+    private void obtemListaDeCidadesDoWebservice() {
+        webservice.obtemCidades(new Callback<List<Cidade>>() {
+            @Override
+            public void onResponse(Call<List<Cidade>> call, Response<List<Cidade>> response) {
+                atualizaSpinnerCidades(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Cidade>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void obtemListaDeCategoriasDoWebservice(int idCidade) {
+        webservice.obtemCategorias(idCidade, new Callback<List<Categoria>>() {
+            @Override
+            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+                atualizaSpinnerCategorias(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void atualizaSpinnerCidades(List<Cidade> cidades) {
+        this.cidades.clear();
+        for (Cidade cidade : cidades) {
+            this.cidades.add(cidade);
+        }
+        cidadeAdapter.notifyDataSetChanged();
+    }
+
+    private void atualizaSpinnerCategorias(List<Categoria> categorias) {
+        this.categorias.clear();
+        for (Categoria categoria : categorias) {
+            this.categorias.add(categoria);
+        }
+        categoriaAdapter.notifyDataSetChanged();
     }
 
     public void selecionarImagem(View view) {
@@ -115,29 +183,28 @@ public class NovoPerfilActivity extends AppCompatActivity {
 
     public void salvaPerfil(View view) {
         PerfilAnunciante perfil = new PerfilAnunciante();
-        perfil.nome = etNome.getText().toString();
+        perfil.nomeFantasia = etNome.getText().toString();
         perfil.telefone = etTelefone.getText().toString();
         perfil.celular = etCelular.getText().toString();
         perfil.email = etEmail.getText().toString();
         perfil.endereco = etEndereco.getText().toString();
         perfil.numero = etNumero.getText().toString();
         perfil.bairro = etBairro.getText().toString();
-        perfil.cidade = etCidade.getText().toString();
-        perfil.estado = spEstados.getSelectedItem().toString().substring(0, 2);
+        perfil.idCidade = ((Cidade) spCidades.getSelectedItem()).idCidade;
         perfil.idCategoria = ((Categoria) spCategorias.getSelectedItem()).idCategoria;
 
         database.salvaPerfil(perfil);
-        publicaAnunciante(perfil);
-        mostraActivityNovoAnuncio(perfil._id);
+        publicaPerfilAnunciante(perfil);
+        mostraActivityNovaPublicacao(perfil.guidAnunciante);
     }
 
-    private void publicaAnunciante(PerfilAnunciante perfil) {
-        final long idPerfil = perfil._id;
+    private void publicaPerfilAnunciante(PerfilAnunciante perfil) {
+        final String guidAnunciante = perfil.guidAnunciante;
         ApiRestAdapter api = ApiRestAdapter.getInstance();
         api.publicaAnunciante(perfil, new Callback<PerfilAnunciante>() {
             @Override
             public void onResponse(Call<PerfilAnunciante> call, Response<PerfilAnunciante> response) {
-                database.marcaPerfilComoPublicado(idPerfil);
+                database.marcaPerfilComoPublicado(guidAnunciante);
                 Toast.makeText(NovoPerfilActivity.this, "Perfil publicado!", Toast.LENGTH_LONG).show();
                 fechaActivity();
             }
@@ -149,9 +216,9 @@ public class NovoPerfilActivity extends AppCompatActivity {
         });
     }
 
-    private void mostraActivityNovoAnuncio(long idPerfil) {
-        Intent intent = new Intent(this, NovoAnuncioActivity.class);
-        intent.putExtra("idPerfil", idPerfil);
+    private void mostraActivityNovaPublicacao(String guidAnunciante) {
+        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
+        intent.putExtra("guid_anunciante", guidAnunciante);
         startActivity(intent);
     }
 

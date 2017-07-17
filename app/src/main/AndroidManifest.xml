@@ -43,7 +43,7 @@
             android:name=".activities.SelecionarPerfilActivity"
             android:label="Selecione o perfil" />
         <activity
-            android:name=".activities.NovoAnuncioActivity"
+            android:name=".activities.NovaPublicacaoActivity"
             android:label="Novo anúncio" />
         <activity
             android:name=".activities.AnuncioPublicado"

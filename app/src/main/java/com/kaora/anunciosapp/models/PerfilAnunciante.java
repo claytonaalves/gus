@@ -1,21 +1,19 @@
 package com.kaora.anunciosapp.models;
 
 public class PerfilAnunciante {
-    public long _id;
-    public String guid;
-    public String nome;
+    public String guidAnunciante;
+    public int idCidade;
+    public int idCategoria;
+    public String nomeFantasia;
     public String telefone;
     public String celular;
     public String email;
     public String endereco;
     public String numero;
-    public String estado;
-    public String cidade;
     public String bairro;
-    public long idCategoria;
 
     @Override
     public String toString() {
-        return this.nome;
+        return this.nomeFantasia;
     }
 }

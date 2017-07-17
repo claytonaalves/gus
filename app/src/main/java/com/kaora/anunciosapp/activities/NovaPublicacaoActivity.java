@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
-import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.models.Publicacao;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.text.ParseException;
@@ -26,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NovoAnuncioActivity extends AppCompatActivity {
+public class NovaPublicacaoActivity extends AppCompatActivity {
 
     private TextView tvNomeAnunciante;
     private EditText etTitulo;
@@ -57,10 +57,10 @@ public class NovoAnuncioActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        long idPerfil = intent.getLongExtra("idPerfil", 0);
-        perfilSelecionado = database.selecionaPerfil(idPerfil);
+        String guidAnunciante = intent.getStringExtra("guid_anunciante");
+        perfilSelecionado = database.selecionaPerfil(guidAnunciante);
 
-        tvNomeAnunciante.setText(perfilSelecionado.nome);
+        tvNomeAnunciante.setText(perfilSelecionado.nomeFantasia);
 
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         preparaDialogData();
@@ -83,30 +83,30 @@ public class NovoAnuncioActivity extends AppCompatActivity {
     }
 
     public void publicaAnuncio(View view) {
-        Anuncio anuncio = new Anuncio();
-        anuncio.titulo = etTitulo.getText().toString();
-        anuncio.descricao = etDescricao.getText().toString();
-        anuncio.validoAte = extraiData(etValidoAte.getText().toString());
-        anuncio.guidAnunciante = perfilSelecionado.guid;
-        anuncio.idCategoria = perfilSelecionado.idCategoria;
-        database.salvaAnuncio(anuncio);
-        publicaAnuncioRemotamente(anuncio);
+        Publicacao publicacao = new Publicacao();
+        publicacao.titulo = etTitulo.getText().toString();
+        publicacao.descricao = etDescricao.getText().toString();
+        publicacao.setDataValidade(extraiData(etValidoAte.getText().toString()));
+        publicacao.guidAnunciante = perfilSelecionado.guidAnunciante;
+        publicacao.idCategoria = perfilSelecionado.idCategoria;
+        database.salvaPublicacao(publicacao);
+        publicaAnuncioRemotamente(publicacao);
     }
 
-    private void publicaAnuncioRemotamente(Anuncio anuncio) {
-        final long idAnuncio = anuncio._id;
+    private void publicaAnuncioRemotamente(Publicacao publicacao) {
+        final String guidPublicacao = publicacao.guidPublicacao;
         ApiRestAdapter api = ApiRestAdapter.getInstance();
-        api.publicaAnuncio(anuncio, new Callback<Anuncio>() {
+        api.publicaPublicacao(publicacao, new Callback<Publicacao>() {
             @Override
-            public void onResponse(Call<Anuncio> call, Response<Anuncio> response) {
-                database.marcaAnuncioComoPublicado(idAnuncio);
-                Toast.makeText(NovoAnuncioActivity.this, "Anúncio publicado!", Toast.LENGTH_LONG).show();
+            public void onResponse(Call<Publicacao> call, Response<Publicacao> response) {
+                database.marcaAnuncioComoPublicado(guidPublicacao);
+                Toast.makeText(NovaPublicacaoActivity.this, "Anúncio publicado!", Toast.LENGTH_LONG).show();
                 fechaActivity();
             }
 
             @Override
-            public void onFailure(Call<Anuncio> call, Throwable t) {
-                Toast.makeText(NovoAnuncioActivity.this, "Erro ao publicar", Toast.LENGTH_LONG).show();
+            public void onFailure(Call<Publicacao> call, Throwable t) {
+                Toast.makeText(NovaPublicacaoActivity.this, "Erro ao publicar", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -117,7 +117,7 @@ public class NovoAnuncioActivity extends AppCompatActivity {
             public void run() {
                 try {
                     Thread.sleep(3500);
-                    NovoAnuncioActivity.this.finish();
+                    NovaPublicacaoActivity.this.finish();
                 } catch (Exception e) {
 
                 }

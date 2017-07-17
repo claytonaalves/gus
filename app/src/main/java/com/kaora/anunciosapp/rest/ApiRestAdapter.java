@@ -6,13 +6,13 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kaora.anunciosapp.models.Anunciante;
-import com.kaora.anunciosapp.models.Anuncio;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ApiRestAdapter {
     private static Retrofit retrofit;
 //    public static final String BASE_URL = "http://177.221.202.42/anuncios/";
 //    public static final String BASE_URL = "http://10.0.2.16:5000/";
-    public static final String BASE_URL = "http://10.1.1.43:5000/";
+    public static final String BASE_URL = "http://10.1.1.102:5000/";
     private static ApiRestAdapter instance;
 
     private ApiRestInterface service;
@@ -62,15 +62,15 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
-    public void publicaAnuncio(Anuncio anuncio, Callback<Anuncio> cb) {
-        Call<Anuncio> request = service.publicaAnuncio(anuncio);
+    public void publicaPublicacao(Publicacao publicacao, Callback<Publicacao> cb) {
+        Call<Publicacao> request = service.publicaPublicacao(publicacao);
         request.enqueue(cb);
     }
 
-    public void obtemAnuncio(String guidAnuncio, Callback<Anuncio> cb) {
-        Call<Anuncio> request = service.obtemAnuncio(guidAnuncio);
-        request.enqueue(cb);
-    }
+//    public void obtemPublicacao(String guidAnuncio, Callback<Publicacao> cb) {
+//        Call<Publicacao> request = service.obtemPublicacao(guidPublicacao);
+//        request.enqueue(cb);
+//    }
 
     public void obtemCidades(Callback<List<Cidade>> cb) {
         Call<List<Cidade>> request = service.obtemCidades();

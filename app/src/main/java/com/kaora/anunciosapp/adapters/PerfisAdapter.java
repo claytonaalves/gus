@@ -34,7 +34,8 @@ public class PerfisAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         PerfilAnunciante perfil = perfis.get(position);
-        return perfil._id;
+//        return perfil._id;
+        return 0;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class PerfisAdapter extends BaseAdapter {
                 .inflate(R.layout.item_listview_anunciante, parent, false);
 
         TextView tvNomeAnunciante = (TextView) view.findViewById(R.id.tvNomeAnunciante);
-        tvNomeAnunciante.setText(perfil.nome);
+        tvNomeAnunciante.setText(perfil.nomeFantasia);
 
         view.setTag(perfil);
 

@@ -21,6 +21,11 @@ public class Cidade implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return this.nome + " - " + this.uf;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

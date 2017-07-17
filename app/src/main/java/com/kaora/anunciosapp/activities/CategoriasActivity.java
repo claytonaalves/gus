@@ -5,15 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -22,7 +18,6 @@ import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.CategoriasAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Categoria;
-import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.utils.NotificationUtils;
 
@@ -185,16 +180,16 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void mostraActivityNovoAnuncio() {
-        Intent intent = new Intent(this, NovoAnuncioActivity.class);
+        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
         intent.putExtra("idPerfil", 1L); // id do primeiro perfil
         startActivity(intent);
     }
 
     private void mostraActivityPreferencias() {
-        PerfilAnunciante perfil = database.selecionaPerfil();
-        Intent intent = new Intent(this, PreferenciasActivity.class);
-        intent.putExtra("idperfil", perfil._id);
-        startActivity(intent);
+//        PerfilAnunciante perfil = database.selecionaPerfil();
+//        Intent intent = new Intent(this, PreferenciasActivity.class);
+//        intent.putExtra("idperfil", perfil._id);
+//        startActivity(intent);
     }
 
     private void preparaBroadcastReceiver() {
