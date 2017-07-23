@@ -162,7 +162,7 @@ public class PublicacoesActivity extends AppCompatActivity {
 //                mostraActivityMeusAnuncios();
                 break;
             case R.id.action_perfis:
-//                mostraActivityPerfis();
+                mostraActivityPerfis();
                 break;
             case R.id.action_configuracoes:
                 mostraActivityCidades();
@@ -197,5 +197,12 @@ public class PublicacoesActivity extends AppCompatActivity {
         intent.putExtra("guid_anunciante", perfil.guidAnunciante);
         startActivity(intent);
     }
+
+    private void mostraActivityPerfis() {
+        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
+        intent.putExtra("modoEdicao", 1);
+        startActivity(intent);
+    }
+
 
 }

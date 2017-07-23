@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -48,11 +49,12 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         etTitulo = (EditText) findViewById(R.id.etTitulo);
         etDescricao = (EditText) findViewById(R.id.etDescricao);
         etValidoAte = (EditText) findViewById(R.id.etValidoAte);
-        etValidoAte.setInputType(InputType.TYPE_NULL);
-        etValidoAte.setOnClickListener(new View.OnClickListener() {
+        etValidoAte.setInputType(InputType.TYPE_CLASS_DATETIME);
+        etValidoAte.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
                 datePicker.show();
+                return false;
             }
         });
 

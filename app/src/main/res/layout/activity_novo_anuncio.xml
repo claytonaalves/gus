@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="16dp"
         android:text="Nome do Anunciante"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp" />
+        android:textSize="18sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Título"/>
+        android:text="Título" />
 
     <EditText
         android:id="@+id/etTitulo"
@@ -38,8 +38,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Descrição"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:text="Descrição" />
 
     <EditText
         android:id="@+id/etDescricao"
@@ -52,13 +52,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Válido até"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:text="Válido até" />
 
     <EditText
         android:id="@+id/etValidoAte"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableRight="@drawable/calendar_plus_gray"
         android:ems="10"
         android:imeOptions="actionDone"
         android:inputType="date" />
@@ -71,16 +72,16 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Adicionar foto"
             android:layout_weight="1"
-            android:onClick="adicionaFoto"/>
+            android:onClick="adicionaFoto"
+            android:text="Adicionar foto" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Publicar"
             android:layout_weight="1"
-            android:onClick="publicaAnuncio"/>
+            android:onClick="publicaAnuncio"
+            android:text="Publicar" />
     </LinearLayout>
 
 </LinearLayout>
