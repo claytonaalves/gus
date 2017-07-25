@@ -352,4 +352,5 @@
     <string name="nome_cidade">Nome Cidade</string>
     <string name="selecione_cidade">Selecione a Cidade</string>
     <string name="selecione_categoria">Selecione a Categoria</string>
+    <string name="data_validade">Válido até %1$s as 17:00</string>
 </resources>

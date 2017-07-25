@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -110,6 +111,7 @@ public class PublicacoesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Publicacao>> call, Throwable t) {
+                Log.d("erro", t.toString());
                 Toast.makeText(PublicacoesActivity.this, "Falha ao obter publicações!", Toast.LENGTH_SHORT).show();
             }
         });
