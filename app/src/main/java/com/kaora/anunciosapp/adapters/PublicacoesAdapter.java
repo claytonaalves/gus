@@ -1,14 +1,17 @@
 package com.kaora.anunciosapp.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.models.Publicacao;
+import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import org.w3c.dom.Text;
 
@@ -40,6 +43,7 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
         TextView tvDescricao = holder.tvDescricao;
         tvTitulo.setText(publicacao.titulo);
         tvDescricao.setText(publicacao.descricao);
+        holder.draweeView.setImageURI(Uri.parse(ApiRestAdapter.BASE_URL + "publicacoes/foto/avatar.jpg"));
     }
 
     @Override
@@ -51,11 +55,13 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
 
         TextView tvTitulo;
         TextView tvDescricao;
+        SimpleDraweeView draweeView;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvTitulo = (TextView) itemView.findViewById(R.id.tvTitulo);
             tvDescricao = (TextView) itemView.findViewById(R.id.tvDescricao);
+            draweeView = (SimpleDraweeView) itemView.findViewById(R.id.imagem);
         }
     }
 

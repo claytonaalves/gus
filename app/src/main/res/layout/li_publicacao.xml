@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,12 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgFoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/photo_gray" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/imagem"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/photo_gray"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/tvDataPublicacao"
@@ -33,11 +36,11 @@
             android:layout_below="@+id/tvDataPublicacao"
             android:layout_marginLeft="75dp"
             android:ellipsize="end"
-            android:textStyle="bold"
             android:maxLines="1"
             android:scrollHorizontally="true"
             android:text="Super oferta de produtos bal bla bla teste 1234 baasdflksdjf"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDescricao"
