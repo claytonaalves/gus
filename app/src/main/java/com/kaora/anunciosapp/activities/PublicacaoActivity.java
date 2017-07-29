@@ -67,8 +67,12 @@ public class PublicacaoActivity extends AppCompatActivity {
         TextView tvDataPublicacao = (TextView) findViewById(R.id.tvDataPublicacao);
         TextView tvDataValidade = (TextView) findViewById(R.id.tvDataValidade);
         Button btLigarPara = (Button) findViewById(R.id.btLigarPara);
-//        SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem_publicacao);
-//        imagem.setImageURI(ApiRestAdapter.BASE_URL + "publicacoes/foto/imagem_teste.jpg");
+
+        if (publicacao.imagem != "") {
+            SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem_publicacao);
+            imagem.setImageURI(ApiRestAdapter.BASE_URL + publicacao.imagem);
+        }
+
         tvTitulo.setText(publicacao.titulo);
         tvDescricao.setText(publicacao.descricao);
         tvNomeAnunciante.setText(publicacao.anunciante.nomeFantasia);

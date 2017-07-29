@@ -15,7 +15,8 @@
         android:id="@+id/imagem_publicacao"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        fresco:actualImageScaleType="centerInside" />
+        fresco:actualImageScaleType="centerInside"
+        fresco:placeholderImage="@drawable/photo_placeholder_750_415" />
 
     <TextView
         android:id="@+id/tvTitulo"
