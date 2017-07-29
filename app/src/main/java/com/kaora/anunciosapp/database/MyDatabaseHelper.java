@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
@@ -235,15 +236,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE arquivado=0", null);
         List<Publicacao> publicacoes = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Publicacao publicacao = new Publicacao();
-            publicacao.guidPublicacao = cursor.getString(cursor.getColumnIndex("guid_publicacao"));
-            publicacao.guidAnunciante = cursor.getString(cursor.getColumnIndex("guid_anunciante"));
-            publicacao.idCategoria = cursor.getInt(cursor.getColumnIndex("id_categoria"));
-            publicacao.titulo = cursor.getString(cursor.getColumnIndex("titulo"));
-            publicacao.descricao = cursor.getString(cursor.getColumnIndex("descricao"));
-            publicacao.dataPublicacao = cursor.getLong(cursor.getColumnIndex("data_publicacao"));
-            publicacao.dataValidade = cursor.getLong(cursor.getColumnIndex("data_validade"));
-            publicacao.imagem = cursor.getString(cursor.getColumnIndex("imagem"));
+            Publicacao publicacao = extraiPublicacaoDoCursor(cursor);
             publicacoes.add(publicacao);
         }
         cursor.close();
@@ -275,4 +268,26 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             db.insert("publicacao", null, values);
         }
     }
+
+    public Publicacao obtemPublicacao(String guidPublicacao) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE guid_publicacao='" + guidPublicacao + "'", null);
+        cursor.moveToNext();
+        return extraiPublicacaoDoCursor(cursor);
+    }
+
+    @NonNull
+    private Publicacao extraiPublicacaoDoCursor(Cursor cursor) {
+        Publicacao publicacao = new Publicacao();
+        publicacao.guidPublicacao = cursor.getString(cursor.getColumnIndex("guid_publicacao"));
+        publicacao.guidAnunciante = cursor.getString(cursor.getColumnIndex("guid_anunciante"));
+        publicacao.idCategoria = cursor.getInt(cursor.getColumnIndex("id_categoria"));
+        publicacao.titulo = cursor.getString(cursor.getColumnIndex("titulo"));
+        publicacao.descricao = cursor.getString(cursor.getColumnIndex("descricao"));
+        publicacao.dataPublicacao = cursor.getLong(cursor.getColumnIndex("data_publicacao"));
+        publicacao.dataValidade = cursor.getLong(cursor.getColumnIndex("data_validade"));
+        publicacao.imagem = cursor.getString(cursor.getColumnIndex("imagem"));
+        return publicacao;
+    }
+
 }

@@ -3,6 +3,7 @@
     package="com.kaora.anunciosapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".MyApplication"
@@ -16,11 +17,13 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.CidadesActivity"
-            android:label="Anúncios App"/>
+        <activity
+            android:name=".activities.CidadesActivity"
+            android:label="Anúncios App" />
         <activity
             android:name=".activities.PublicacoesActivity"
             android:label="Publicações" />
@@ -56,6 +59,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.PublicacaoActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -66,6 +72,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

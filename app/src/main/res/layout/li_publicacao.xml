@@ -3,6 +3,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical"
     android:paddingLeft="5dp"
     android:paddingRight="5dp">
@@ -23,12 +24,11 @@
 
         <TextView
             android:id="@+id/tvDataPublicacao"
+            style="@style/data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="HOJE"
-            android:textColor="#808080"
-            android:textSize="10sp" />
+            android:text="HOJE" />
 
         <TextView
             android:id="@+id/tvTitulo"
@@ -52,21 +52,22 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:scrollHorizontally="true"
-            android:text="Este aqui vai ser o conteúdo da descrição do anúncio de teste 1234 pra ver quantas linhas dá pra por aqui. Este aqui vai ser o conteúdo da descrição do anúncio de teste 1234 pra ver quantas linhas dá pra por aqui"
+            android:text="xxxx xxxx xxx xxx x xxxxxxxx xx xxxxxxxxx xx xxxxxxx xx xxxxx xxxx xxx xxx xxxxxxx xxxxxx xx xxx xxx xxxxx xxxx xxxx xxx xxx x xxxxxxxx xx xxxxxxxxx xx xxxxxxx xx xxxxx xxxx xxx xxx xxxxxxx xxxxxx xx xxx xxx xxxx
+"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tvDataValidade"
+            style="@style/data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvDescricao"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
+            android:gravity="end"
             android:text="@string/data_validade"
-            android:textAlignment="textEnd"
-            android:textColor="#808080"
-            android:textSize="9sp" />
+            android:textAlignment="textEnd" />
 
     </RelativeLayout>
 

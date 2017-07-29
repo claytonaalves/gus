@@ -34,6 +34,9 @@ public interface ApiRestInterface {
     @POST("publicacoes/")
     Call<Publicacao> publicaPublicacao(@Body Publicacao publicacao);
 
+    @GET("publicacoes/{guid_publicacao}")
+    Call<Publicacao> obtemPublicacao(@Path("guid_publicacao") String guidAnunciante);
+
     @Multipart
     @POST("publicacoes/fotos")
     Call<ResponseBody> postaFotoPublicacao(@Part("description") RequestBody description, @Part MultipartBody.Part file);

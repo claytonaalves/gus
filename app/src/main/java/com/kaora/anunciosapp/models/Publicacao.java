@@ -14,14 +14,9 @@ public class Publicacao {
     public long dataPublicacao;
     public long dataValidade;
     public String imagem;
+    public Anunciante anunciante;
 
     public Publicacao() {
-        this.dataPublicacao = new Date().getTime()/1000;
-    }
-
-    public Publicacao(String titulo, String descricao) {
-        this.titulo = titulo;
-        this.descricao = descricao;
         this.dataPublicacao = new Date().getTime()/1000;
     }
 
