@@ -49,7 +49,9 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
         holder.tvDescricao.setText(publicacao.descricao);
         holder.tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publicacao.dataPublicacao));
         holder.tvDataValidade.setText(textoDataValidade(publicacao.dataValidade));
-        holder.draweeView.setImageURI(Uri.parse(ApiRestAdapter.BASE_URL + "publicacoes/foto/avatar.jpg"));
+        if (publicacao.imagem != "") {
+            holder.draweeView.setImageURI(Uri.parse(ApiRestAdapter.BASE_URL + publicacao.imagem));
+        }
     }
 
     private String textoDataValidade(long dataValidade) {
