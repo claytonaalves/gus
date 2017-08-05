@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingTop="30dp"
-        app:srcCompat="@drawable/attention" />
+        app:srcCompat="@drawable/attention_roxo" />
 
     <TextView
         android:id="@+id/textView5"
