@@ -126,12 +126,14 @@ public class PublicacoesActivity extends AppCompatActivity {
         for (Publicacao publicacao : publicacoes) {
             this.publicacoes.add(publicacao);
         }
+        int posicaoUltimoItem = this.publicacoes.size()-1;
         if (publicacoes.size()==1) {
-            publicacoesAdapter.notifyItemInserted(this.publicacoes.size()-1);
+            publicacoesAdapter.notifyItemInserted(posicaoUltimoItem);
         } else {
             publicacoesAdapter.notifyDataSetChanged();
         }
-        rvPublicacoes.smoothScrollToPosition(this.publicacoes.size()-1);
+        if (posicaoUltimoItem>=0)
+           rvPublicacoes.smoothScrollToPosition(posicaoUltimoItem);
         salvaDataDaUltimaAtualizacao();
     }
 

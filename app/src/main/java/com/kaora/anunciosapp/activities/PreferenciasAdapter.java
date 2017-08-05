@@ -45,10 +45,8 @@ public class PreferenciasAdapter extends ArrayAdapter<Preferencia> {
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (preferencia != null) {
-                    preferencia.selecionanda = isChecked;
-                    database.salvaPreferencia(preferencia);
-                }
+                preferencia.selecionanda = isChecked;
+                database.salvaPreferencia(preferencia);
             }
         });
 

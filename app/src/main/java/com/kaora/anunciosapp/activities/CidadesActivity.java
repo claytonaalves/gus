@@ -44,7 +44,7 @@ public class CidadesActivity extends AppCompatActivity {
             }
         }
 
-        cidades = obtemCidades();
+        cidades = new ArrayList<>();
         preparaListaDeCidades(cidades);
     }
 
@@ -83,16 +83,6 @@ public class CidadesActivity extends AppCompatActivity {
         for (Cidade cidade : cidades)
             this.cidades.add(cidade);
         cidadesAdapter.notifyDataSetChanged();
-    }
-
-    @NonNull
-    private List<Cidade> obtemCidades() {
-        List<Cidade> cidades = new ArrayList<>();
-//        cidades.add(new Cidade("Alta Floresta", "MT"));
-//        cidades.add(new Cidade("Apiacás", "MT"));
-//        cidades.add(new Cidade("Monte Verde", "MT"));
-//        cidades.add(new Cidade("Bandeirantes", "MT"));
-        return cidades;
     }
 
     @Override
