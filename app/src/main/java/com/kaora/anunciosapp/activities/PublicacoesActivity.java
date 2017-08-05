@@ -32,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kaora.anunciosapp.R.id.rvPublicacoes;
 import static com.kaora.anunciosapp.R.id.view_publicacoes_vazia;
 
 public class PublicacoesActivity extends AppCompatActivity {
@@ -39,6 +40,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     private PublicacoesAdapter publicacoesAdapter;
     private MyDatabaseHelper database;
     private List<Publicacao> publicacoes;
+    private CustomRecyclerView rvPublicacoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,10 @@ public class PublicacoesActivity extends AppCompatActivity {
         publicacoes = database.publicacoesSalvas();
         publicacoesAdapter = new PublicacoesAdapter(this, publicacoes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        CustomRecyclerView rvPublicacoes = (CustomRecyclerView) findViewById(R.id.rvPublicacoes);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rvPublicacoes = (CustomRecyclerView) findViewById(R.id.rvPublicacoes);
         rvPublicacoes.setEmptyView(findViewById(view_publicacoes_vazia));
         rvPublicacoes.setAdapter(publicacoesAdapter);
         rvPublicacoes.setLayoutManager(layoutManager);
@@ -122,10 +127,11 @@ public class PublicacoesActivity extends AppCompatActivity {
             this.publicacoes.add(publicacao);
         }
         if (publicacoes.size()==1) {
-            publicacoesAdapter.notifyItemInserted(0);
+            publicacoesAdapter.notifyItemInserted(this.publicacoes.size()-1);
         } else {
             publicacoesAdapter.notifyDataSetChanged();
         }
+        rvPublicacoes.smoothScrollToPosition(this.publicacoes.size()-1);
         salvaDataDaUltimaAtualizacao();
     }
 

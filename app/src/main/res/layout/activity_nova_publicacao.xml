@@ -46,8 +46,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:height="100dp"
         android:imeOptions="actionNext"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical" />
 
     <TextView
         android:layout_width="match_parent"

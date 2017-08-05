@@ -103,18 +103,6 @@ public class NovoPerfilActivity extends AppCompatActivity {
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategorias = (Spinner) findViewById(R.id.spCategoria);
         spCategorias.setAdapter(categoriaAdapter);
-        spCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Categoria c = (Categoria) spCategorias.getSelectedItem();
-                Toast.makeText(NovoPerfilActivity.this, c.descricao, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void obtemListaDeCidadesDoWebservice() {

@@ -233,7 +233,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // Retorna a lista de publicações não arquivadas
     public List<Publicacao> publicacoesSalvas() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE arquivado=0 ORDER BY data_publicacao DESC", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE arquivado=0 ORDER BY data_publicacao", null);
         List<Publicacao> publicacoes = new ArrayList<>();
         while (cursor.moveToNext()) {
             Publicacao publicacao = extraiPublicacaoDoCursor(cursor);
