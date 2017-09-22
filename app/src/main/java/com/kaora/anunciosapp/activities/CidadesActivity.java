@@ -2,13 +2,11 @@ package com.kaora.anunciosapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
@@ -24,6 +22,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CidadesActivity extends AppCompatActivity {
+
+    public static final int PREFERENCIAS_SELECIONADAS = 1;
 
     List<Cidade> cidades;
     CidadesAdapter cidadesAdapter;
@@ -50,6 +50,7 @@ public class CidadesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        setResult(PREFERENCIAS_SELECIONADAS);
         this.finish();
         return true;
     }

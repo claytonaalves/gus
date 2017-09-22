@@ -54,9 +54,9 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
         }
     }
 
-    private String textoDataValidade(long dataValidade) {
+    private String textoDataValidade(Date dataValidade) {
         Resources res = context.getResources();
-        return String.format(res.getString(R.string.data_validade), df.format(new Date(dataValidade * 1000)));
+        return String.format(res.getString(R.string.data_validade), df.format(dataValidade));
     }
 
     @Override

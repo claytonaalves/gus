@@ -11,8 +11,13 @@ import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
+import com.kaora.anunciosapp.utils.DateUtils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +40,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TABELA_PREFERENCIA = "" +
             "CREATE TABLE preferencia ( " +
             "id_categoria INTEGER, " +
-            "descricao TEXT NOT NULL)";
+            "descricao TEXT NOT NULL, " +
+            "atualizada INTEGER)";
 
     private static final String TABELA_ANUNCIANTE = "" +
             "CREATE TABLE anunciante ( " +
@@ -174,6 +180,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("id_categoria", preferencia.idCategoria);
             values.put("descricao", preferencia.descricao);
+            values.put("atualizada", 0);
             database.insert("preferencia", null, values);
         }
     }
@@ -198,6 +205,24 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return preferencias;
+    }
+
+    public List<Preferencia> preferenciasDesatualizadas() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia WHERE atualizada=0", null);
+        List<Preferencia> preferencias = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
+            preferencia.selecionanda = true;
+            preferencias.add(preferencia);
+        }
+        cursor.close();
+        return preferencias;
+    }
+
+    public void marcaPreferenciasComoAtualizadas() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE preferencia SET atualizada=1");
     }
 
     public List<Preferencia> peferenciasSelecionadas() {
@@ -262,8 +287,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             values.put("id_categoria", publicacao.idCategoria);
             values.put("titulo", publicacao.titulo);
             values.put("descricao", publicacao.descricao);
-            values.put("data_publicacao", publicacao.dataPublicacao);
-            values.put("data_validade", publicacao.dataValidade);
+            values.put("data_publicacao", DateUtils.dateToString(publicacao.dataPublicacao));
+            values.put("data_validade", DateUtils.dateToString(publicacao.dataValidade));
             values.put("imagem", publicacao.imagem);
             db.insert("publicacao", null, values);
         }
@@ -284,8 +309,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         publicacao.idCategoria = cursor.getInt(cursor.getColumnIndex("id_categoria"));
         publicacao.titulo = cursor.getString(cursor.getColumnIndex("titulo"));
         publicacao.descricao = cursor.getString(cursor.getColumnIndex("descricao"));
-        publicacao.dataPublicacao = cursor.getLong(cursor.getColumnIndex("data_publicacao"));
-        publicacao.dataValidade = cursor.getLong(cursor.getColumnIndex("data_validade"));
+        publicacao.dataPublicacao = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("data_publicacao")));
+        publicacao.dataValidade = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("data_validade")));
         publicacao.imagem = cursor.getString(cursor.getColumnIndex("imagem"));
         return publicacao;
     }

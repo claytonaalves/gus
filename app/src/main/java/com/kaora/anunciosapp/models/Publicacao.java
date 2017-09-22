@@ -11,22 +11,22 @@ public class Publicacao {
     public int idCategoria;
     public String titulo;
     public String descricao;
-    public long dataPublicacao;
-    public long dataValidade;
+    public Date dataPublicacao;
+    public Date dataValidade;
     public String imagem;
     public Anunciante anunciante;
 
     public Publicacao() {
-        this.dataPublicacao = new Date().getTime()/1000;
+        this.dataPublicacao = new Date();
     }
 
     public void setDataValidade(Date dataValidade) {
-        this.dataValidade = dataValidade.getTime()/1000;
+        this.dataValidade = dataValidade;
     }
 
     public String dataFormatada() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        return dateFormat.format(new Date(this.dataValidade));
+        return dateFormat.format(this.dataValidade);
     }
 
 }

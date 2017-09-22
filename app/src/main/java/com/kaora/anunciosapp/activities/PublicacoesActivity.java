@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
+import com.kaora.anunciosapp.adapters.CidadesAdapter;
 import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
@@ -106,20 +107,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     private void obtemPublicacoesDoServidor() {
         Date ultimaAtualizacao = obtemDataDaUltimaAtualizacao();
         List<Preferencia> preferencias = database.peferenciasSelecionadas();
-        ApiRestAdapter webservice = ApiRestAdapter.getInstance();
-        webservice.obtemPublicacoes(ultimaAtualizacao, preferencias, new Callback<List<Publicacao>>() {
-            @Override
-            public void onResponse(Call<List<Publicacao>> call, Response<List<Publicacao>> response) {
-                database.salvaPublicacoes(response.body());
-                atualizaListaDePublicacoes(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Publicacao>> call, Throwable t) {
-                Log.d("erro", t.toString());
-                Toast.makeText(PublicacoesActivity.this, "Falha ao obter publicações!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        baixaPublicacoesDoWebservice(ultimaAtualizacao, preferencias);
     }
 
     private void atualizaListaDePublicacoes(List<Publicacao> publicacoes) {
@@ -182,7 +170,34 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void mostraActivityCidades() {
-        startActivity(new Intent(this, CidadesActivity.class));
+        startActivityForResult(new Intent(this, CidadesActivity.class), CidadesActivity.PREFERENCIAS_SELECIONADAS);
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode == CidadesActivity.PREFERENCIAS_SELECIONADAS) {
+            // Carrega lista de preferências com "atualizada=0"
+            List<Preferencia> preferencias = database.preferenciasDesatualizadas();
+            baixaPublicacoesDoWebservice(new Date(0), preferencias);
+        }
+    }
+
+    private void baixaPublicacoesDoWebservice(Date ultimaAtualizacao, List<Preferencia> preferencias) {
+        ApiRestAdapter webservice = ApiRestAdapter.getInstance();
+        webservice.obtemPublicacoes(ultimaAtualizacao, preferencias, new Callback<List<Publicacao>>() {
+            @Override
+            public void onResponse(Call<List<Publicacao>> call, Response<List<Publicacao>> response) {
+                database.salvaPublicacoes(response.body());
+                database.marcaPreferenciasComoAtualizadas();
+                atualizaListaDePublicacoes(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Publicacao>> call, Throwable t) {
+                Log.d("erro", t.toString());
+                Toast.makeText(PublicacoesActivity.this, "Falha ao obter publicações!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void criaNovaPublicacao() {
