@@ -28,7 +28,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiRestAdapter {
 
     private static Retrofit retrofit;
-    public static final String BASE_URL = "http://177.221.202.42:8080/api/v1/";
+    public static final String HOST = "http://177.221.202.42:8080";
+    public static final String BASE_URL = HOST + "/api/v1/";
+    public static final String IMAGES_PATH = HOST + "/images";
 //    public static final String BASE_URL = "http://10.0.2.16:5000/";
 //    public static final String BASE_URL = "http://10.1.1.43:5000/";
     private static ApiRestAdapter instance;

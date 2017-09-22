@@ -70,7 +70,7 @@ public class PublicacaoActivity extends AppCompatActivity {
 
         if (publicacao.imagem != "") {
             SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem_publicacao);
-            imagem.setImageURI(ApiRestAdapter.BASE_URL + publicacao.imagem);
+            imagem.setImageURI(ApiRestAdapter.IMAGES_PATH + "/publicacoes/" + publicacao.imagem);
         }
 
         tvTitulo.setText(publicacao.titulo);
