@@ -1,10 +1,13 @@
 package com.kaora.anunciosapp.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,8 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.adapters.CidadesAdapter;
 import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
@@ -33,7 +37,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kaora.anunciosapp.R.id.rvPublicacoes;
 import static com.kaora.anunciosapp.R.id.view_publicacoes_vazia;
 
 public class PublicacoesActivity extends AppCompatActivity {
@@ -42,6 +45,9 @@ public class PublicacoesActivity extends AppCompatActivity {
     private MyDatabaseHelper database;
     private List<Publicacao> publicacoes;
     private CustomRecyclerView rvPublicacoes;
+
+    private LocalBroadcastManager broadcastManager;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,7 @@ public class PublicacoesActivity extends AppCompatActivity {
             }
         });
 
+        preparaBroadcastManager();
         preparaListaDePublicacoes();
     }
 
@@ -65,6 +72,25 @@ public class PublicacoesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         obtemPublicacoesDoServidor();
+        broadcastManager.registerReceiver(broadcastReceiver, new IntentFilter(Config.PUSH_NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        broadcastManager.unregisterReceiver(broadcastReceiver);
+        super.onPause();
+    }
+
+    private void preparaBroadcastManager() {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    obtemPublicacoesDoServidor();
+                }
+            }
+        };
     }
 
     private void preparaListaDePublicacoes() {
