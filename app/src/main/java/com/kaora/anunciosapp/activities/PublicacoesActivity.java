@@ -1,5 +1,7 @@
 package com.kaora.anunciosapp.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +30,7 @@ import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
+import com.kaora.anunciosapp.receivers.MyAlarmReceiver;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.components.CustomRecyclerView;
 
@@ -68,6 +71,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         });
 
         database = MyDatabaseHelper.getInstance(this);
+        database.removePublicacoesVencidas();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +83,7 @@ public class PublicacoesActivity extends AppCompatActivity {
 
         preparaBroadcastManager();
         preparaListaDePublicacoes();
+        iniciaSchedulerRemocaoPublicacoesVencidas();
     }
 
     @Override
@@ -164,6 +169,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         adicionaFuncionalidadeSwipe(rvPublicacoes);
     }
 
+    // Swipe to left/right to delete ad
     private void adicionaFuncionalidadeSwipe(CustomRecyclerView rvPublicacoes) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -291,6 +297,16 @@ public class PublicacoesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SelecionarPerfilActivity.class);
         intent.putExtra("modoEdicao", 0);
         startActivity(intent);
+    }
+
+    private void iniciaSchedulerRemocaoPublicacoesVencidas() {
+        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        long firstMillis = System.currentTimeMillis();
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                AlarmManager.INTERVAL_DAY, pIntent);
     }
 
 }

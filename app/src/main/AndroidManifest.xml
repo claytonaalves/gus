@@ -77,6 +77,13 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service
+            android:name=".services.RemovePublicacoesVencidasService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receivers.MyAlarmReceiver"
+            android:process=":remote" />
 
     </application>
 

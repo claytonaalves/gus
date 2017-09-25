@@ -315,4 +315,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return publicacao;
     }
 
+    public void removePublicacoesVencidas() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM publicacao WHERE data_validade<'" + DateUtils.dateToString(new Date()) + "'");
+    }
 }
