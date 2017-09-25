@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,6 +48,8 @@ public class PublicacoesActivity extends AppCompatActivity {
 
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver broadcastReceiver;
+
+//    private Menu overflowMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,20 @@ public class PublicacoesActivity extends AppCompatActivity {
             // Device without hardware menu button
             inflater.inflate(R.menu.main_menu_overflow, menu);
         }
+//        overflowMenu = menu;
         return true;
     }
+
+//    @Override
+//    public boolean onKeyUp(int keycode, KeyEvent e) {
+//        switch(keycode) {
+//            case KeyEvent.KEYCODE_MENU:
+//                if (overflowMenu !=null) {
+//                    overflowMenu.performIdentifierAction(R.id.menu_overflow, 0);
+//                }
+//        }
+//        return super.onKeyUp(keycode, e);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -173,21 +186,21 @@ public class PublicacoesActivity extends AppCompatActivity {
         for (Publicacao publicacao : publicacoes) {
             this.publicacoes.add(publicacao);
         }
-        int posicaoUltimoItem = this.publicacoes.size()-1;
-        if (publicacoes.size()==1) {
+        int posicaoUltimoItem = this.publicacoes.size() - 1;
+        if (publicacoes.size() == 1) {
             publicacoesAdapter.notifyItemInserted(posicaoUltimoItem);
         } else {
             publicacoesAdapter.notifyDataSetChanged();
         }
-        if (posicaoUltimoItem>=0)
-           rvPublicacoes.smoothScrollToPosition(posicaoUltimoItem);
+        if (posicaoUltimoItem >= 0)
+            rvPublicacoes.smoothScrollToPosition(posicaoUltimoItem);
         salvaDataDaUltimaAtualizacao();
     }
 
     private Date obtemDataDaUltimaAtualizacao() {
         SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         long ultimaAtualizacao = preferences.getLong("ultima_atualizacao", 0);
-        if (ultimaAtualizacao==0) {
+        if (ultimaAtualizacao == 0) {
             return new Date(0);
         } else {
             return new Date(ultimaAtualizacao);
@@ -206,7 +219,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == CidadesActivity.PREFERENCIAS_SELECIONADAS) {
             // Carrega lista de preferências com "atualizada=0"
             List<Preferencia> preferencias = database.preferenciasDesatualizadas();
@@ -234,9 +247,9 @@ public class PublicacoesActivity extends AppCompatActivity {
 
     private void criaNovaPublicacao() {
         int qtdePerfisCadastrados = database.todosPerfis().size();
-        if (qtdePerfisCadastrados==0) {
+        if (qtdePerfisCadastrados == 0) {
             mostraActivityCriacaoPerfil();
-        } else if (qtdePerfisCadastrados==1) {
+        } else if (qtdePerfisCadastrados == 1) {
             mostraActivityNovoAnuncio();
         } else {
             mostraActivitySelecaoPerfil();
