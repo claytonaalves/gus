@@ -3,36 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:orderInCategory="11111"
+        android:id="@+id/search"
+        android:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/pesquisar"
+        app:showAsAction="collapseActionView|ifRoom" />
+    <item
         android:icon="@drawable/ic_menu_moreoverflow_white"
-        app:showAsAction="always"
-        android:title="X">
+        android:orderInCategory="11111"
+        android:title="X"
+        app:showAsAction="always">
         <menu>
-            <item
-                android:id="@+id/search"
-                android:actionViewClass="android.support.v7.widget.SearchView"
-                android:icon="@drawable/ic_search_white_24dp"
-                android:title="@string/pesquisar"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_criar_anuncio"
-                android:title="@string/criar_anuncio"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_perfis"
-                android:title="@string/perfis"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_meus_anuncios"
-                android:title="@string/meus_anuncios"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_configuracoes"
-                android:title="@string/configuracoes"
-                app:showAsAction="never" />
-            <item
-                android:title="@string/termos_de_uso"
-                app:showAsAction="never" />
+            <group android:id="@+id/group1">
+                <item
+                    android:id="@+id/action_criar_anuncio"
+                    android:title="@string/criar_anuncio"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/action_perfis"
+                    android:title="@string/perfis"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/action_meus_anuncios"
+                    android:title="@string/meus_anuncios"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/action_configuracoes"
+                    android:title="@string/configuracoes"
+                    app:showAsAction="never" />
+                <item
+                    android:title="@string/termos_de_uso"
+                    app:showAsAction="never" />
+            </group>
         </menu>
     </item>
 </menu>
