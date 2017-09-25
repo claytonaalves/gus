@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,12 +50,22 @@ public class PublicacoesActivity extends AppCompatActivity {
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver broadcastReceiver;
 
+    private SwipeRefreshLayout swipeRefreshLayoutLayout;
+
 //    private Menu overflowMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicacoes);
+
+        swipeRefreshLayoutLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                obtemPublicacoesDoServidor();
+            }
+        });
 
         database = MyDatabaseHelper.getInstance(this);
 
@@ -235,11 +246,13 @@ public class PublicacoesActivity extends AppCompatActivity {
                 database.salvaPublicacoes(response.body());
                 database.marcaPreferenciasComoAtualizadas();
                 atualizaListaDePublicacoes(response.body());
+                swipeRefreshLayoutLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<Publicacao>> call, Throwable t) {
                 Log.d("erro", t.toString());
+                swipeRefreshLayoutLayout.setRefreshing(false);
                 Toast.makeText(PublicacoesActivity.this, "Falha ao obter publicações!", Toast.LENGTH_SHORT).show();
             }
         });
