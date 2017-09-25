@@ -123,7 +123,7 @@ public class CategoriasActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_categorias, menu);
+        inflater.inflate(R.menu.main_menu_overflow, menu);
 
         return true;
     }

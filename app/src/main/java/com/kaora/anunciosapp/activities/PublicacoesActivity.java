@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +18,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Toast;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
@@ -79,6 +80,38 @@ public class PublicacoesActivity extends AppCompatActivity {
     protected void onPause() {
         broadcastManager.unregisterReceiver(broadcastReceiver);
         super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if (ViewConfiguration.get(this).hasPermanentMenuKey()) {
+            // Device with hardware menu button
+            inflater.inflate(R.menu.main_menu_overflow_hardware_button, menu);
+        } else {
+            // Device without hardware menu button
+            inflater.inflate(R.menu.main_menu_overflow, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_criar_anuncio:
+                criaNovaPublicacao();
+                break;
+            case R.id.action_meus_anuncios:
+//                mostraActivityMeusAnuncios();
+                break;
+            case R.id.action_perfis:
+                mostraActivityPerfis();
+                break;
+            case R.id.action_configuracoes:
+                mostraActivityCidades();
+                break;
+        }
+        return true;
     }
 
     private void preparaBroadcastManager() {
@@ -168,33 +201,6 @@ public class PublicacoesActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_categorias, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_criar_anuncio:
-                criaNovaPublicacao();
-                break;
-            case R.id.action_meus_anuncios:
-//                mostraActivityMeusAnuncios();
-                break;
-            case R.id.action_perfis:
-                mostraActivityPerfis();
-                break;
-            case R.id.action_configuracoes:
-                mostraActivityCidades();
-                break;
-        }
-        return true;
-    }
-
     private void mostraActivityCidades() {
         startActivityForResult(new Intent(this, CidadesActivity.class), CidadesActivity.PREFERENCIAS_SELECIONADAS);
     }
@@ -233,7 +239,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         } else if (qtdePerfisCadastrados==1) {
             mostraActivityNovoAnuncio();
         } else {
-//            mostraActivitySelecaoPerfil();
+            mostraActivitySelecaoPerfil();
         }
     }
 
@@ -255,5 +261,10 @@ public class PublicacoesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void mostraActivitySelecaoPerfil() {
+        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
+        intent.putExtra("modoEdicao", 0);
+        startActivity(intent);
+    }
 
 }

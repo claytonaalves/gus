@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:orderInCategory="11111"
+        android:icon="@drawable/ic_menu_moreoverflow_white"
+        app:showAsAction="always"
+        android:title="X">
+        <menu>
+            <item
+                android:id="@+id/search"
+                android:actionViewClass="android.support.v7.widget.SearchView"
+                android:icon="@drawable/ic_search_white_24dp"
+                android:title="@string/pesquisar"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_criar_anuncio"
+                android:title="@string/criar_anuncio"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_perfis"
+                android:title="@string/perfis"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_meus_anuncios"
+                android:title="@string/meus_anuncios"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_configuracoes"
+                android:title="@string/configuracoes"
+                app:showAsAction="never" />
+            <item
+                android:title="@string/termos_de_uso"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+</menu>

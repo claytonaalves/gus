@@ -1,97 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_novo_anuncio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     tools:context="com.kaora.anunciosapp.activities.NovaPublicacaoActivity">
-
-    <TextView
-        android:id="@+id/tvNomeAnunciante"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:text="Nome do Anunciante"
-        android:textSize="18sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Título" />
-
-    <EditText
-        android:id="@+id/etTitulo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:imeOptions="actionNext"
-        android:inputType="textCapWords" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Descrição" />
-
-    <EditText
-        android:id="@+id/etDescricao"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:height="100dp"
-        android:imeOptions="actionNext"
-        android:inputType="textMultiLine"
-        android:scrollbars="vertical" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Válido até" />
-
-    <EditText
-        android:id="@+id/etValidoAte"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableRight="@drawable/calendar_plus_gray"
-        android:ems="10"
-        android:imeOptions="actionDone"
-        android:inputType="date" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-        <Button
+        <TextView
+            android:id="@+id/tvNomeAnunciante"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="selecionarImagem"
-            android:text="Adicionar foto" />
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Nome do Anunciante"
+            android:textSize="18sp" />
 
-        <Button
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Título" />
+
+        <EditText
+            android:id="@+id/etTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Descrição" />
+
+        <EditText
+            android:id="@+id/etDescricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="100dp"
+            android:ems="10"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Válido até" />
+
+        <EditText
+            android:id="@+id/etValidoAte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/calendar_plus_gray"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="date" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="iniciaActivitySelecaoImagem"
+                android:text="Adicionar foto" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="publicaAnuncio"
+                android:text="Publicar" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/fotoPublicacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="publicaAnuncio"
-            android:text="Publicar" />
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:maxHeight="100dp"
+            android:src="@drawable/photo_gray" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/fotoPublicacao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/photo_gray" />
-
-</LinearLayout>
+</ScrollView>
