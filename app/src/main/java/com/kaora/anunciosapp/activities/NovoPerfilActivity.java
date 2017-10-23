@@ -1,11 +1,15 @@
 package com.kaora.anunciosapp.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +26,7 @@ import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +37,7 @@ import retrofit2.Response;
 
 public class NovoPerfilActivity extends AppCompatActivity {
 
-    private static final int SELECIONAR_FOTO = 1;
+    private static final int IMG_REQUEST = 1;
 
     ImageView imagem;
     EditText etNome;
@@ -72,12 +77,22 @@ public class NovoPerfilActivity extends AppCompatActivity {
         etNome = (EditText) findViewById(R.id.etNome);
         etTelefone = (EditText) findViewById(R.id.etTelefone);
         etCelular = (EditText) findViewById(R.id.etCelular);
+        etCelular.setText(obtemNumeroCelular());
         etEmail = (EditText) findViewById(R.id.etEmail);
         etEndereco = (EditText) findViewById(R.id.etEndereco);
         etNumero = (EditText) findViewById(R.id.etNumero);
         etBairro = (EditText) findViewById(R.id.etBairro);
         criaSpinnerCidades();
         criaSpinnerCategorias();
+    }
+
+    private String obtemNumeroCelular() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String numeroCelular = telephonyManager.getLine1Number();
+        if (numeroCelular == null) {
+            numeroCelular = "";
+        }
+        return numeroCelular;
     }
 
     private void criaSpinnerCidades() {
@@ -107,11 +122,11 @@ public class NovoPerfilActivity extends AppCompatActivity {
 
     private void obtemListaDeCidadesDoWebservice() {
         webservice.obtemCidades(new Callback<List<Cidade>>() {
+
             @Override
             public void onResponse(Call<List<Cidade>> call, Response<List<Cidade>> response) {
                 atualizaSpinnerCidades(response.body());
             }
-
             @Override
             public void onFailure(Call<List<Cidade>> call, Throwable t) {
 
@@ -149,21 +164,21 @@ public class NovoPerfilActivity extends AppCompatActivity {
         categoriaAdapter.notifyDataSetChanged();
     }
 
-    public void selecionarImagem(View view) {
+    public void iniciaActivitySelecaoImagem(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, SELECIONAR_FOTO);
+        startActivityForResult(intent, IMG_REQUEST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SELECIONAR_FOTO && resultCode == Activity.RESULT_OK) {
+        if (requestCode == IMG_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             try {
-                InputStream inputStream = this.getContentResolver().openInputStream(data.getData());
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                Uri path = data.getData();
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
                 imagem.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
