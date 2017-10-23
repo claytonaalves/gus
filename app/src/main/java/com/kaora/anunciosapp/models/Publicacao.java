@@ -24,9 +24,4 @@ public class Publicacao {
         this.dataValidade = dataValidade;
     }
 
-    public String dataFormatada() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        return dateFormat.format(this.dataValidade);
-    }
-
 }
