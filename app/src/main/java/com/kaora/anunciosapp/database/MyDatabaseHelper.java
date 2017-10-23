@@ -250,7 +250,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put("titulo", publicacao.titulo);
         values.put("descricao", publicacao.descricao);
         values.put("id_categoria", publicacao.idCategoria);
-        values.put("data_validade", publicacao.dataFormatada());
+        values.put("data_publicacao", DateUtils.dateToString(publicacao.dataPublicacao));
+        values.put("data_validade", DateUtils.dateToString(publicacao.dataValidade));
         SQLiteDatabase db = getWritableDatabase();
         db.insert("publicacao", null, values);
     }
@@ -273,9 +274,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE publicacao SET arquivado=1 WHERE guid_publicacao='" + publicacao.guidPublicacao + "'");
     }
 
-    public void marcaAnuncioComoPublicado(String guidAnuncio) {
+    public void marcaComoPublicado(Publicacao publicacao) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE publicacao SET publicado=1 WHERE guid_publicacao='" + guidAnuncio + "'");
+        db.execSQL("UPDATE publicacao SET publicado=1 WHERE guid_publicacao='" + publicacao.guidPublicacao + "'");
     }
 
     public void salvaPublicacoes(List<Publicacao> publicacoes) {
