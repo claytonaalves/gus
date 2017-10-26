@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,6 +37,7 @@ import com.kaora.components.CustomRecyclerView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,12 +57,19 @@ public class PublicacoesActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefreshLayoutLayout;
 
+    private String deviceId;
+    private SharedPreferences preferences;
+
 //    private Menu overflowMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicacoes);
+
+        preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+
+        deviceId = obtemDeviceId();
 
         swipeRefreshLayoutLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -215,7 +224,6 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private Date obtemDataDaUltimaAtualizacao() {
-        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         long ultimaAtualizacao = preferences.getLong("ultima_atualizacao", 0);
         if (ultimaAtualizacao == 0) {
             return new Date(0);
@@ -225,10 +233,20 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void salvaDataDaUltimaAtualizacao() {
-        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong("ultima_atualizacao", new Date().getTime());
         editor.apply();
+    }
+
+    private String obtemDeviceId() {
+        String deviceId = preferences.getString("device_id", "");
+        if (deviceId.equals("")) {
+            deviceId = UUID.randomUUID().toString();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("device_id", deviceId);
+            editor.apply();
+        }
+        return deviceId;
     }
 
     private void mostraActivityCidades() {
