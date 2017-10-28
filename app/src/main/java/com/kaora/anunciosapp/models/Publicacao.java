@@ -1,8 +1,9 @@
 package com.kaora.anunciosapp.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Publicacao {
+public class Publicacao implements Serializable {
 
     public String guidPublicacao;
     public String guidAnunciante;
