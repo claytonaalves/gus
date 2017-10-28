@@ -43,6 +43,11 @@ public interface ApiRestInterface {
     Call<ResponseBody> postaFotoPublicacao(@Part("description") RequestBody description,
                                            @Part MultipartBody.Part file);
 
+    @Multipart
+    @POST("anunciantes/fotos")
+    Call<ResponseBody> postAdvertiserImage(@Part("description") RequestBody description,
+                                           @Part MultipartBody.Part file);
+
     @POST("anunciantes/")
     Call<PerfilAnunciante> publicaAnunciante(@Body PerfilAnunciante anunciante);
 

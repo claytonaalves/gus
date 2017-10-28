@@ -118,24 +118,44 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // ========================================================================
-    // Perfis
+    // Advertiser Profiles
     // ========================================================================
 
-    public void salvaPerfil(PerfilAnunciante perfil) {
-        perfil.guidAnunciante = UUID.randomUUID().toString();
-        ContentValues values = new ContentValues();
-        values.put("guid_anunciante", perfil.guidAnunciante);
-        values.put("nome_fantasia", perfil.nomeFantasia);
-        values.put("telefone", perfil.telefone);
-        values.put("celular", perfil.celular);
-        values.put("email", perfil.email);
-        values.put("endereco", perfil.endereco);
-        values.put("numero", perfil.numero);
-        values.put("bairro", perfil.bairro);
-        values.put("id_cidade", perfil.idCidade);
-        values.put("id_categoria", perfil.idCategoria);
+    public void saveAdvertiserProfile(PerfilAnunciante advertiserProfile) {
+        int rowsAffected = updateAdvertiserProfile(advertiserProfile);
+        if (rowsAffected == 0) {
+            insertAdvertiserProfile(advertiserProfile);
+        }
+    }
+
+    private int updateAdvertiserProfile(PerfilAnunciante advertiserProfile) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = createAdvertiserProfileContentValues(advertiserProfile);
+        return db.update("perfil_anunciante", values, "guid_anunciante=?", new String[] {advertiserProfile.guidAnunciante});
+    }
+
+    private void insertAdvertiserProfile(PerfilAnunciante advertiserProfile) {
+        advertiserProfile.guidAnunciante = UUID.randomUUID().toString();
+        ContentValues values = createAdvertiserProfileContentValues(advertiserProfile);
         SQLiteDatabase db = getWritableDatabase();
         db.insert("perfil_anunciante", null, values);
+    }
+
+    @NonNull
+    private ContentValues createAdvertiserProfileContentValues(PerfilAnunciante advertiserProfile) {
+        ContentValues values = new ContentValues();
+        values.put("guid_anunciante", advertiserProfile.guidAnunciante);
+        values.put("nome_fantasia", advertiserProfile.nomeFantasia);
+        values.put("telefone", advertiserProfile.telefone);
+        values.put("celular", advertiserProfile.celular);
+        values.put("email", advertiserProfile.email);
+        values.put("endereco", advertiserProfile.endereco);
+        values.put("numero", advertiserProfile.numero);
+        values.put("bairro", advertiserProfile.bairro);
+        values.put("id_cidade", advertiserProfile.idCidade);
+        values.put("id_categoria", advertiserProfile.idCategoria);
+        values.put("publicado", (advertiserProfile.published ? 1 : 0));
+        return values;
     }
 
     public List<PerfilAnunciante> todosPerfis() {
@@ -162,11 +182,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         perfil.idCategoria = cursor.getInt(2);
         cursor.close();
         return perfil;
-    }
-
-    public void marcaPerfilComoPublicado(String guidAnunciante) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE perfil_anunciante SET publicado=1 WHERE guid_anunciante='" + guidAnunciante + "'");
     }
 
     // ========================================================================

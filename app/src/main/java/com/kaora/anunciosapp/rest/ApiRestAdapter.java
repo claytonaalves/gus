@@ -102,4 +102,8 @@ public class ApiRestAdapter {
         return service.postaFotoPublicacao(description, body);
     }
 
+    public Call<ResponseBody> postAdvertiserImage(RequestBody description, MultipartBody.Part body) {
+        return service.postAdvertiserImage(description, body);
+    }
+
 }

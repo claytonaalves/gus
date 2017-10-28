@@ -3,8 +3,6 @@ package com.kaora.anunciosapp.activities;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,7 +13,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,20 +24,14 @@ import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Publicacao;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
+import com.kaora.anunciosapp.rest.MediaUploadService;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +53,6 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat;
     private ImageView imagem;
     private Uri mediaFileUri;
-    private Bitmap bitmap;
 
     private ProgressDialog progressDialog;
     private MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
@@ -138,7 +128,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         if (requestCode == IMG_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             mediaFileUri = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mediaFileUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mediaFileUri);
                 imagem.setImageBitmap(bitmap);
                 imagem.getLayoutParams().height = bitmap.getHeight();
                 imagem.getLayoutParams().width = bitmap.getWidth();
@@ -150,93 +140,60 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
 
     public void postaPublicacao(View view) {
         progressDialog = ProgressDialog.show(NovaPublicacaoActivity.this, "Postando Publicação", "Aguarde...", false, false);
-
         publicacao = new Publicacao();
+        populateWithActivityData(publicacao);
+        database.salvaPublicacao(publicacao);
+        postPublication();
+    }
+
+    private void populateWithActivityData(Publicacao publicacao) {
         publicacao.titulo = etTitulo.getText().toString();
         publicacao.descricao = etDescricao.getText().toString();
         publicacao.setDataValidade(extraiData(etValidoAte.getText().toString()));
         publicacao.guidAnunciante = perfilSelecionado.guidAnunciante;
         publicacao.idCategoria = perfilSelecionado.idCategoria;
-        database.salvaPublicacao(publicacao);
-        postaPublicacaoRemotamente(publicacao);
     }
 
-    private void postaPublicacaoRemotamente(Publicacao publicacao) {
+    /* Publish media first
+       After complete, MediaTransferResponseHandler will dispatch publication publishing */
+    private void postPublication() {
+        progressDialog.setMessage("Enviando imagens...");
+        MediaUploadService mediaUpload = new MediaUploadService(NovaPublicacaoActivity.this);
+        mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.PUBLICATION_IMAGE_UPLOAD);
+    }
+
+    private class MediaTransferResponseHandler extends MediaUploadService.MediaSentEvent implements Callback<ResponseBody> {
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            publicacao.imagem = mediaFileName;
+            sendPublicationToWebservice(publicacao);
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+            progressDialog.dismiss();
+            Toast.makeText(NovaPublicacaoActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void sendPublicationToWebservice(Publicacao publicacao) {
+        progressDialog.setMessage("Postando Publicação...");
         webservice = ApiRestAdapter.getInstance();
         webservice.publicaPublicacao(publicacao, new Callback<Publicacao>() {
             @Override
             public void onResponse(Call<Publicacao> call, Response<Publicacao> response) {
-                postaMidiaRemotamente(mediaFileUri);
+                Publicacao publicacao = response.body();
+                database.marcaComoPublicado(publicacao);
+                progressDialog.dismiss();
+                fechaActivity();
             }
 
             @Override
             public void onFailure(Call<Publicacao> call, Throwable t) {
-                Toast.makeText(NovaPublicacaoActivity.this, "Erro ao publicar", Toast.LENGTH_LONG).show();
+                progressDialog.dismiss();
+                Toast.makeText(NovaPublicacaoActivity.this, "Erro ao postar Publicação", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    public void postaMidiaRemotamente(Uri fileUri) {
-        progressDialog.setMessage("Enviando imagens...");
-        InputStream in = null;
-        try {
-            in = getContentResolver().openInputStream(fileUri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (in == null) return;
-        byte[] buf;
-        try {
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1);
-
-            String extension = getMimeType(this, fileUri);
-            String nomeArquivo = UUID.randomUUID().toString() + "." + extension;
-
-            RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), buf);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", nomeArquivo, requestFile);
-
-            webservice = ApiRestAdapter.getInstance();
-            Call<ResponseBody> call = webservice.postaFotoPublicacao(requestFile, body);
-
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    database.marcaComoPublicado(publicacao);
-                    progressDialog.dismiss();
-                    fechaActivity();
-                    Log.v("Upload", "success");
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    progressDialog.dismiss();
-                    Log.e("Upload de midia", t.getMessage());
-                }
-            });
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static String getMimeType(Context context, Uri uri) {
-        String extension;
-
-        //Check uri format to avoid null
-        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
-            //If scheme is a content
-            final MimeTypeMap mime = MimeTypeMap.getSingleton();
-            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
-        } else {
-            //If scheme is a File
-            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
-            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
-
-        }
-
-        return extension;
     }
 
     private void fechaActivity() {

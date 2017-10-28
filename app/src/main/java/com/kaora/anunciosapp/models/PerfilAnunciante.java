@@ -12,6 +12,9 @@ public class PerfilAnunciante {
     public String numero;
     public String bairro;
 
+    public String pictureFile;
+    public Boolean published = false;
+
     @Override
     public String toString() {
         return this.nomeFantasia;

@@ -1,10 +1,10 @@
 package com.kaora.anunciosapp.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,13 +24,13 @@ import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
+import com.kaora.anunciosapp.rest.MediaUploadService;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,6 +56,9 @@ public class NovoPerfilActivity extends AppCompatActivity {
     private ArrayAdapter<Categoria> categoriaAdapter;
     final private List<Cidade> cidades = new ArrayList<>();
     final private List<Categoria> categorias = new ArrayList<>();
+    private Uri mediaFileUri;
+    private final PerfilAnunciante advertiserProfile = new PerfilAnunciante();
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,10 +177,12 @@ public class NovoPerfilActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMG_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            mediaFileUri = data.getData();
             try {
-                Uri path = data.getData();
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mediaFileUri);
                 imagem.setImageBitmap(bitmap);
+                imagem.getLayoutParams().height = bitmap.getHeight();
+                imagem.getLayoutParams().width = bitmap.getWidth();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -185,38 +190,26 @@ public class NovoPerfilActivity extends AppCompatActivity {
     }
 
     public void salvaPerfil(View view) {
-        PerfilAnunciante perfil = new PerfilAnunciante();
-        perfil.nomeFantasia = etNome.getText().toString();
-        perfil.telefone = etTelefone.getText().toString();
-        perfil.celular = etCelular.getText().toString();
-        perfil.email = etEmail.getText().toString();
-        perfil.endereco = etEndereco.getText().toString();
-        perfil.numero = etNumero.getText().toString();
-        perfil.bairro = etBairro.getText().toString();
-        perfil.idCidade = ((Cidade) spCidades.getSelectedItem()).idCidade;
-        perfil.idCategoria = ((Categoria) spCategorias.getSelectedItem()).idCategoria;
+        advertiserProfile.nomeFantasia = etNome.getText().toString();
+        advertiserProfile.telefone = etTelefone.getText().toString();
+        advertiserProfile.celular = etCelular.getText().toString();
+        advertiserProfile.email = etEmail.getText().toString();
+        advertiserProfile.endereco = etEndereco.getText().toString();
+        advertiserProfile.numero = etNumero.getText().toString();
+        advertiserProfile.bairro = etBairro.getText().toString();
+        advertiserProfile.idCidade = ((Cidade) spCidades.getSelectedItem()).idCidade;
+        advertiserProfile.idCategoria = ((Categoria) spCategorias.getSelectedItem()).idCategoria;
 
-        database.salvaPerfil(perfil);
-        publicaPerfilAnunciante(perfil);
-        mostraActivityNovaPublicacao(perfil.guidAnunciante);
+        postCurrentUserProfile();
+        database.saveAdvertiserProfile(advertiserProfile);
+        mostraActivityNovaPublicacao(advertiserProfile.guidAnunciante);
     }
 
-    private void publicaPerfilAnunciante(PerfilAnunciante perfil) {
-        final String guidAnunciante = perfil.guidAnunciante;
-        ApiRestAdapter api = ApiRestAdapter.getInstance();
-        api.publicaAnunciante(perfil, new Callback<PerfilAnunciante>() {
-            @Override
-            public void onResponse(Call<PerfilAnunciante> call, Response<PerfilAnunciante> response) {
-                database.marcaPerfilComoPublicado(guidAnunciante);
-                Toast.makeText(NovoPerfilActivity.this, "Perfil publicado!", Toast.LENGTH_LONG).show();
-                fechaActivity();
-            }
-
-            @Override
-            public void onFailure(Call<PerfilAnunciante> call, Throwable t) {
-                Toast.makeText(NovoPerfilActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
-            }
-        });
+    private void postCurrentUserProfile() {
+        progressDialog = ProgressDialog.show(NovoPerfilActivity.this, "Postando Perfil", "Aguarde...", false, false);
+        progressDialog.setMessage("Enviando imagens...");
+        MediaUploadService mediaUpload = new MediaUploadService(NovoPerfilActivity.this);
+        mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.ADVERTISER_IMAGE_UPLOAD);
     }
 
     private void mostraActivityNovaPublicacao(String guidAnunciante) {
@@ -238,6 +231,40 @@ public class NovoPerfilActivity extends AppCompatActivity {
             }
         };
         thread.start();
+    }
+
+    private class MediaTransferResponseHandler extends MediaUploadService.MediaSentEvent implements Callback<ResponseBody> {
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            advertiserProfile.pictureFile = mediaFileName;
+            sendAdvertiserProfileToWebservice(advertiserProfile);
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+            progressDialog.dismiss();
+            Toast.makeText(NovoPerfilActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void sendAdvertiserProfileToWebservice(PerfilAnunciante advertiserProfile) {
+        ApiRestAdapter api = ApiRestAdapter.getInstance();
+        api.publicaAnunciante(advertiserProfile, new Callback<PerfilAnunciante>() {
+            @Override
+            public void onResponse(Call<PerfilAnunciante> call, Response<PerfilAnunciante> response) {
+                PerfilAnunciante advertiserProfile = response.body();
+                advertiserProfile.published = true;
+                database.saveAdvertiserProfile(advertiserProfile);
+                progressDialog.dismiss();
+                fechaActivity();
+            }
+
+            @Override
+            public void onFailure(Call<PerfilAnunciante> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(NovoPerfilActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }
