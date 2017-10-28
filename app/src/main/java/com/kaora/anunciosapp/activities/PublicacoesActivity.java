@@ -203,9 +203,8 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void obtemPublicacoesDoServidor() {
-        Date ultimaAtualizacao = obtemDataDaUltimaAtualizacao();
         List<Preferencia> preferencias = database.peferenciasSelecionadas();
-        baixaPublicacoesDoWebservice(ultimaAtualizacao, preferencias);
+        baixaPublicacoesDoWebservice(deviceId, preferencias);
     }
 
     private void atualizaListaDePublicacoes(List<Publicacao> publicacoes) {
@@ -220,22 +219,6 @@ public class PublicacoesActivity extends AppCompatActivity {
         }
         if (posicaoUltimoItem >= 0)
             rvPublicacoes.smoothScrollToPosition(posicaoUltimoItem);
-        salvaDataDaUltimaAtualizacao();
-    }
-
-    private Date obtemDataDaUltimaAtualizacao() {
-        long ultimaAtualizacao = preferences.getLong("ultima_atualizacao", 0);
-        if (ultimaAtualizacao == 0) {
-            return new Date(0);
-        } else {
-            return new Date(ultimaAtualizacao);
-        }
-    }
-
-    private void salvaDataDaUltimaAtualizacao() {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong("ultima_atualizacao", new Date().getTime());
-        editor.apply();
     }
 
     private String obtemDeviceId() {
@@ -258,13 +241,13 @@ public class PublicacoesActivity extends AppCompatActivity {
         if (resultCode == CidadesActivity.PREFERENCIAS_SELECIONADAS) {
             // Carrega lista de preferências com "atualizada=0"
             List<Preferencia> preferencias = database.preferenciasDesatualizadas();
-            baixaPublicacoesDoWebservice(new Date(0), preferencias);
+            baixaPublicacoesDoWebservice(deviceId, preferencias);
         }
     }
 
-    private void baixaPublicacoesDoWebservice(Date ultimaAtualizacao, List<Preferencia> preferencias) {
+    private void baixaPublicacoesDoWebservice(String deviceId, List<Preferencia> preferencias) {
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
-        webservice.obtemPublicacoes(ultimaAtualizacao, preferencias, new Callback<List<Publicacao>>() {
+        webservice.obtemPublicacoes(deviceId, preferencias, new Callback<List<Publicacao>>() {
             @Override
             public void onResponse(Call<List<Publicacao>> call, Response<List<Publicacao>> response) {
                 database.salvaPublicacoes(response.body());

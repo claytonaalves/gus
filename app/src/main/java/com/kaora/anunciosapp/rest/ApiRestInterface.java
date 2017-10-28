@@ -29,7 +29,8 @@ public interface ApiRestInterface {
     Call<List<Categoria>> obtemCategorias(@Query("id_cidade") int idCidade);
 
     @GET("publicacoes/")
-    Call<List<Publicacao>> obtemPublicacoes(@Query("desde") long desde, @Query("categorias") String idsCategorias);
+    Call<List<Publicacao>> obtemPublicacoes(@Query("device_id") String deviceId,
+                                            @Query("categorias") String idsCategorias);
 
     @POST("publicacoes/")
     Call<Publicacao> publicaPublicacao(@Body Publicacao publicacao);
@@ -39,7 +40,8 @@ public interface ApiRestInterface {
 
     @Multipart
     @POST("publicacoes/fotos")
-    Call<ResponseBody> postaFotoPublicacao(@Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Call<ResponseBody> postaFotoPublicacao(@Part("description") RequestBody description,
+                                           @Part MultipartBody.Part file);
 
     @POST("anunciantes/")
     Call<PerfilAnunciante> publicaAnunciante(@Body PerfilAnunciante anunciante);
