@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.models.Anunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 
 public class AnuncianteActivity extends AppCompatActivity {
 
@@ -16,7 +16,7 @@ public class AnuncianteActivity extends AppCompatActivity {
     TextView tvEndereco;
     TextView tvNumero;
 
-    Anunciante anunciante;
+    private Advertiser advertiser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class AnuncianteActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        anunciante = (Anunciante) intent.getSerializableExtra("anunciante");
+        advertiser = (Advertiser) intent.getSerializableExtra("advertiser");
 
         tvNomeAnunciante = (TextView) findViewById(R.id.tvNomeAnunciante);
         tvTelefone = (TextView) findViewById(R.id.tvTelefone);
@@ -39,10 +39,10 @@ public class AnuncianteActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tvNomeAnunciante.setText(anunciante.nomeFantasia);
-        tvTelefone.setText(anunciante.telefone);
-        tvEndereco.setText(anunciante.logradouro);
-        tvNumero.setText(anunciante.numero);
+        tvNomeAnunciante.setText(advertiser.nomeFantasia);
+        tvTelefone.setText(advertiser.telefone);
+        tvEndereco.setText(advertiser.logradouro);
+        tvNumero.setText(advertiser.numero);
     }
 
     @Override

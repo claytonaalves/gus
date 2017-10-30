@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
+import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.Cidade;
-import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.rest.MediaUploadService;
 
@@ -57,7 +57,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
     final private List<Cidade> cidades = new ArrayList<>();
     final private List<Categoria> categorias = new ArrayList<>();
     private Uri mediaFileUri;
-    private final PerfilAnunciante advertiserProfile = new PerfilAnunciante();
+    private final Advertiser advertiserProfile = new Advertiser();
     private ProgressDialog progressDialog;
 
     @Override
@@ -189,12 +189,12 @@ public class NovoPerfilActivity extends AppCompatActivity {
         }
     }
 
-    public void salvaPerfil(View view) {
+    public void saveAdvertiserProfile(View view) {
         advertiserProfile.nomeFantasia = etNome.getText().toString();
         advertiserProfile.telefone = etTelefone.getText().toString();
         advertiserProfile.celular = etCelular.getText().toString();
         advertiserProfile.email = etEmail.getText().toString();
-        advertiserProfile.endereco = etEndereco.getText().toString();
+        advertiserProfile.logradouro = etEndereco.getText().toString();
         advertiserProfile.numero = etNumero.getText().toString();
         advertiserProfile.bairro = etBairro.getText().toString();
         advertiserProfile.idCidade = ((Cidade) spCidades.getSelectedItem()).idCidade;
@@ -247,12 +247,12 @@ public class NovoPerfilActivity extends AppCompatActivity {
         }
     }
 
-    private void sendAdvertiserProfileToWebservice(PerfilAnunciante advertiserProfile) {
+    private void sendAdvertiserProfileToWebservice(Advertiser advertiserProfile) {
         ApiRestAdapter api = ApiRestAdapter.getInstance();
-        api.publicaAnunciante(advertiserProfile, new Callback<PerfilAnunciante>() {
+        api.publicaAnunciante(advertiserProfile, new Callback<Advertiser>() {
             @Override
-            public void onResponse(Call<PerfilAnunciante> call, Response<PerfilAnunciante> response) {
-                PerfilAnunciante advertiserProfile = response.body();
+            public void onResponse(Call<Advertiser> call, Response<Advertiser> response) {
+                Advertiser advertiserProfile = response.body();
                 advertiserProfile.published = true;
                 database.saveAdvertiserProfile(advertiserProfile);
                 progressDialog.dismiss();
@@ -260,7 +260,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<PerfilAnunciante> call, Throwable t) {
+            public void onFailure(Call<Advertiser> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(NovoPerfilActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
             }

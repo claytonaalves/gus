@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.PerfisAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
-import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 
 public class SelecionarPerfilActivity extends AppCompatActivity {
 
@@ -61,7 +61,7 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
     private class SelecaoPerfilClickHandler implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            PerfilAnunciante perfil = (PerfilAnunciante) view.getTag();
+            Advertiser perfil = (Advertiser) view.getTag();
             mostraActivityNovaPublicacao(perfil.guidAnunciante);
         }
     }

@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
-import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Publicacao;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.rest.MediaUploadService;
@@ -55,7 +55,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
     private MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
-    private PerfilAnunciante perfilSelecionado;
+    private Advertiser perfilSelecionado;
     private Publicacao publicacao;
     private ApiRestAdapter webservice;
 

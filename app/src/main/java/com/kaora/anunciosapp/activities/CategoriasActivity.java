@@ -186,7 +186,7 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void mostraActivityPreferencias() {
-//        PerfilAnunciante perfil = database.selecionaPerfil();
+//        Advertiser perfil = database.selecionaPerfil();
 //        Intent intent = new Intent(this, PreferenciasActivity.class);
 //        intent.putExtra("idperfil", perfil._id);
 //        startActivity(intent);

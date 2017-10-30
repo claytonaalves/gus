@@ -27,7 +27,7 @@ import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
-import com.kaora.anunciosapp.models.PerfilAnunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
 import com.kaora.anunciosapp.receivers.MyAlarmReceiver;
@@ -280,7 +280,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void mostraActivityNovoAnuncio() {
-        PerfilAnunciante perfil = database.todosPerfis().get(0); // Pega o primeiro perfil
+        Advertiser perfil = database.todosPerfis().get(0); // Pega o primeiro perfil
         Intent intent = new Intent(this, NovaPublicacaoActivity.class);
         intent.putExtra("guid_anunciante", perfil.guidAnunciante);
         startActivity(intent);

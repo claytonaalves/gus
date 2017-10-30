@@ -13,7 +13,7 @@ public class Publicacao implements Serializable {
     public Date dataPublicacao;
     public Date dataValidade;
     public String imagem;
-    public Anunciante anunciante;
+    public Advertiser anunciante;
 
     public Boolean published = false;
 

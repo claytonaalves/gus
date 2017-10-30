@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="Confirmar"
-                android:onClick="salvaPerfil"/>
+                android:onClick="saveAdvertiserProfile"/>
 
         </LinearLayout>
     </ScrollView>

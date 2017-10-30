@@ -6,10 +6,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kaora.anunciosapp.BuildConfig;
-import com.kaora.anunciosapp.models.Anunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.Cidade;
-import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
 
@@ -55,13 +54,13 @@ public class ApiRestAdapter {
         service = retrofit.create(ApiRestInterface.class);
     }
 
-    public void anunciantesPorCategoria(Callback<List<Anunciante>> cb, int idCategoria) {
-        Call<List<Anunciante>> request = service.anunciantesPorCategoria(idCategoria);
+    public void anunciantesPorCategoria(Callback<List<Advertiser>> cb, int idCategoria) {
+        Call<List<Advertiser>> request = service.anunciantesPorCategoria(idCategoria);
         request.enqueue(cb);
     }
 
-    public void publicaAnunciante(PerfilAnunciante anunciante, Callback<PerfilAnunciante> cb) {
-        Call<PerfilAnunciante> request = service.publicaAnunciante(anunciante);
+    public void publicaAnunciante(Advertiser anunciante, Callback<Advertiser> cb) {
+        Call<Advertiser> request = service.publicaAnunciante(anunciante);
         request.enqueue(cb);
     }
 

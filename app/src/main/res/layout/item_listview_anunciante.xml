@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_marginBottom="50px">
+    android:layout_marginBottom="50px"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        app:srcCompat="@mipmap/ic_launcher"
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/imgLogoAnunciante"
-        android:layout_weight="1" />
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:placeholderImage="@drawable/photo_gray"
+        fresco:placeholderImageScaleType="centerCrop"
+        fresco:roundAsCircle="true" />
 
     <TextView
+        android:id="@+id/tvNomeAnunciante"
         android:layout_width="0px"
         android:layout_height="match_parent"
-        android:id="@+id/tvNomeAnunciante"
         android:layout_weight="5"
+        android:gravity="center_vertical"
         android:paddingLeft="30px"
         android:paddingStart="30px"
-        android:textSize="24sp"
-        android:gravity="center_vertical" />
+        android:textSize="24sp" />
 </LinearLayout>

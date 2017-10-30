@@ -1,9 +1,8 @@
 package com.kaora.anunciosapp.rest;
 
-import com.kaora.anunciosapp.models.Anunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Categoria;
 import com.kaora.anunciosapp.models.Cidade;
-import com.kaora.anunciosapp.models.PerfilAnunciante;
 import com.kaora.anunciosapp.models.Publicacao;
 
 import java.util.List;
@@ -49,10 +48,10 @@ public interface ApiRestInterface {
                                            @Part MultipartBody.Part file);
 
     @POST("anunciantes/")
-    Call<PerfilAnunciante> publicaAnunciante(@Body PerfilAnunciante anunciante);
+    Call<Advertiser> publicaAnunciante(@Body Advertiser anunciante);
 
     @GET("categoria/{id}")
-    Call<List<Anunciante>> anunciantesPorCategoria(@Path("id") int idCategoria);
+    Call<List<Advertiser>> anunciantesPorCategoria(@Path("id") int idCategoria);
 
 //    @GET("publicacao/{guid}")
 //    Call<Publicacao> obtemPublicacao(@Path("guid") String guidPublicacao);

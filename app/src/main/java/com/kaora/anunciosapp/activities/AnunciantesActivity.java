@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.AnuncianteAdapter;
-import com.kaora.anunciosapp.models.Anunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.List;
@@ -41,12 +41,12 @@ public class AnunciantesActivity extends AppCompatActivity {
         lvAnunciantes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                iniciaActivityAnunciante((Anunciante) view.getTag());
+                iniciaActivityAnunciante((Advertiser) view.getTag());
             }
         });
     }
 
-    private void iniciaActivityAnunciante(Anunciante anunciante) {
+    private void iniciaActivityAnunciante(Advertiser anunciante) {
         Intent intent = new Intent(this, AnuncianteActivity.class);
         intent.putExtra("anunciante", anunciante);
         startActivity(intent);
@@ -62,15 +62,15 @@ public class AnunciantesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         ApiRestAdapter api = ApiRestAdapter.getInstance();
-        api.anunciantesPorCategoria(new Callback<List<Anunciante>>() {
+        api.anunciantesPorCategoria(new Callback<List<Advertiser>>() {
             @Override
-            public void onResponse(Call<List<Anunciante>> call, Response<List<Anunciante>> response) {
-                List<Anunciante> anunciantes = response.body();
+            public void onResponse(Call<List<Advertiser>> call, Response<List<Advertiser>> response) {
+                List<Advertiser> anunciantes = response.body();
                 lvAnunciantes.setAdapter(new AnuncianteAdapter(anunciantes, AnunciantesActivity.this));
             }
 
             @Override
-            public void onFailure(Call<List<Anunciante>> call, Throwable t) {
+            public void onFailure(Call<List<Advertiser>> call, Throwable t) {
 
             }
         }, idCategoria);

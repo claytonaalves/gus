@@ -7,17 +7,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.models.Anunciante;
+import com.kaora.anunciosapp.models.Advertiser;
 
 import java.util.List;
 
 
 public class AnuncianteAdapter extends BaseAdapter {
 
-    private final List<Anunciante> anunciantes;
+    private final List<Advertiser> anunciantes;
     private final Activity activity;
 
-    public AnuncianteAdapter(List<Anunciante> anunciantes, Activity activity) {
+    public AnuncianteAdapter(List<Advertiser> anunciantes, Activity activity) {
         this.anunciantes = anunciantes;
         this.activity = activity;
     }
@@ -34,13 +34,13 @@ public class AnuncianteAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        Anunciante anunciante = anunciantes.get(position);
-        return anunciante._id;
+        Advertiser anunciante = anunciantes.get(position);
+        return anunciante.position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Anunciante anunciante = anunciantes.get(position);
+        Advertiser anunciante = anunciantes.get(position);
 
         View view = activity.getLayoutInflater()
                 .inflate(R.layout.item_listview_anunciante, parent, false);
