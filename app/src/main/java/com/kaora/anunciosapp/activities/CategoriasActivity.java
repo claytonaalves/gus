@@ -52,7 +52,7 @@ public class CategoriasActivity extends AppCompatActivity {
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                PublicationCategory categoriaSelecionada = (PublicationCategory) view.getTag();
 //                Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
-//                intent.putExtra("idCategoria", categoriaSelecionada.idCategoria);
+//                intent.putExtra("category_id", categoriaSelecionada.category_id);
 //                startActivity(intent);
 //            }
 //        });

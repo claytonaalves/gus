@@ -26,8 +26,8 @@ public class AnuncioPublicado extends AppCompatActivity {
         if (startingIntent != null) {
 //            guidAnuncio = startingIntent.getStringExtra("guid_anuncio");
 
-            tvTitulo.setText(startingIntent.getStringExtra("titulo"));
-            tvDescricao.setText(startingIntent.getStringExtra("descricao"));
+            tvTitulo.setText(startingIntent.getStringExtra("title"));
+            tvDescricao.setText(startingIntent.getStringExtra("description"));
         }
 
 //        getOfferDetails(id_offer);

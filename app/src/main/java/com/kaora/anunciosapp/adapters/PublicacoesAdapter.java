@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.activities.PublicacaoActivity;
-import com.kaora.anunciosapp.models.Publicacao;
+import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.utils.DateUtils;
 
@@ -29,10 +29,10 @@ import retrofit2.Response;
 public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.ViewHolder> {
 
     private Context context;
-    private List<Publicacao> publicacoes;
+    private List<Publication> publicacoes;
     private DateFormat df;
 
-    public PublicacoesAdapter(Context context, List<Publicacao> publicacoes) {
+    public PublicacoesAdapter(Context context, List<Publication> publicacoes) {
         this.publicacoes = publicacoes;
         this.context = context;
         this.df = DateFormat.getDateInstance();
@@ -49,13 +49,13 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Publicacao publicacao = publicacoes.get(position);
-        holder.tvTitulo.setText(publicacao.titulo);
-        holder.tvDescricao.setText(publicacao.descricao);
-        holder.tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publicacao.dataPublicacao));
-        holder.tvDataValidade.setText(textoDataValidade(publicacao.dataValidade));
-        if (publicacao.imagem != "") {
-            holder.draweeView.setImageURI(Uri.parse(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + publicacao.imagem));
+        Publication publication = publicacoes.get(position);
+        holder.tvTitulo.setText(publication.title);
+        holder.tvDescricao.setText(publication.description);
+        holder.tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publication.publicationDate));
+        holder.tvDataValidade.setText(textoDataValidade(publication.dueDate));
+        if (publication.imageFile != "") {
+            holder.draweeView.setImageURI(Uri.parse(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + publication.imageFile));
         }
     }
 
@@ -91,24 +91,24 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Publicacao publicacao = publicacoes.get(position);
-                obtemPublicacaoDoWebservice(publicacao.guidPublicacao);
+                Publication publication = publicacoes.get(position);
+                obtemPublicacaoDoWebservice(publication.publicationGuid);
             }
         }
 
         private void obtemPublicacaoDoWebservice(String guidPublicacao) {
             ApiRestAdapter webservice = ApiRestAdapter.getInstance();
-            webservice.obtemPublicacao(guidPublicacao, new Callback<Publicacao>() {
+            webservice.obtemPublicacao(guidPublicacao, new Callback<Publication>() {
                 @Override
-                public void onResponse(Call<Publicacao> call, Response<Publicacao> response) {
-                    Publicacao publicacao = response.body();
+                public void onResponse(Call<Publication> call, Response<Publication> response) {
+                    Publication publication = response.body();
                     Intent intent = new Intent(context, PublicacaoActivity.class);
-                    intent.putExtra("publicacao", publicacao);
+                    intent.putExtra("publication", publication);
                     context.startActivity(intent);
                 }
 
                 @Override
-                public void onFailure(Call<Publicacao> call, Throwable t) {
+                public void onFailure(Call<Publication> call, Throwable t) {
                     Toast.makeText(context, "Falha ao baixar Publicação", Toast.LENGTH_SHORT).show();
                 }
             });

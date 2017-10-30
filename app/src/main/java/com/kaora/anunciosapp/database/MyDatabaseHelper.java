@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.kaora.anunciosapp.models.Advertiser;
+import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Preferencia;
-import com.kaora.anunciosapp.models.Publicacao;
 import com.kaora.anunciosapp.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -34,21 +34,34 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "advertiser_count INTEGER, " +
             "image_file TEXT)";
 
+    private static final String PUBLICATIONS_TABLE = "" +
+            "CREATE TABLE publication ( " +
+            "publication_guid TEXT NOT NULL PRIMARY KEY, " +
+            "advertiser_guid TEXT NOT NULL, " +
+            "category_id INTEGER NOT NULL, " +
+            "title TEXT, " +
+            "description TEXT, " +
+            "publication_date INTEGER NOT NULL, " +
+            "due_date INTEGER NOT NULL, " +
+            "image_file TEXT, " +
+            "archived INTEGER NOT NULL DEFAULT 0, " +
+            "published INTEGER )";
+
     private static final String PREFERENCES_TABLE = "" +
             "CREATE TABLE preferencia ( " +
             "id_categoria INTEGER, " +
-            "descricao TEXT NOT NULL, " +
+            "description TEXT NOT NULL, " +
             "atualizada INTEGER)";
 
     private static final String ADVERTISER_TABLE = "" +
-            "CREATE TABLE anunciante ( " +
+            "CREATE TABLE advertiser ( " +
             "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
             "nome_fantasia TEXT, " +
             "telefone TEXT, " +
             "endereco TEXT, " +
             "id_categoria INTEGER)";
 
-    // Armazena os perfis de anunciante criados no aparelho
+    // Armazena os perfis de advertiser criados no aparelho
     private static final String ADVERTISER_PROFILE_TABLE = "" +
             "CREATE TABLE perfil_anunciante ( " +
             "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
@@ -61,19 +74,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "bairro TEXT, " +
             "id_cidade INTEGER, " +
             "id_categoria INTEGER, " +
-            "publicado INTEGER )";
-
-    private static final String PUBLICATIONS_TABLE = "" +
-            "CREATE TABLE publicacao ( " +
-            "guid_publicacao TEXT NOT NULL PRIMARY KEY, " +
-            "guid_anunciante TEXT NOT NULL, " +
-            "id_categoria INTEGER NOT NULL, " +
-            "titulo TEXT, " +
-            "descricao TEXT, " +
-            "data_publicacao INTEGER NOT NULL, " +
-            "data_validade INTEGER NOT NULL, " +
-            "imagem TEXT, " +
-            "arquivado INTEGER NOT NULL DEFAULT 0, " +
             "publicado INTEGER )";
 
     private MyDatabaseHelper(Context context) {
@@ -195,7 +195,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         if (preferencia.selecionanda) {
             ContentValues values = new ContentValues();
             values.put("id_categoria", preferencia.idCategoria);
-            values.put("descricao", preferencia.descricao);
+            values.put("description", preferencia.descricao);
             values.put("atualizada", 0);
             database.insert("preferencia", null, values);
         }
@@ -212,7 +212,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Preferencia> preferenciasSelecionadasPorCidade(int idCidade) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia", null);
+        Cursor cursor = db.rawQuery("SELECT id_categoria, description FROM preferencia", null);
         List<Preferencia> preferencias = new ArrayList<>();
         while (cursor.moveToNext()) {
             Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
@@ -225,7 +225,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Preferencia> preferenciasDesatualizadas() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia WHERE atualizada=0", null);
+        Cursor cursor = db.rawQuery("SELECT id_categoria, description FROM preferencia WHERE atualizada=0", null);
         List<Preferencia> preferencias = new ArrayList<>();
         while (cursor.moveToNext()) {
             Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
@@ -243,7 +243,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Preferencia> peferenciasSelecionadas() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id_categoria, descricao FROM preferencia", null);
+        Cursor cursor = db.rawQuery("SELECT id_categoria, description FROM preferencia", null);
         List<Preferencia> preferencias = new ArrayList<>();
         while (cursor.moveToNext()) {
             Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
@@ -258,14 +258,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // Publications
     // ========================================================================
 
-    public void savePublications(List<Publicacao> publicacoes) {
-        for (Publicacao publicacao : publicacoes)
-            savePublication(publicacao);
+    public void savePublications(List<Publication> publications) {
+        for (Publication publication : publications)
+            savePublication(publication);
     }
 
-    public void savePublication(Publicacao publication) {
-        if (publication.guidPublicacao.equals("")) {
-            publication.guidPublicacao = UUID.randomUUID().toString();
+    public void savePublication(Publication publication) {
+        if (publication.publicationGuid.equals("")) {
+            publication.publicationGuid = UUID.randomUUID().toString();
         }
         int rowsAffected = updatePublication(publication);
         if (rowsAffected == 0) {
@@ -273,74 +273,69 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void insertPublication(Publicacao publication) {
-        publication.guidPublicacao = UUID.randomUUID().toString();
+    private void insertPublication(Publication publication) {
         ContentValues values = createPublicationContentValues(publication);
         SQLiteDatabase db = getWritableDatabase();
-        db.insert("publicacao", null, values);
+        db.insert("publication", null, values);
     }
 
-    private int updatePublication(Publicacao publication) {
+    private int updatePublication(Publication publication) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = createPublicationContentValues(publication);
-        return db.update("publicacao", values, "guid_publicacao=?", new String[] {publication.guidPublicacao});
+        return db.update("publication", values, "publication_guid=?", new String[] {publication.publicationGuid});
     }
 
-    private ContentValues createPublicationContentValues(Publicacao publication) {
+    private ContentValues createPublicationContentValues(Publication publication) {
         ContentValues values = new ContentValues();
-        values.put("guid_publicacao", publication.guidPublicacao);
-        values.put("guid_anunciante", publication.guidAnunciante);
-        values.put("titulo", publication.titulo);
-        values.put("descricao", publication.descricao);
-        values.put("id_categoria", publication.idCategoria);
-        values.put("data_publicacao", DateUtils.dateToString(publication.dataPublicacao));
-        values.put("data_validade", DateUtils.dateToString(publication.dataValidade));
-        values.put("imagem", publication.imagem);
-        values.put("publicado", (publication.published ? 1 : 0));
+        values.put("publication_guid", publication.publicationGuid);
+        values.put("advertiser_guid", publication.advertiserGuid);
+        values.put("title", publication.title);
+        values.put("description", publication.description);
+        values.put("category_id", publication.category_id);
+        values.put("publication_date", DateUtils.dateToString(publication.publicationDate));
+        values.put("due_date", DateUtils.dateToString(publication.dueDate));
+        values.put("image_file", publication.imageFile);
+        values.put("published", (publication.published ? 1 : 0));
+        values.put("archived", (publication.archived ? 1 : 0));
         return values;
     }
 
     // Retorna a lista de publicações não arquivadas
-    public List<Publicacao> publicacoesSalvas() {
+    public List<Publication> getSavedPublications() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE arquivado=0 ORDER BY data_publicacao", null);
-        List<Publicacao> publicacoes = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM publication WHERE archived=0 ORDER BY publication_date", null);
+        List<Publication> publications = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Publicacao publicacao = extraiPublicacaoDoCursor(cursor);
-            publicacoes.add(publicacao);
+            Publication publication = getPublicationFromCursor(cursor);
+            publications.add(publication);
         }
         cursor.close();
-        return publicacoes;
+        return publications;
     }
 
-    public void arquivaPublicacao(Publicacao publicacao) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE publicacao SET arquivado=1 WHERE guid_publicacao='" + publicacao.guidPublicacao + "'");
-    }
-
-    public Publicacao obtemPublicacao(String guidPublicacao) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE guid_publicacao='" + guidPublicacao + "'", null);
-        cursor.moveToNext();
-        return extraiPublicacaoDoCursor(cursor);
-    }
+//    public Publication obtemPublicacao(String guidPublicacao) {
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE guid_publicacao='" + guidPublicacao + "'", null);
+//        cursor.moveToNext();
+//        return getPublicationFromCursor(cursor);
+//    }
 
     @NonNull
-    private Publicacao extraiPublicacaoDoCursor(Cursor cursor) {
-        Publicacao publicacao = new Publicacao();
-        publicacao.guidPublicacao = cursor.getString(cursor.getColumnIndex("guid_publicacao"));
-        publicacao.guidAnunciante = cursor.getString(cursor.getColumnIndex("guid_anunciante"));
-        publicacao.idCategoria = cursor.getInt(cursor.getColumnIndex("id_categoria"));
-        publicacao.titulo = cursor.getString(cursor.getColumnIndex("titulo"));
-        publicacao.descricao = cursor.getString(cursor.getColumnIndex("descricao"));
-        publicacao.dataPublicacao = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("data_publicacao")));
-        publicacao.dataValidade = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("data_validade")));
-        publicacao.imagem = cursor.getString(cursor.getColumnIndex("imagem"));
-        return publicacao;
+    private Publication getPublicationFromCursor(Cursor cursor) {
+        Publication publication = new Publication();
+        publication.publicationGuid = cursor.getString(cursor.getColumnIndex("publication_guid"));
+        publication.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
+        publication.category_id = cursor.getInt(cursor.getColumnIndex("category_id"));
+        publication.title = cursor.getString(cursor.getColumnIndex("title"));
+        publication.description = cursor.getString(cursor.getColumnIndex("description"));
+        publication.publicationDate = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("publication_date")));
+        publication.dueDate = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("due_date")));
+        publication.imageFile = cursor.getString(cursor.getColumnIndex("image_file"));
+        return publication;
     }
 
-    public void removePublicacoesVencidas() {
+    public void removeOverduePublications() {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM publicacao WHERE data_validade<'" + DateUtils.dateToString(new Date()) + "'");
+        db.execSQL("DELETE FROM publication WHERE due_date<'" + DateUtils.dateToString(new Date()) + "'");
     }
 }

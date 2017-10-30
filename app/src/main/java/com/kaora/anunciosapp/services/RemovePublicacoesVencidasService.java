@@ -18,7 +18,7 @@ public class RemovePublicacoesVencidasService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.i("Removendo", "Removendo publicações vencidas.");
         MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
-        database.removePublicacoesVencidas();
+        database.removeOverduePublications();
     }
 
 }

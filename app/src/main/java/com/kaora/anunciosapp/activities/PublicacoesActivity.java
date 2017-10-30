@@ -29,7 +29,7 @@ import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Preferencia;
-import com.kaora.anunciosapp.models.Publicacao;
+import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.receivers.MyAlarmReceiver;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.components.CustomRecyclerView;
@@ -47,7 +47,7 @@ public class PublicacoesActivity extends AppCompatActivity {
 
     private PublicacoesAdapter publicacoesAdapter;
     private MyDatabaseHelper database;
-    private List<Publicacao> publicacoes;
+    private List<Publication> publicacoes;
     private CustomRecyclerView rvPublicacoes;
 
     private LocalBroadcastManager broadcastManager;
@@ -78,7 +78,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         });
 
         database = MyDatabaseHelper.getInstance(this);
-        database.removePublicacoesVencidas();
+        database.removeOverduePublications();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +163,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void preparaListaDePublicacoes() {
-        publicacoes = database.publicacoesSalvas();
+        publicacoes = database.getSavedPublications();
         publicacoesAdapter = new PublicacoesAdapter(this, publicacoes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
@@ -195,7 +195,9 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void marcaPublicacaoComoVista(int position) {
-        database.arquivaPublicacao(publicacoes.get(position));
+        Publication publication = publicacoes.get(position);
+        publication.archived = true;
+        database.savePublication(publication);
         publicacoes.remove(position);
         publicacoesAdapter.notifyItemRemoved(position);
     }
@@ -205,9 +207,9 @@ public class PublicacoesActivity extends AppCompatActivity {
         baixaPublicacoesDoWebservice(deviceId, preferencias);
     }
 
-    private void atualizaListaDePublicacoes(List<Publicacao> publicacoes) {
-        for (Publicacao publicacao : publicacoes) {
-            this.publicacoes.add(publicacao);
+    private void atualizaListaDePublicacoes(List<Publication> publicacoes) {
+        for (Publication publication : publicacoes) {
+            this.publicacoes.add(publication);
         }
         int posicaoUltimoItem = this.publicacoes.size() - 1;
         if (publicacoes.size() == 1) {
@@ -245,9 +247,9 @@ public class PublicacoesActivity extends AppCompatActivity {
 
     private void baixaPublicacoesDoWebservice(String deviceId, List<Preferencia> preferencias) {
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
-        webservice.obtemPublicacoes(deviceId, preferencias, new Callback<List<Publicacao>>() {
+        webservice.obtemPublicacoes(deviceId, preferencias, new Callback<List<Publication>>() {
             @Override
-            public void onResponse(Call<List<Publicacao>> call, Response<List<Publicacao>> response) {
+            public void onResponse(Call<List<Publication>> call, Response<List<Publication>> response) {
                 database.savePublications(response.body());
                 database.marcaPreferenciasComoAtualizadas();
                 atualizaListaDePublicacoes(response.body());
@@ -255,7 +257,7 @@ public class PublicacoesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Publicacao>> call, Throwable t) {
+            public void onFailure(Call<List<Publication>> call, Throwable t) {
                 Log.d("erro", t.toString());
                 swipeRefreshLayoutLayout.setRefreshing(false);
                 Toast.makeText(PublicacoesActivity.this, "Falha ao obter publicações!", Toast.LENGTH_SHORT).show();

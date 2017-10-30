@@ -1,9 +1,9 @@
 package com.kaora.anunciosapp.rest;
 
 import com.kaora.anunciosapp.models.Advertiser;
+import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
-import com.kaora.anunciosapp.models.Publicacao;
 
 import java.util.List;
 
@@ -28,14 +28,14 @@ public interface ApiRestInterface {
     Call<List<PublicationCategory>> obtemCategorias(@Query("id_cidade") int idCidade);
 
     @GET("publicacoes/")
-    Call<List<Publicacao>> obtemPublicacoes(@Query("device_id") String deviceId,
-                                            @Query("categorias") String idsCategorias);
+    Call<List<Publication>> obtemPublicacoes(@Query("device_id") String deviceId,
+                                             @Query("categorias") String idsCategorias);
 
     @POST("publicacoes/")
-    Call<Publicacao> publicaPublicacao(@Body Publicacao publicacao);
+    Call<Publication> publicaPublicacao(@Body Publication publication);
 
     @GET("publicacoes/{guid_publicacao}")
-    Call<Publicacao> obtemPublicacao(@Path("guid_publicacao") String guidAnunciante);
+    Call<Publication> obtemPublicacao(@Path("guid_publicacao") String guidAnunciante);
 
     @Multipart
     @POST("publicacoes/fotos")
@@ -54,5 +54,5 @@ public interface ApiRestInterface {
     Call<List<Advertiser>> anunciantesPorCategoria(@Path("id") int idCategoria);
 
 //    @GET("publicacao/{guid}")
-//    Call<Publicacao> obtemPublicacao(@Path("guid") String guidPublicacao);
+//    Call<Publication> obtemPublicacao(@Path("guid") String publicationGuid);
 }

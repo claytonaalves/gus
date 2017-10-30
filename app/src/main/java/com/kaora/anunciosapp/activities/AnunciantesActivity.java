@@ -35,7 +35,7 @@ public class AnunciantesActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        idCategoria = intent.getIntExtra("idCategoria", 0);
+        idCategoria = intent.getIntExtra("category_id", 0);
 
         lvAnunciantes = (ListView) findViewById(R.id.lvAnunciantes);
         lvAnunciantes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -48,7 +48,7 @@ public class AnunciantesActivity extends AppCompatActivity {
 
     private void iniciaActivityAnunciante(Advertiser anunciante) {
         Intent intent = new Intent(this, AnuncianteActivity.class);
-        intent.putExtra("anunciante", anunciante);
+        intent.putExtra("advertiser", anunciante);
         startActivity(intent);
     }
 

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.models.Publicacao;
+import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.utils.DateUtils;
 
@@ -22,18 +22,18 @@ import java.text.DateFormat;
 
 public class PublicacaoActivity extends AppCompatActivity {
 
-    private Publicacao publicacao;
+    private Publication publication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicacao);
 
-        publicacao = (Publicacao) getIntent().getSerializableExtra("publicacao");
-        atualizaDadosPublicacao(publicacao);
+        publication = (Publication) getIntent().getSerializableExtra("publication");
+        atualizaDadosPublicacao(publication);
     }
 
-    private void atualizaDadosPublicacao(Publicacao publicacao) {
+    private void atualizaDadosPublicacao(Publication publication) {
         TextView tvTitulo = (TextView) findViewById(R.id.tvTitulo);
         TextView tvDescricao = (TextView) findViewById(R.id.tvDescricao);
         TextView tvNomeAnunciante = (TextView) findViewById(R.id.tvNomeAnunciante);
@@ -41,27 +41,27 @@ public class PublicacaoActivity extends AppCompatActivity {
         TextView tvDataValidade = (TextView) findViewById(R.id.tvDataValidade);
         Button btLigarPara = (Button) findViewById(R.id.btLigarPara);
 
-        if (!(publicacao.imagem==null) && (!publicacao.imagem.equals(""))) {
+        if (!(publication.imageFile ==null) && (!publication.imageFile.equals(""))) {
             SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem_publicacao);
-            imagem.setImageURI(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + publicacao.imagem);
+            imagem.setImageURI(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + publication.imageFile);
         }
 
-        tvTitulo.setText(publicacao.titulo);
-        tvDescricao.setText(publicacao.descricao);
-        tvNomeAnunciante.setText(publicacao.anunciante.nomeFantasia);
-        tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publicacao.dataPublicacao));
-        btLigarPara.setText("Ligar para " + publicacao.anunciante.nomeFantasia + "\n" + publicacao.anunciante.telefone);
+        tvTitulo.setText(publication.title);
+        tvDescricao.setText(publication.description);
+        tvNomeAnunciante.setText(publication.advertiser.nomeFantasia);
+        tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publication.publicationDate));
+        btLigarPara.setText("Ligar para " + publication.advertiser.nomeFantasia + "\n" + publication.advertiser.telefone);
 
         Resources res = this.getResources();
         DateFormat df = DateFormat.getDateInstance();
         tvDataValidade.setText(
-            String.format(res.getString(R.string.data_validade), df.format(publicacao.dataValidade))
+            String.format(res.getString(R.string.data_validade), df.format(publication.dueDate))
         );
     }
 
     public void ligarParaAnunciante(View view) {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + publicacao.anunciante.telefone));
+        callIntent.setData(Uri.parse("tel:" + publication.advertiser.telefone));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

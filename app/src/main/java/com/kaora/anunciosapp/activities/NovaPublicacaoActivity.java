@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
-import com.kaora.anunciosapp.models.Publicacao;
+import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.rest.MediaUploadService;
 
@@ -56,7 +56,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
     private Advertiser perfilSelecionado;
-    private Publicacao publicacao;
+    private Publication publication;
     private ApiRestAdapter webservice;
 
     @Override
@@ -139,18 +139,18 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
 
     public void postaPublicacao(View view) {
         progressDialog = ProgressDialog.show(NovaPublicacaoActivity.this, "Postando Publicação", "Aguarde...", false, false);
-        publicacao = new Publicacao();
-        populateWithActivityData(publicacao);
-        database.savePublication(publicacao);
+        publication = new Publication();
+        populateWithActivityData(publication);
+        database.savePublication(publication);
         postPublication();
     }
 
-    private void populateWithActivityData(Publicacao publicacao) {
-        publicacao.titulo = etTitulo.getText().toString();
-        publicacao.descricao = etDescricao.getText().toString();
-        publicacao.setDataValidade(extraiData(etValidoAte.getText().toString()));
-        publicacao.guidAnunciante = perfilSelecionado.guidAnunciante;
-        publicacao.idCategoria = perfilSelecionado.idCategoria;
+    private void populateWithActivityData(Publication publication) {
+        publication.title = etTitulo.getText().toString();
+        publication.description = etDescricao.getText().toString();
+        publication.setDueDate(extraiData(etValidoAte.getText().toString()));
+        publication.advertiserGuid = perfilSelecionado.guidAnunciante;
+        publication.category_id = perfilSelecionado.idCategoria;
     }
 
     /* Publish media first
@@ -164,8 +164,8 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
     private class MediaTransferResponseHandler extends MediaUploadService.MediaSentEvent implements Callback<ResponseBody> {
         @Override
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            publicacao.imagem = mediaFileName;
-            sendPublicationToWebservice(publicacao);
+            publication.imageFile = mediaFileName;
+            sendPublicationToWebservice(publication);
         }
 
         @Override
@@ -175,20 +175,20 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         }
     }
 
-    private void sendPublicationToWebservice(Publicacao publicacao) {
+    private void sendPublicationToWebservice(Publication publication) {
         progressDialog.setMessage("Postando Publicação...");
         webservice = ApiRestAdapter.getInstance();
-        webservice.publicaPublicacao(publicacao, new Callback<Publicacao>() {
+        webservice.publicaPublicacao(publication, new Callback<Publication>() {
             @Override
-            public void onResponse(Call<Publicacao> call, Response<Publicacao> response) {
-                Publicacao publicacao = response.body();
-                database.savePublication(publicacao);
+            public void onResponse(Call<Publication> call, Response<Publication> response) {
+                Publication publication = response.body();
+                database.savePublication(publication);
                 progressDialog.dismiss();
                 fechaActivity();
             }
 
             @Override
-            public void onFailure(Call<Publicacao> call, Throwable t) {
+            public void onFailure(Call<Publication> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(NovaPublicacaoActivity.this, "Erro ao postar Publicação", Toast.LENGTH_LONG).show();
             }

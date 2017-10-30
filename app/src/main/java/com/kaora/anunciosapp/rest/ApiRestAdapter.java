@@ -7,10 +7,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kaora.anunciosapp.BuildConfig;
 import com.kaora.anunciosapp.models.Advertiser;
+import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.Preferencia;
-import com.kaora.anunciosapp.models.Publicacao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +64,13 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
-    public void publicaPublicacao(Publicacao publicacao, Callback<Publicacao> cb) {
-        Call<Publicacao> request = service.publicaPublicacao(publicacao);
+    public void publicaPublicacao(Publication publication, Callback<Publication> cb) {
+        Call<Publication> request = service.publicaPublicacao(publication);
         request.enqueue(cb);
     }
 
-//    public void obtemPublicacao(String guidAnuncio, Callback<Publicacao> cb) {
-//        Call<Publicacao> request = service.obtemPublicacao(guidPublicacao);
+//    public void obtemPublicacao(String guidAnuncio, Callback<Publication> cb) {
+//        Call<Publication> request = service.obtemPublicacao(publicationGuid);
 //        request.enqueue(cb);
 //    }
 
@@ -84,18 +84,18 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
-    public void obtemPublicacoes(String deviceId, List<Preferencia> preferencias, Callback<List<Publicacao>> cb) {
+    public void obtemPublicacoes(String deviceId, List<Preferencia> preferencias, Callback<List<Publication>> cb) {
         List<Integer> idsCategorias = new ArrayList<>();
         for (Preferencia preferencia : preferencias) {
             idsCategorias.add(preferencia.idCategoria);
         }
         String listaDeIdsCategorias = TextUtils.join(",", idsCategorias);
-        Call<List<Publicacao>> request = service.obtemPublicacoes(deviceId, listaDeIdsCategorias);
+        Call<List<Publication>> request = service.obtemPublicacoes(deviceId, listaDeIdsCategorias);
         request.enqueue(cb);
     }
 
-    public void obtemPublicacao(String guidPublicacao, Callback<Publicacao> cb) {
-        Call<Publicacao> request = service.obtemPublicacao(guidPublicacao);
+    public void obtemPublicacao(String guidPublicacao, Callback<Publication> cb) {
+        Call<Publication> request = service.obtemPublicacao(guidPublicacao);
         request.enqueue(cb);
     }
 
