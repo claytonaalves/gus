@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
@@ -142,7 +141,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         progressDialog = ProgressDialog.show(NovaPublicacaoActivity.this, "Postando Publicação", "Aguarde...", false, false);
         publicacao = new Publicacao();
         populateWithActivityData(publicacao);
-        database.salvaPublicacao(publicacao);
+        database.savePublication(publicacao);
         postPublication();
     }
 
@@ -183,7 +182,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Publicacao> call, Response<Publicacao> response) {
                 Publicacao publicacao = response.body();
-                database.marcaComoPublicado(publicacao);
+                database.savePublication(publicacao);
                 progressDialog.dismiss();
                 fechaActivity();
             }
@@ -201,7 +200,6 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3500);
                     NovaPublicacaoActivity.this.finish();
                 } catch (Exception e) {
 

@@ -254,21 +254,46 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // ========================================================================
-    // Publicações
+    // Publications
     // ========================================================================
 
-    public void salvaPublicacao(Publicacao publicacao) {
-        publicacao.guidPublicacao = UUID.randomUUID().toString();
-        ContentValues values = new ContentValues();
-        values.put("guid_publicacao", publicacao.guidPublicacao);
-        values.put("guid_anunciante", publicacao.guidAnunciante);
-        values.put("titulo", publicacao.titulo);
-        values.put("descricao", publicacao.descricao);
-        values.put("id_categoria", publicacao.idCategoria);
-        values.put("data_publicacao", DateUtils.dateToString(publicacao.dataPublicacao));
-        values.put("data_validade", DateUtils.dateToString(publicacao.dataValidade));
+    public void savePublications(List<Publicacao> publicacoes) {
+        for (Publicacao publicacao : publicacoes)
+            savePublication(publicacao);
+    }
+
+    public void savePublication(Publicacao publication) {
+        int rowsAffected = updatePublication(publication);
+        if (rowsAffected == 0) {
+            insertPublication(publication);
+        }
+    }
+
+    private void insertPublication(Publicacao publication) {
+        publication.guidPublicacao = UUID.randomUUID().toString();
+        ContentValues values = createPublicationContentValues(publication);
         SQLiteDatabase db = getWritableDatabase();
         db.insert("publicacao", null, values);
+    }
+
+    private int updatePublication(Publicacao publication) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = createPublicationContentValues(publication);
+        return db.update("publicacao", values, "guid_publicacao=?", new String[] {publication.guidPublicacao});
+    }
+
+    private ContentValues createPublicationContentValues(Publicacao publication) {
+        ContentValues values = new ContentValues();
+        values.put("guid_publicacao", publication.guidPublicacao);
+        values.put("guid_anunciante", publication.guidAnunciante);
+        values.put("titulo", publication.titulo);
+        values.put("descricao", publication.descricao);
+        values.put("id_categoria", publication.idCategoria);
+        values.put("data_publicacao", DateUtils.dateToString(publication.dataPublicacao));
+        values.put("data_validade", DateUtils.dateToString(publication.dataValidade));
+        values.put("imagem", publication.imagem);
+        values.put("publicado", (publication.published ? 1 : 0));
+        return values;
     }
 
     // Retorna a lista de publicações não arquivadas
@@ -287,27 +312,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void arquivaPublicacao(Publicacao publicacao) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE publicacao SET arquivado=1 WHERE guid_publicacao='" + publicacao.guidPublicacao + "'");
-    }
-
-    public void marcaComoPublicado(Publicacao publicacao) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE publicacao SET publicado=1 WHERE guid_publicacao='" + publicacao.guidPublicacao + "'");
-    }
-
-    public void salvaPublicacoes(List<Publicacao> publicacoes) {
-        SQLiteDatabase db = getWritableDatabase();
-        for (Publicacao publicacao : publicacoes) {
-            ContentValues values = new ContentValues();
-            values.put("guid_publicacao", publicacao.guidPublicacao);
-            values.put("guid_anunciante", publicacao.guidAnunciante);
-            values.put("id_categoria", publicacao.idCategoria);
-            values.put("titulo", publicacao.titulo);
-            values.put("descricao", publicacao.descricao);
-            values.put("data_publicacao", DateUtils.dateToString(publicacao.dataPublicacao));
-            values.put("data_validade", DateUtils.dateToString(publicacao.dataValidade));
-            values.put("imagem", publicacao.imagem);
-            db.insert("publicacao", null, values);
-        }
     }
 
     public Publicacao obtemPublicacao(String guidPublicacao) {

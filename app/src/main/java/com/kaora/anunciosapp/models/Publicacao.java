@@ -15,6 +15,8 @@ public class Publicacao implements Serializable {
     public String imagem;
     public Anunciante anunciante;
 
+    public Boolean published = false;
+
     public Publicacao() {
         this.dataPublicacao = new Date();
     }

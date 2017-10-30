@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,7 +34,6 @@ import com.kaora.anunciosapp.receivers.MyAlarmReceiver;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.components.CustomRecyclerView;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -250,7 +248,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         webservice.obtemPublicacoes(deviceId, preferencias, new Callback<List<Publicacao>>() {
             @Override
             public void onResponse(Call<List<Publicacao>> call, Response<List<Publicacao>> response) {
-                database.salvaPublicacoes(response.body());
+                database.savePublications(response.body());
                 database.marcaPreferenciasComoAtualizadas();
                 atualizaListaDePublicacoes(response.body());
                 swipeRefreshLayoutLayout.setRefreshing(false);
