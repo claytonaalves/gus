@@ -80,7 +80,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String guidAnunciante = intent.getStringExtra("guid_anunciante");
-        perfilSelecionado = database.selecionaPerfil(guidAnunciante);
+        perfilSelecionado = database.getProfileByGuid(guidAnunciante);
 
         tvNomeAnunciante.setText(perfilSelecionado.nomeFantasia);
 

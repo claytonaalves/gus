@@ -25,7 +25,7 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
         MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
 
         lvPerfis = (ListView) findViewById(R.id.lvPerfis);
-        lvPerfis.setAdapter(new PerfisAdapter(database.todosPerfis(), this));
+        lvPerfis.setAdapter(new PerfisAdapter(database.allProfiles(), this));
 
         Intent intent = getIntent();
         int modoEdicao = intent.getIntExtra("modoEdicao", 0);

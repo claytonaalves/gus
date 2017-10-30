@@ -264,7 +264,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void criaNovaPublicacao() {
-        int qtdePerfisCadastrados = database.todosPerfis().size();
+        int qtdePerfisCadastrados = database.allProfiles().size();
         if (qtdePerfisCadastrados == 0) {
             mostraActivityCriacaoPerfil();
         } else if (qtdePerfisCadastrados == 1) {
@@ -280,7 +280,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void mostraActivityNovoAnuncio() {
-        Advertiser perfil = database.todosPerfis().get(0); // Pega o primeiro perfil
+        Advertiser perfil = database.allProfiles().get(0); // Pega o primeiro perfil
         Intent intent = new Intent(this, NovaPublicacaoActivity.class);
         intent.putExtra("guid_anunciante", perfil.guidAnunciante);
         startActivity(intent);

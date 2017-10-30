@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kaora.anunciosapp.BuildConfig;
 import com.kaora.anunciosapp.models.Advertiser;
-import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
@@ -79,8 +79,8 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
-    public void obtemCategorias(int idCidade, Callback<List<Categoria>> cb) {
-        Call<List<Categoria>> request = service.obtemCategorias(idCidade);
+    public void obtemCategorias(int idCidade, Callback<List<PublicationCategory>> cb) {
+        Call<List<PublicationCategory>> request = service.obtemCategorias(idCidade);
         request.enqueue(cb);
     }
 

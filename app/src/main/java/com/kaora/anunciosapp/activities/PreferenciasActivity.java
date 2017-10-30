@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
-import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
@@ -81,23 +81,23 @@ public class PreferenciasActivity extends AppCompatActivity {
     private void obtemCategoriasDaAPI() {
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
 
-        webservice.obtemCategorias(cidade.idCidade, new Callback<List<Categoria>>() {
+        webservice.obtemCategorias(cidade.idCidade, new Callback<List<PublicationCategory>>() {
             @Override
-            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+            public void onResponse(Call<List<PublicationCategory>> call, Response<List<PublicationCategory>> response) {
                 preencheListaDePreferencias(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Categoria>> call, Throwable t) {
-                Toast.makeText(PreferenciasActivity.this, "Não foi possível obter a lista de categorias!", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<PublicationCategory>> call, Throwable t) {
+                Toast.makeText(PreferenciasActivity.this, "Não foi possível obter a lista de publicationCategories!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void preencheListaDePreferencias(List<Categoria> categorias) {
+    private void preencheListaDePreferencias(List<PublicationCategory> publicationCategories) {
         preferencias.clear();
-        for (Categoria categoria: categorias) {
-            Preferencia preferencia = new Preferencia(categoria.idCategoria, categoria.descricao);
+        for (PublicationCategory publicationCategory : publicationCategories) {
+            Preferencia preferencia = new Preferencia(publicationCategory.idCategoria, publicationCategory.descricao);
             preferencia.selecionanda = preferenciasSelecionadas.contains(preferencia);
             preferencias.add(preferencia);
         }

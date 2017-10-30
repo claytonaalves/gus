@@ -12,10 +12,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.database.MyDatabaseHelper;
-import com.kaora.anunciosapp.models.Categoria;
-
-import java.util.List;
 
 import static android.text.Html.fromHtml;
 
@@ -63,7 +59,7 @@ public class TermosDeUsoActivity extends AppCompatActivity implements View.OnCli
 
     private boolean preferenciasDefinidas() {
 //        MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
-//        List<Categoria> preferencias = database.categoriasPreferidas();
+//        List<PublicationCategory> preferencias = database.categoriasPreferidas();
 //        return preferencias.size()>0;
         return true;
     }

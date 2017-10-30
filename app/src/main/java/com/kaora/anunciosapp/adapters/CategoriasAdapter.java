@@ -9,55 +9,55 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.List;
 
 public class CategoriasAdapter extends BaseAdapter {
 
-    private final List<Categoria> categorias;
+    private final List<PublicationCategory> publicationCategories;
     private final Activity activity;
 
-    public CategoriasAdapter(List<Categoria> categorias, Activity activity) {
-        this.categorias = categorias;
+    public CategoriasAdapter(List<PublicationCategory> publicationCategories, Activity activity) {
+        this.publicationCategories = publicationCategories;
         this.activity = activity;
     }
 
     @Override
     public int getCount() {
-        return categorias.size();
+        return publicationCategories.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return categorias.get(position);
+        return publicationCategories.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        Categoria categoria = categorias.get(position);
-        return categoria.idCategoria;
+        PublicationCategory publicationCategory = publicationCategories.get(position);
+        return publicationCategory.idCategoria;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = activity.getLayoutInflater()
                 .inflate(R.layout.item_listview_categoria, parent, false);
-        Categoria categoria = categorias.get(position);
+        PublicationCategory publicationCategory = publicationCategories.get(position);
 
-        Uri uri = Uri.parse(ApiRestAdapter.BASE_URL + categoria.imagem);
+        Uri uri = Uri.parse(ApiRestAdapter.BASE_URL + publicationCategory.imagem);
         SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(R.id.imagem);
         draweeView.setImageURI(uri);
 
         TextView nomeCategoria = (TextView) view.findViewById(R.id.tvNomeCategoria);
-        nomeCategoria.setText(categoria.descricao);
+        nomeCategoria.setText(publicationCategory.descricao);
 
         TextView qtdeAnunciantes = (TextView) view.findViewById(R.id.qtdeAnunciantes);
-        qtdeAnunciantes.setVisibility(categoria.qtdeAnunciantes>0 ? View.VISIBLE : View.INVISIBLE);
-        qtdeAnunciantes.setText(" " + Integer.toString(categoria.qtdeAnunciantes) + " ");
+        qtdeAnunciantes.setVisibility(publicationCategory.qtdeAnunciantes>0 ? View.VISIBLE : View.INVISIBLE);
+        qtdeAnunciantes.setText(" " + Integer.toString(publicationCategory.qtdeAnunciantes) + " ");
 
-        view.setTag(categoria);
+        view.setTag(publicationCategory);
 
         return view;
     }

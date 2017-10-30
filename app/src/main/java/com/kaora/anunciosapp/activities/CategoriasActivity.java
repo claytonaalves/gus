@@ -17,7 +17,7 @@ import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.CategoriasAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
-import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.utils.NotificationUtils;
 
@@ -30,7 +30,7 @@ import retrofit2.Response;
 public class CategoriasActivity extends AppCompatActivity {
 
     MyDatabaseHelper database;
-    List<Categoria> categorias;
+    List<PublicationCategory> publicationCategories;
 
     CategoriasAdapter categoriasAdapter;
     private BroadcastReceiver notificationBroadcastReceiver;
@@ -41,16 +41,16 @@ public class CategoriasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categorias);
 
 //        database = MyDatabaseHelper.getInstance(this);
-//        categorias = database.categoriasPreferidas();
+//        publicationCategories = database.categoriasPreferidas();
 //
-//        categoriasAdapter = new CategoriasAdapter(categorias, this);
+//        categoriasAdapter = new CategoriasAdapter(publicationCategories, this);
 //        ListView lvCategorias = (ListView) findViewById(R.id.lvOfertas);
 //        lvCategorias.setAdapter(categoriasAdapter);
 //
 //        lvCategorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Categoria categoriaSelecionada = (Categoria) view.getTag();
+//                PublicationCategory categoriaSelecionada = (PublicationCategory) view.getTag();
 //                Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
 //                intent.putExtra("idCategoria", categoriaSelecionada.idCategoria);
 //                startActivity(intent);
@@ -98,24 +98,24 @@ public class CategoriasActivity extends AppCompatActivity {
     private void obtemCategoriasDaAPI() {
         ApiRestAdapter restApi = ApiRestAdapter.getInstance();
 
-        restApi.obtemCategorias(1, new Callback<List<Categoria>>() {
+        restApi.obtemCategorias(1, new Callback<List<PublicationCategory>>() {
             @Override
-            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
-                database.atualizaCategorias(response.body());
+            public void onResponse(Call<List<PublicationCategory>> call, Response<List<PublicationCategory>> response) {
+                database.updateCategories(response.body());
                 atualizaListagemCategorias();
             }
 
             @Override
-            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+            public void onFailure(Call<List<PublicationCategory>> call, Throwable t) {
 //                Toast.makeText(PreferenciasActivity.this, "Não foi possível atualizar as activity_categorias!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void atualizaListagemCategorias() {
-//        categorias.clear();
-//        for (Categoria categoria : database.categoriasPreferidas()) {
-//            categorias.add(categoria);
+//        publicationCategories.clear();
+//        for (PublicationCategory categoria : database.categoriasPreferidas()) {
+//            publicationCategories.add(categoria);
 //        }
 //        categoriasAdapter.notifyDataSetChanged();
     }
@@ -148,7 +148,7 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void criarNovoAnuncio() {
-        int qtdePerfisCadastrados = database.todosPerfis().size();
+        int qtdePerfisCadastrados = database.allProfiles().size();
         if (qtdePerfisCadastrados==0) {
             mostraActivityCriacaoPerfil();
         } else if (qtdePerfisCadastrados==1) {
@@ -186,7 +186,7 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void mostraActivityPreferencias() {
-//        Advertiser perfil = database.selecionaPerfil();
+//        Advertiser perfil = database.getProfileByGuid();
 //        Intent intent = new Intent(this, PreferenciasActivity.class);
 //        intent.putExtra("idperfil", perfil._id);
 //        startActivity(intent);

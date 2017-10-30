@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
-import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.rest.MediaUploadService;
@@ -53,9 +53,9 @@ public class NovoPerfilActivity extends AppCompatActivity {
     private MyDatabaseHelper database;
     private ApiRestAdapter webservice;
     private ArrayAdapter<Cidade> cidadeAdapter;
-    private ArrayAdapter<Categoria> categoriaAdapter;
+    private ArrayAdapter<PublicationCategory> categoriaAdapter;
     final private List<Cidade> cidades = new ArrayList<>();
-    final private List<Categoria> categorias = new ArrayList<>();
+    final private List<PublicationCategory> publicationCategories = new ArrayList<>();
     private Uri mediaFileUri;
     private final Advertiser advertiserProfile = new Advertiser();
     private ProgressDialog progressDialog;
@@ -117,7 +117,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
     }
 
     private void criaSpinnerCategorias() {
-        categoriaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorias);
+        categoriaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, publicationCategories);
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategorias = (Spinner) findViewById(R.id.spCategoria);
         spCategorias.setAdapter(categoriaAdapter);
@@ -138,14 +138,14 @@ public class NovoPerfilActivity extends AppCompatActivity {
     }
 
     private void obtemListaDeCategoriasDoWebservice(int idCidade) {
-        webservice.obtemCategorias(idCidade, new Callback<List<Categoria>>() {
+        webservice.obtemCategorias(idCidade, new Callback<List<PublicationCategory>>() {
             @Override
-            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+            public void onResponse(Call<List<PublicationCategory>> call, Response<List<PublicationCategory>> response) {
                 atualizaSpinnerCategorias(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+            public void onFailure(Call<List<PublicationCategory>> call, Throwable t) {
 
             }
         });
@@ -159,10 +159,10 @@ public class NovoPerfilActivity extends AppCompatActivity {
         cidadeAdapter.notifyDataSetChanged();
     }
 
-    private void atualizaSpinnerCategorias(List<Categoria> categorias) {
-        this.categorias.clear();
-        for (Categoria categoria : categorias) {
-            this.categorias.add(categoria);
+    private void atualizaSpinnerCategorias(List<PublicationCategory> publicationCategories) {
+        this.publicationCategories.clear();
+        for (PublicationCategory publicationCategory : publicationCategories) {
+            this.publicationCategories.add(publicationCategory);
         }
         categoriaAdapter.notifyDataSetChanged();
     }
@@ -198,7 +198,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
         advertiserProfile.numero = etNumero.getText().toString();
         advertiserProfile.bairro = etBairro.getText().toString();
         advertiserProfile.idCidade = ((Cidade) spCidades.getSelectedItem()).idCidade;
-        advertiserProfile.idCategoria = ((Categoria) spCategorias.getSelectedItem()).idCategoria;
+        advertiserProfile.idCategoria = ((PublicationCategory) spCategorias.getSelectedItem()).idCategoria;
 
         postCurrentUserProfile();
         database.saveAdvertiserProfile(advertiserProfile);

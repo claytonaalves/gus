@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.kaora.anunciosapp.models.Advertiser;
-import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Preferencia;
 import com.kaora.anunciosapp.models.Publicacao;
 import com.kaora.anunciosapp.utils.DateUtils;
@@ -26,21 +26,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABELA_CATEGORIA = "" +
-            "CREATE TABLE categoria ( " +
-            "id_categoria INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "id_cidade INTEGER NOT NULL, " +
-            "descricao TEXT NOT NULL, " +
-            "qtde_anunciantes INTEGER, " +
-            "imagem TEXT)";
+    private static final String CATEGORY_TABLE = "" +
+            "CREATE TABLE publication_category ( " +
+            "category_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "city_id INTEGER NOT NULL, " +
+            "name TEXT NOT NULL, " +
+            "advertiser_count INTEGER, " +
+            "image_file TEXT)";
 
-    private static final String TABELA_PREFERENCIA = "" +
+    private static final String PREFERENCES_TABLE = "" +
             "CREATE TABLE preferencia ( " +
             "id_categoria INTEGER, " +
             "descricao TEXT NOT NULL, " +
             "atualizada INTEGER)";
 
-    private static final String TABELA_ANUNCIANTE = "" +
+    private static final String ADVERTISER_TABLE = "" +
             "CREATE TABLE anunciante ( " +
             "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
             "nome_fantasia TEXT, " +
@@ -49,7 +49,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "id_categoria INTEGER)";
 
     // Armazena os perfis de anunciante criados no aparelho
-    private static final String ADVERTISER_TABLE = "" +
+    private static final String ADVERTISER_PROFILE_TABLE = "" +
             "CREATE TABLE perfil_anunciante ( " +
             "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
             "nome_fantasia TEXT, " +
@@ -63,7 +63,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "id_categoria INTEGER, " +
             "publicado INTEGER )";
 
-    private static final String TABELA_PUBLICACOES = "" +
+    private static final String PUBLICATIONS_TABLE = "" +
             "CREATE TABLE publicacao ( " +
             "guid_publicacao TEXT NOT NULL PRIMARY KEY, " +
             "guid_anunciante TEXT NOT NULL, " +
@@ -89,11 +89,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABELA_CATEGORIA);
-        db.execSQL(TABELA_PREFERENCIA);
-        db.execSQL(TABELA_ANUNCIANTE);
+        db.execSQL(CATEGORY_TABLE);
+        db.execSQL(PREFERENCES_TABLE);
         db.execSQL(ADVERTISER_TABLE);
-        db.execSQL(TABELA_PUBLICACOES);
+        db.execSQL(ADVERTISER_PROFILE_TABLE);
+        db.execSQL(PUBLICATIONS_TABLE);
     }
 
     @Override
@@ -101,16 +101,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void atualizaCategorias(List<Categoria> categorias) {
+    // ========================================================================
+    // Publication Categories
+    // ========================================================================
+
+    public void updateCategories(List<PublicationCategory> publicationCategories) {
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM categoria");
-        for (Categoria categoria : categorias) {
+        database.execSQL("DELETE FROM publication_category");
+        for (PublicationCategory publicationCategory : publicationCategories) {
             ContentValues values = new ContentValues();
-            values.put("_id", categoria.idCategoria);
-            values.put("descricao", categoria.descricao);
-            values.put("qtde_anunciantes", categoria.qtdeAnunciantes);
-            values.put("imagem", categoria.imagem);
-            database.insert("categoria", null, values);
+            values.put("category_id", publicationCategory.idCategoria);
+            values.put("name", publicationCategory.descricao);
+            values.put("advertiser_count", publicationCategory.qtdeAnunciantes);
+            values.put("image_file", publicationCategory.imagem);
+            database.insert("publication_category", null, values);
         }
     }
 
@@ -155,7 +159,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return values;
     }
 
-    public List<Advertiser> todosPerfis() {
+    public List<Advertiser> allProfiles() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM perfil_anunciante", null);
         List<Advertiser> perfis = new ArrayList<>();
@@ -169,7 +173,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return perfis;
     }
 
-    public Advertiser selecionaPerfil(String guidAnunciante) {
+    public Advertiser getProfileByGuid(String guidAnunciante) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT guid_anunciante, nome_fantasia, id_categoria FROM perfil_anunciante WHERE guid_anunciante='" + guidAnunciante + "'", null);
         cursor.moveToNext();
@@ -182,7 +186,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // ========================================================================
-    // Preferências
+    // Preferences
     // ========================================================================
 
     public void salvaPreferencia(Preferencia preferencia) {

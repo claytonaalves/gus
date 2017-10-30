@@ -1,7 +1,7 @@
 package com.kaora.anunciosapp.rest;
 
 import com.kaora.anunciosapp.models.Advertiser;
-import com.kaora.anunciosapp.models.Categoria;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.models.Publicacao;
 
@@ -25,7 +25,7 @@ public interface ApiRestInterface {
     Call<List<Cidade>> obtemCidades();
 
     @GET("categorias/")
-    Call<List<Categoria>> obtemCategorias(@Query("id_cidade") int idCidade);
+    Call<List<PublicationCategory>> obtemCategorias(@Query("id_cidade") int idCidade);
 
     @GET("publicacoes/")
     Call<List<Publicacao>> obtemPublicacoes(@Query("device_id") String deviceId,
