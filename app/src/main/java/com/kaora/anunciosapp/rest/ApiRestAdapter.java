@@ -31,7 +31,9 @@ public class ApiRestAdapter {
 
     private static final String HOST = BuildConfig.API_URL;
     public static final String BASE_URL = HOST + "/api/v1/";
-    public static final String IMAGES_PATH = HOST + "/images";
+//    public static final String IMAGES_PATH = HOST + "/images";
+    public static final String PUBLICATIONS_IMAGE_PATH = BASE_URL + "publicacoes/foto/";
+    public static final String ADVERTISERS_IMAGE_PATH = BASE_URL + "anunciantes/foto/";
 
     public static ApiRestAdapter getInstance() {
         if (instance == null) {
