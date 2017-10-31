@@ -46,7 +46,7 @@ public class AnuncianteAdapter extends BaseAdapter {
                 .inflate(R.layout.item_listview_anunciante, parent, false);
 
         TextView tvNomeAnunciante = (TextView) view.findViewById(R.id.tvNomeAnunciante);
-        tvNomeAnunciante.setText(anunciante.nomeFantasia);
+        tvNomeAnunciante.setText(anunciante.tradingName);
 
         view.setTag(anunciante);
 

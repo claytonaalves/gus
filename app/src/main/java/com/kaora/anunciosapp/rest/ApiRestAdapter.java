@@ -10,7 +10,7 @@ import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
-import com.kaora.anunciosapp.models.Preferencia;
+import com.kaora.anunciosapp.models.Preference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +59,8 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
-    public void publicaAnunciante(Advertiser anunciante, Callback<Advertiser> cb) {
-        Call<Advertiser> request = service.publicaAnunciante(anunciante);
+    public void postAdvertiserProfile(Advertiser advertiser, Callback<Advertiser> cb) {
+        Call<Advertiser> request = service.postAdvertiserProfile(advertiser);
         request.enqueue(cb);
     }
 
@@ -84,10 +84,10 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
-    public void obtemPublicacoes(String deviceId, List<Preferencia> preferencias, Callback<List<Publication>> cb) {
+    public void obtemPublicacoes(String deviceId, List<Preference> preferences, Callback<List<Publication>> cb) {
         List<Integer> idsCategorias = new ArrayList<>();
-        for (Preferencia preferencia : preferencias) {
-            idsCategorias.add(preferencia.idCategoria);
+        for (Preference preference : preferences) {
+            idsCategorias.add(preference.categoryId);
         }
         String listaDeIdsCategorias = TextUtils.join(",", idsCategorias);
         Call<List<Publication>> request = service.obtemPublicacoes(deviceId, listaDeIdsCategorias);

@@ -62,7 +62,7 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Advertiser perfil = (Advertiser) view.getTag();
-            mostraActivityNovaPublicacao(perfil.guidAnunciante);
+            mostraActivityNovaPublicacao(perfil.advertiserGuid);
         }
     }
 

@@ -57,7 +57,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
     final private List<Cidade> cidades = new ArrayList<>();
     final private List<PublicationCategory> publicationCategories = new ArrayList<>();
     private Uri mediaFileUri;
-    private final Advertiser advertiserProfile = new Advertiser();
+    private final Advertiser advertiser = new Advertiser();
     private ProgressDialog progressDialog;
 
     @Override
@@ -80,7 +80,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
         etNome = (EditText) findViewById(R.id.etNome);
         etTelefone = (EditText) findViewById(R.id.etTelefone);
         etCelular = (EditText) findViewById(R.id.etCelular);
-        etCelular.setText(obtemNumeroCelular());
+        etCelular.setText(getCellphoneNumber());
         etEmail = (EditText) findViewById(R.id.etEmail);
         etEndereco = (EditText) findViewById(R.id.etEndereco);
         etNumero = (EditText) findViewById(R.id.etNumero);
@@ -89,13 +89,13 @@ public class NovoPerfilActivity extends AppCompatActivity {
         criaSpinnerCategorias();
     }
 
-    private String obtemNumeroCelular() {
+    private String getCellphoneNumber() {
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String numeroCelular = telephonyManager.getLine1Number();
-        if (numeroCelular == null) {
-            numeroCelular = "";
+        String cellphoneNumber = telephonyManager.getLine1Number();
+        if (cellphoneNumber == null) {
+            cellphoneNumber = "";
         }
-        return numeroCelular;
+        return cellphoneNumber;
     }
 
     private void criaSpinnerCidades() {
@@ -190,26 +190,31 @@ public class NovoPerfilActivity extends AppCompatActivity {
     }
 
     public void saveAdvertiserProfile(View view) {
-        advertiserProfile.nomeFantasia = etNome.getText().toString();
-        advertiserProfile.telefone = etTelefone.getText().toString();
-        advertiserProfile.celular = etCelular.getText().toString();
-        advertiserProfile.email = etEmail.getText().toString();
-        advertiserProfile.logradouro = etEndereco.getText().toString();
-        advertiserProfile.numero = etNumero.getText().toString();
-        advertiserProfile.bairro = etBairro.getText().toString();
-        advertiserProfile.idCidade = ((Cidade) spCidades.getSelectedItem()).idCidade;
-        advertiserProfile.idCategoria = ((PublicationCategory) spCategorias.getSelectedItem()).idCategoria;
+        advertiser.tradingName = etNome.getText().toString();
+        advertiser.phoneNumber = etTelefone.getText().toString();
+        advertiser.cellphone = etCelular.getText().toString();
+        advertiser.email = etEmail.getText().toString();
+        advertiser.streetName = etEndereco.getText().toString();
+        advertiser.addressNumber = etNumero.getText().toString();
+        advertiser.neighbourhood = etBairro.getText().toString();
+        advertiser.cityId = ((Cidade) spCidades.getSelectedItem()).idCidade;
+        advertiser.categoryId = ((PublicationCategory) spCategorias.getSelectedItem()).idCategoria;
 
         postCurrentUserProfile();
-        database.saveAdvertiserProfile(advertiserProfile);
-        mostraActivityNovaPublicacao(advertiserProfile.guidAnunciante);
+        database.saveAdvertiserProfile(advertiser);
+        mostraActivityNovaPublicacao(advertiser.advertiserGuid);
     }
 
     private void postCurrentUserProfile() {
         progressDialog = ProgressDialog.show(NovoPerfilActivity.this, "Postando Perfil", "Aguarde...", false, false);
-        progressDialog.setMessage("Enviando imagens...");
-        MediaUploadService mediaUpload = new MediaUploadService(NovoPerfilActivity.this);
-        mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.ADVERTISER_IMAGE_UPLOAD);
+        // if no media file were selected...
+        if (mediaFileUri != null) {
+            progressDialog.setMessage("Enviando imagens...");
+            MediaUploadService mediaUpload = new MediaUploadService(NovoPerfilActivity.this);
+            mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.ADVERTISER_IMAGE_UPLOAD);
+        } else {
+            sendAdvertiserProfileToWebservice(advertiser);
+        }
     }
 
     private void mostraActivityNovaPublicacao(String guidAnunciante) {
@@ -236,8 +241,8 @@ public class NovoPerfilActivity extends AppCompatActivity {
     private class MediaTransferResponseHandler extends MediaUploadService.MediaSentEvent implements Callback<ResponseBody> {
         @Override
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            advertiserProfile.pictureFile = mediaFileName;
-            sendAdvertiserProfileToWebservice(advertiserProfile);
+            advertiser.pictureFile = mediaFileName;
+            sendAdvertiserProfileToWebservice(advertiser);
         }
 
         @Override
@@ -247,14 +252,14 @@ public class NovoPerfilActivity extends AppCompatActivity {
         }
     }
 
-    private void sendAdvertiserProfileToWebservice(Advertiser advertiserProfile) {
+    private void sendAdvertiserProfileToWebservice(Advertiser advertiser) {
         ApiRestAdapter api = ApiRestAdapter.getInstance();
-        api.publicaAnunciante(advertiserProfile, new Callback<Advertiser>() {
+        api.postAdvertiserProfile(advertiser, new Callback<Advertiser>() {
             @Override
             public void onResponse(Call<Advertiser> call, Response<Advertiser> response) {
-                Advertiser advertiserProfile = response.body();
-                advertiserProfile.published = true;
-                database.saveAdvertiserProfile(advertiserProfile);
+                Advertiser advertiser = response.body();
+                advertiser.published = true;
+                database.saveAdvertiserProfile(advertiser);
                 progressDialog.dismiss();
                 fechaActivity();
             }

@@ -48,7 +48,7 @@ public interface ApiRestInterface {
                                            @Part MultipartBody.Part file);
 
     @POST("anunciantes/")
-    Call<Advertiser> publicaAnunciante(@Body Advertiser anunciante);
+    Call<Advertiser> postAdvertiserProfile(@Body Advertiser advertiser);
 
     @GET("categoria/{id}")
     Call<List<Advertiser>> anunciantesPorCategoria(@Path("id") int idCategoria);

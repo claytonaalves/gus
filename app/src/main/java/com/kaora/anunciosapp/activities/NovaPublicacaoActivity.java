@@ -82,7 +82,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         String guidAnunciante = intent.getStringExtra("guid_anunciante");
         perfilSelecionado = database.getProfileByGuid(guidAnunciante);
 
-        tvNomeAnunciante.setText(perfilSelecionado.nomeFantasia);
+        tvNomeAnunciante.setText(perfilSelecionado.tradingName);
 
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         preparaDialogData();
@@ -149,8 +149,8 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         publication.title = etTitulo.getText().toString();
         publication.description = etDescricao.getText().toString();
         publication.setDueDate(extraiData(etValidoAte.getText().toString()));
-        publication.advertiserGuid = perfilSelecionado.guidAnunciante;
-        publication.category_id = perfilSelecionado.idCategoria;
+        publication.advertiserGuid = perfilSelecionado.advertiserGuid;
+        publication.category_id = perfilSelecionado.categoryId;
     }
 
     /* Publish media first

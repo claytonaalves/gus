@@ -48,9 +48,9 @@ public class PublicacaoActivity extends AppCompatActivity {
 
         tvTitulo.setText(publication.title);
         tvDescricao.setText(publication.description);
-        tvNomeAnunciante.setText(publication.advertiser.nomeFantasia);
+        tvNomeAnunciante.setText(publication.advertiser.tradingName);
         tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publication.publicationDate));
-        btLigarPara.setText("Ligar para " + publication.advertiser.nomeFantasia + "\n" + publication.advertiser.telefone);
+        btLigarPara.setText("Ligar para " + publication.advertiser.tradingName + "\n" + publication.advertiser.phoneNumber);
 
         Resources res = this.getResources();
         DateFormat df = DateFormat.getDateInstance();
@@ -61,7 +61,7 @@ public class PublicacaoActivity extends AppCompatActivity {
 
     public void ligarParaAnunciante(View view) {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + publication.advertiser.telefone));
+        callIntent.setData(Uri.parse("tel:" + publication.advertiser.phoneNumber));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

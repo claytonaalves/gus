@@ -49,7 +49,7 @@ public class PerfisAdapter extends BaseAdapter {
                 .inflate(R.layout.item_listview_anunciante, parent, false);
 
         TextView tvNomeAnunciante = (TextView) view.findViewById(R.id.tvNomeAnunciante);
-        tvNomeAnunciante.setText(perfil.nomeFantasia);
+        tvNomeAnunciante.setText(perfil.tradingName);
 
         SimpleDraweeView profileLogo = (SimpleDraweeView) view.findViewById(R.id.imgLogoAnunciante);
         profileLogo.setImageURI(Uri.parse(ApiRestAdapter.ADVERTISERS_IMAGE_PATH + perfil.pictureFile));

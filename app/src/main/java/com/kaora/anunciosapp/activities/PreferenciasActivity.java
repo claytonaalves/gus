@@ -11,7 +11,7 @@ import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
-import com.kaora.anunciosapp.models.Preferencia;
+import com.kaora.anunciosapp.models.Preference;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ public class PreferenciasActivity extends AppCompatActivity {
     private TextView tvNomeCidade;
     private PreferenciasAdapter preferenciasAdapter;
     private Cidade cidade;
-    private List<Preferencia> preferencias;
-    private List<Preferencia> preferenciasSelecionadas;
+    private List<Preference> preferences;
+    private List<Preference> preferenciasSelecionadas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +71,10 @@ public class PreferenciasActivity extends AppCompatActivity {
     }
 
     private void preparaListaDePreferencias() {
-        preferenciasSelecionadas = database.preferenciasSelecionadasPorCidade(1);
-        preferencias = new ArrayList<>();
+        preferenciasSelecionadas = database.getPreferencesByCity(1);
+        preferences = new ArrayList<>();
         lvPreferencias = (ListView) findViewById(R.id.lvPreferencias);
-        preferenciasAdapter = new PreferenciasAdapter(this, preferencias);
+        preferenciasAdapter = new PreferenciasAdapter(this, preferences);
         lvPreferencias.setAdapter(preferenciasAdapter);
     }
 
@@ -95,18 +95,18 @@ public class PreferenciasActivity extends AppCompatActivity {
     }
 
     private void preencheListaDePreferencias(List<PublicationCategory> publicationCategories) {
-        preferencias.clear();
+        preferences.clear();
         for (PublicationCategory publicationCategory : publicationCategories) {
-            Preferencia preferencia = new Preferencia(publicationCategory.idCategoria, publicationCategory.descricao);
-            preferencia.selecionanda = preferenciasSelecionadas.contains(preferencia);
-            preferencias.add(preferencia);
+            Preference preference = new Preference(publicationCategory.idCategoria, publicationCategory.descricao);
+            preference.selected = preferenciasSelecionadas.contains(preference);
+            preferences.add(preference);
         }
         preferenciasAdapter.notifyDataSetChanged();
     }
 
     private boolean usuarioSelecionouAlgumaPreferencia() {
-        for (Preferencia preferencia : preferencias) {
-            if (preferencia.selecionanda)
+        for (Preference preference : preferences) {
+            if (preference.selected)
                 return true;
         }
         return false;

@@ -28,7 +28,7 @@ import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
-import com.kaora.anunciosapp.models.Preferencia;
+import com.kaora.anunciosapp.models.Preference;
 import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.receivers.MyAlarmReceiver;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
@@ -203,8 +203,8 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void obtemPublicacoesDoServidor() {
-        List<Preferencia> preferencias = database.peferenciasSelecionadas();
-        baixaPublicacoesDoWebservice(deviceId, preferencias);
+        List<Preference> preferences = database.getSelectedPreferences();
+        baixaPublicacoesDoWebservice(deviceId, preferences);
     }
 
     private void atualizaListaDePublicacoes(List<Publication> publicacoes) {
@@ -240,14 +240,14 @@ public class PublicacoesActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == CidadesActivity.PREFERENCIAS_SELECIONADAS) {
             // Carrega lista de preferências com "atualizada=0"
-            List<Preferencia> preferencias = database.preferenciasDesatualizadas();
-            baixaPublicacoesDoWebservice(deviceId, preferencias);
+            List<Preference> preferences = database.getOutdatedPreferences();
+            baixaPublicacoesDoWebservice(deviceId, preferences);
         }
     }
 
-    private void baixaPublicacoesDoWebservice(String deviceId, List<Preferencia> preferencias) {
+    private void baixaPublicacoesDoWebservice(String deviceId, List<Preference> preferences) {
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
-        webservice.obtemPublicacoes(deviceId, preferencias, new Callback<List<Publication>>() {
+        webservice.obtemPublicacoes(deviceId, preferences, new Callback<List<Publication>>() {
             @Override
             public void onResponse(Call<List<Publication>> call, Response<List<Publication>> response) {
                 database.savePublications(response.body());
@@ -284,7 +284,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     private void mostraActivityNovoAnuncio() {
         Advertiser perfil = database.allProfiles().get(0); // Pega o primeiro perfil
         Intent intent = new Intent(this, NovaPublicacaoActivity.class);
-        intent.putExtra("guid_anunciante", perfil.guidAnunciante);
+        intent.putExtra("guid_anunciante", perfil.advertiserGuid);
         startActivity(intent);
     }
 

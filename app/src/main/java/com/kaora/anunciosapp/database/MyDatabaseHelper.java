@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.models.PublicationCategory;
-import com.kaora.anunciosapp.models.Preferencia;
+import com.kaora.anunciosapp.models.Preference;
 import com.kaora.anunciosapp.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private static MyDatabaseHelper instance = null;
 
-    public static final String DATABASE_NAME = "anuncios_database";
+    public static final String DATABASE_NAME = "publicationsdb";
 
     private static final int DATABASE_VERSION = 1;
 
@@ -33,6 +33,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "name TEXT NOT NULL, " +
             "advertiser_count INTEGER, " +
             "image_file TEXT)";
+
+    private static final String PREFERENCES_TABLE = "" +
+            "CREATE TABLE preference ( " +
+            "category_id INTEGER, " +
+            "description TEXT NOT NULL, " +
+            "updated INTEGER)";
 
     private static final String PUBLICATIONS_TABLE = "" +
             "CREATE TABLE publication ( " +
@@ -47,34 +53,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "archived INTEGER NOT NULL DEFAULT 0, " +
             "published INTEGER )";
 
-    private static final String PREFERENCES_TABLE = "" +
-            "CREATE TABLE preferencia ( " +
-            "id_categoria INTEGER, " +
-            "description TEXT NOT NULL, " +
-            "atualizada INTEGER)";
-
+    // Armazena os perfis de advertiser criados no aparelho
     private static final String ADVERTISER_TABLE = "" +
             "CREATE TABLE advertiser ( " +
-            "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
-            "nome_fantasia TEXT, " +
-            "telefone TEXT, " +
-            "endereco TEXT, " +
-            "id_categoria INTEGER)";
-
-    // Armazena os perfis de advertiser criados no aparelho
-    private static final String ADVERTISER_PROFILE_TABLE = "" +
-            "CREATE TABLE perfil_anunciante ( " +
-            "guid_anunciante TEXT NOT NULL PRIMARY KEY, " +
-            "nome_fantasia TEXT, " +
-            "telefone TEXT, " +
-            "celular TEXT, " +
+            "advertiser_guid TEXT NOT NULL PRIMARY KEY, " +
+            "trading_name TEXT, " +
+            "phone_number TEXT, " +
+            "cellphone TEXT, " +
             "email TEXT, " +
-            "logradouro TEXT, " +
-            "numero TEXT, " +
-            "bairro TEXT, " +
-            "id_cidade INTEGER, " +
-            "id_categoria INTEGER, " +
-            "publicado INTEGER )";
+            "street_name TEXT, " +
+            "address_number TEXT, " +
+            "neighbourhood TEXT, " +
+            "city_id INTEGER, " +
+            "category_id INTEGER, " +
+            "published INTEGER )";
 
     private MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -92,7 +84,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CATEGORY_TABLE);
         db.execSQL(PREFERENCES_TABLE);
         db.execSQL(ADVERTISER_TABLE);
-        db.execSQL(ADVERTISER_PROFILE_TABLE);
         db.execSQL(PUBLICATIONS_TABLE);
     }
 
@@ -122,136 +113,138 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // Advertiser Profiles
     // ========================================================================
 
-    public void saveAdvertiserProfile(Advertiser advertiserProfile) {
-        int rowsAffected = updateAdvertiserProfile(advertiserProfile);
+    public void saveAdvertiserProfile(Advertiser advertiser) {
+        int rowsAffected = updateAdvertiserProfile(advertiser);
         if (rowsAffected == 0) {
-            insertAdvertiserProfile(advertiserProfile);
+            insertAdvertiserProfile(advertiser);
         }
     }
 
-    private int updateAdvertiserProfile(Advertiser advertiserProfile) {
+    private int updateAdvertiserProfile(Advertiser advertiser) {
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = createAdvertiserProfileContentValues(advertiserProfile);
-        return db.update("perfil_anunciante", values, "guid_anunciante=?", new String[] {advertiserProfile.guidAnunciante});
+        ContentValues values = createAdvertiserProfileContentValues(advertiser);
+        return db.update("advertiser", values, "advertiser_guid=?", new String[] {advertiser.advertiserGuid});
     }
 
-    private void insertAdvertiserProfile(Advertiser advertiserProfile) {
-        advertiserProfile.guidAnunciante = UUID.randomUUID().toString();
-        ContentValues values = createAdvertiserProfileContentValues(advertiserProfile);
+    private void insertAdvertiserProfile(Advertiser advertiser) {
+        advertiser.advertiserGuid = UUID.randomUUID().toString();
+        ContentValues values = createAdvertiserProfileContentValues(advertiser);
         SQLiteDatabase db = getWritableDatabase();
-        db.insert("perfil_anunciante", null, values);
+        db.insert("advertiser", null, values);
     }
 
     @NonNull
     private ContentValues createAdvertiserProfileContentValues(Advertiser advertiserProfile) {
         ContentValues values = new ContentValues();
-        values.put("guid_anunciante", advertiserProfile.guidAnunciante);
-        values.put("nome_fantasia", advertiserProfile.nomeFantasia);
-        values.put("telefone", advertiserProfile.telefone);
-        values.put("celular", advertiserProfile.celular);
+        values.put("advertiser_guid", advertiserProfile.advertiserGuid);
+        values.put("trading_name", advertiserProfile.tradingName);
+        values.put("phone_number", advertiserProfile.phoneNumber);
+        values.put("cellphone", advertiserProfile.cellphone);
         values.put("email", advertiserProfile.email);
-        values.put("logradouro", advertiserProfile.logradouro);
-        values.put("numero", advertiserProfile.numero);
-        values.put("bairro", advertiserProfile.bairro);
-        values.put("id_cidade", advertiserProfile.idCidade);
-        values.put("id_categoria", advertiserProfile.idCategoria);
-        values.put("publicado", (advertiserProfile.published ? 1 : 0));
+        values.put("street_name", advertiserProfile.streetName);
+        values.put("address_number", advertiserProfile.addressNumber);
+        values.put("neighbourhood", advertiserProfile.neighbourhood);
+        values.put("city_id", advertiserProfile.cityId);
+        values.put("category_id", advertiserProfile.categoryId);
+        values.put("published", (advertiserProfile.published ? 1 : 0));
         return values;
     }
 
     public List<Advertiser> allProfiles() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM perfil_anunciante", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM advertiser", null);
         List<Advertiser> perfis = new ArrayList<>();
         while (cursor.moveToNext()) {
             Advertiser perfil = new Advertiser();
-            perfil.guidAnunciante = cursor.getString(cursor.getColumnIndex("guid_anunciante"));
-            perfil.nomeFantasia = cursor.getString(cursor.getColumnIndex("nome_fantasia"));
+            perfil.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
+            perfil.tradingName = cursor.getString(cursor.getColumnIndex("trading_name"));
             perfis.add(perfil);
         }
         cursor.close();
         return perfis;
     }
 
-    public Advertiser getProfileByGuid(String guidAnunciante) {
+    public Advertiser getProfileByGuid(String advertiserGuid) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT guid_anunciante, nome_fantasia, id_categoria FROM perfil_anunciante WHERE guid_anunciante='" + guidAnunciante + "'", null);
+        Cursor cursor = db.rawQuery("SELECT advertiser_guid, trading_name, category_id " +
+                                    "FROM advertiser " +
+                                    "WHERE advertiser_guid='" + advertiserGuid + "'", null);
         cursor.moveToNext();
-        Advertiser perfil = new Advertiser();
-        perfil.guidAnunciante = cursor.getString(0);
-        perfil.nomeFantasia = cursor.getString(1);
-        perfil.idCategoria = cursor.getInt(2);
+        Advertiser advertiser = new Advertiser();
+        advertiser.advertiserGuid = cursor.getString(0);
+        advertiser.tradingName = cursor.getString(1);
+        advertiser.categoryId = cursor.getInt(2);
         cursor.close();
-        return perfil;
+        return advertiser;
     }
 
     // ========================================================================
     // Preferences
     // ========================================================================
 
-    public void salvaPreferencia(Preferencia preferencia) {
+    public void salvaPreferencia(Preference preference) {
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM preferencia WHERE id_categoria=" + preferencia.idCategoria);
-        if (preferencia.selecionanda) {
+        database.execSQL("DELETE FROM preference WHERE category_id=" + preference.categoryId);
+        if (preference.selected) {
             ContentValues values = new ContentValues();
-            values.put("id_categoria", preferencia.idCategoria);
-            values.put("description", preferencia.descricao);
-            values.put("atualizada", 0);
-            database.insert("preferencia", null, values);
+            values.put("category_id", preference.categoryId);
+            values.put("description", preference.descricao);
+            values.put("updated", 0);
+            database.insert("preference", null, values);
         }
     }
 
-    public boolean preferenciasDefinidas() {
+    public boolean getPreferences() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM preferencia", null);
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM preference", null);
         cursor.moveToFirst();
         boolean result = cursor.getInt(0) > 0;
         cursor.close();
         return result;
     }
 
-    public List<Preferencia> preferenciasSelecionadasPorCidade(int idCidade) {
+    public List<Preference> getPreferencesByCity(int idCidade) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id_categoria, description FROM preferencia", null);
-        List<Preferencia> preferencias = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT category_id, description FROM preference", null);
+        List<Preference> preferences = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
-            preferencia.selecionanda = true;
-            preferencias.add(preferencia);
+            Preference preference = new Preference(cursor.getInt(0), cursor.getString(1));
+            preference.selected = true;
+            preferences.add(preference);
         }
         cursor.close();
-        return preferencias;
+        return preferences;
     }
 
-    public List<Preferencia> preferenciasDesatualizadas() {
+    public List<Preference> getOutdatedPreferences() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id_categoria, description FROM preferencia WHERE atualizada=0", null);
-        List<Preferencia> preferencias = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT category_id, description FROM preference WHERE updated=0", null);
+        List<Preference> preferences = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
-            preferencia.selecionanda = true;
-            preferencias.add(preferencia);
+            Preference preference = new Preference(cursor.getInt(0), cursor.getString(1));
+            preference.selected = true;
+            preferences.add(preference);
         }
         cursor.close();
-        return preferencias;
+        return preferences;
     }
 
     public void marcaPreferenciasComoAtualizadas() {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE preferencia SET atualizada=1");
+        db.execSQL("UPDATE preference SET updated=1");
     }
 
-    public List<Preferencia> peferenciasSelecionadas() {
+    public List<Preference> getSelectedPreferences() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id_categoria, description FROM preferencia", null);
-        List<Preferencia> preferencias = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT category_id, description FROM preference", null);
+        List<Preference> preferences = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Preferencia preferencia = new Preferencia(cursor.getInt(0), cursor.getString(1));
-            preferencia.selecionanda = true;
-            preferencias.add(preferencia);
+            Preference preference = new Preference(cursor.getInt(0), cursor.getString(1));
+            preference.selected = true;
+            preferences.add(preference);
         }
         cursor.close();
-        return preferencias;
+        return preferences;
     }
 
     // ========================================================================

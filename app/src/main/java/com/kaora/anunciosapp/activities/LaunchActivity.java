@@ -20,7 +20,7 @@ public class LaunchActivity extends AppCompatActivity {
 
         Intent intent;
 
-        if (database.preferenciasDefinidas()) {
+        if (database.getPreferences()) {
             intent = new Intent(this, PublicacoesActivity.class);
         } else {
             intent = new Intent(this, CidadesActivity.class);

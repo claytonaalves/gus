@@ -1,33 +1,62 @@
 package com.kaora.anunciosapp.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Advertiser implements Serializable {
-    public String guidAnunciante;
-    public int idCidade;
-    public int idCategoria;
-    public String razaoSocial;
-    public String nomeFantasia;
-    public String telefone;
-    public String celular;
+
+    @SerializedName(value = "guid_anunciante")
+    public String advertiserGuid;
+
+    @SerializedName(value = "id_cidade")
+    public int cityId;
+
+    @SerializedName(value = "id_categoria")
+    public int categoryId;
+
+    @SerializedName(value = "razao_social")
+    public String companyName;
+
+    @SerializedName(value = "nome_fantasia")
+    public String tradingName;
+
+    @SerializedName(value = "telefone")
+    public String phoneNumber;
+
+    @SerializedName(value = "celular")
+    public String cellphone;
+
     public String email;
-    public String logradouro;
-    public String numero;
-    public String bairro;
+
+    @SerializedName(value = "logradouro")
+    public String streetName;
+
+    @SerializedName(value = "numero")
+    public String addressNumber;
+
+    @SerializedName(value = "bairro")
+    public String neighbourhood;
 
     public String pictureFile;
-    public Boolean published = false;
-    public int position;
+
+    public transient boolean published = false;
+    public transient int position;
+
+    public Advertiser() {
+        this.advertiserGuid = UUID.randomUUID().toString();
+    }
 
     @Override
     public String toString() {
-        return this.nomeFantasia;
+        return this.tradingName;
     }
 
     @Override
     public boolean equals(Object object) {
         return object instanceof Advertiser
-                && ((Advertiser)object).guidAnunciante.equals(this.guidAnunciante);
+                && ((Advertiser)object).advertiserGuid.equals(this.advertiserGuid);
     }
 
 }
