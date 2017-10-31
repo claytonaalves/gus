@@ -47,12 +47,12 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
     }
 
     private void mostraActivityCriacaoPerfil() {
-        Intent intent = new Intent(this, NovoPerfilActivity.class);
+        Intent intent = new Intent(this, NewAdvertiserActivity.class);
         startActivity(intent);
     }
 
     private void mostraActivityNovaPublicacao(String guidAnunciante) {
-        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
+        Intent intent = new Intent(this, NewPublicationActivity.class);
         intent.putExtra("guid_anunciante", guidAnunciante);
         startActivity(intent);
         finish();

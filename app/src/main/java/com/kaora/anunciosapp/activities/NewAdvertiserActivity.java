@@ -35,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NovoPerfilActivity extends AppCompatActivity {
+public class NewAdvertiserActivity extends AppCompatActivity {
 
     private static final int IMG_REQUEST = 1;
 
@@ -206,11 +206,11 @@ public class NovoPerfilActivity extends AppCompatActivity {
     }
 
     private void postCurrentUserProfile() {
-        progressDialog = ProgressDialog.show(NovoPerfilActivity.this, "Postando Perfil", "Aguarde...", false, false);
+        progressDialog = ProgressDialog.show(NewAdvertiserActivity.this, "Postando Perfil", "Aguarde...", false, false);
         // if no media file were selected...
         if (mediaFileUri != null) {
             progressDialog.setMessage("Enviando imagens...");
-            MediaUploadService mediaUpload = new MediaUploadService(NovoPerfilActivity.this);
+            MediaUploadService mediaUpload = new MediaUploadService(NewAdvertiserActivity.this);
             mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.ADVERTISER_IMAGE_UPLOAD);
         } else {
             sendAdvertiserProfileToWebservice(advertiser);
@@ -218,7 +218,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
     }
 
     private void mostraActivityNovaPublicacao(String guidAnunciante) {
-        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
+        Intent intent = new Intent(this, NewPublicationActivity.class);
         intent.putExtra("guid_anunciante", guidAnunciante);
         startActivity(intent);
     }
@@ -229,7 +229,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
             public void run() {
                 try {
                     Thread.sleep(3500);
-                    NovoPerfilActivity.this.finish();
+                    NewAdvertiserActivity.this.finish();
                 } catch (Exception e) {
 
                 }
@@ -248,7 +248,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
             progressDialog.dismiss();
-            Toast.makeText(NovoPerfilActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
+            Toast.makeText(NewAdvertiserActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -267,7 +267,7 @@ public class NovoPerfilActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Advertiser> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(NovoPerfilActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
+                Toast.makeText(NewAdvertiserActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
             }
         });
     }

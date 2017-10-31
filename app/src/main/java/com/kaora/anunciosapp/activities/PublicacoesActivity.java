@@ -283,7 +283,7 @@ public class PublicacoesActivity extends AppCompatActivity {
 
     private void mostraActivityNovoAnuncio() {
         Advertiser perfil = database.allProfiles().get(0); // Pega o primeiro perfil
-        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
+        Intent intent = new Intent(this, NewPublicationActivity.class);
         intent.putExtra("guid_anunciante", perfil.advertiserGuid);
         startActivity(intent);
     }

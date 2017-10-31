@@ -180,7 +180,7 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void mostraActivityNovoAnuncio() {
-        Intent intent = new Intent(this, NovaPublicacaoActivity.class);
+        Intent intent = new Intent(this, NewPublicationActivity.class);
         intent.putExtra("idPerfil", 1L); // id do primeiro perfil
         startActivity(intent);
     }

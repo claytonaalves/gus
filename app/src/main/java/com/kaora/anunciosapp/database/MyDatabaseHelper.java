@@ -127,7 +127,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void insertAdvertiserProfile(Advertiser advertiser) {
-        advertiser.advertiserGuid = UUID.randomUUID().toString();
         ContentValues values = createAdvertiserProfileContentValues(advertiser);
         SQLiteDatabase db = getWritableDatabase();
         db.insert("advertiser", null, values);
@@ -257,9 +256,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void savePublication(Publication publication) {
-        if (publication.publicationGuid.equals("")) {
-            publication.publicationGuid = UUID.randomUUID().toString();
-        }
         int rowsAffected = updatePublication(publication);
         if (rowsAffected == 0) {
             insertPublication(publication);

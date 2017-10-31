@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 public class Publication implements Serializable {
 
@@ -38,6 +39,7 @@ public class Publication implements Serializable {
     public boolean archived = false;
 
     public Publication() {
+        this.publicationGuid = UUID.randomUUID().toString();
         this.publicationDate = new Date();
     }
 

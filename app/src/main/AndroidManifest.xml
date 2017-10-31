@@ -45,13 +45,13 @@
             android:name=".activities.AvisoPerfilActivity"
             android:label="Perfil" />
         <activity
-            android:name=".activities.NovoPerfilActivity"
+            android:name=".activities.NewAdvertiserActivity"
             android:label="Novo perfil" />
         <activity
             android:name=".activities.SelecionarPerfilActivity"
             android:label="Selecione o perfil" />
         <activity
-            android:name=".activities.NovaPublicacaoActivity"
+            android:name=".activities.NewPublicationActivity"
             android:label="Nova Publicação" />
         <activity
             android:name=".activities.AnuncioPublicado"

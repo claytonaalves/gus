@@ -36,13 +36,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NovaPublicacaoActivity extends AppCompatActivity {
-
-    private static final String TAG = NovaPublicacaoActivity.class.getSimpleName(); // LogCat tag
+public class NewPublicationActivity extends AppCompatActivity {
 
     private static final int IMG_REQUEST = 1;
-    private static final String IMAGE_DIRECTORY_NAME = "AdsImages"; // Directory name to store captured images and videos
-    public static final int MEDIA_TYPE_IMAGE = 1;
 
     private TextView tvNomeAnunciante;
     private EditText etTitulo;
@@ -55,7 +51,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
     private MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
-    private Advertiser perfilSelecionado;
+    private Advertiser advertiser;
     private Publication publication;
     private ApiRestAdapter webservice;
 
@@ -80,9 +76,9 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String guidAnunciante = intent.getStringExtra("guid_anunciante");
-        perfilSelecionado = database.getProfileByGuid(guidAnunciante);
+        advertiser = database.getProfileByGuid(guidAnunciante);
 
-        tvNomeAnunciante.setText(perfilSelecionado.tradingName);
+        tvNomeAnunciante.setText(advertiser.tradingName);
 
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         preparaDialogData();
@@ -137,28 +133,32 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         }
     }
 
-    public void postaPublicacao(View view) {
-        progressDialog = ProgressDialog.show(NovaPublicacaoActivity.this, "Postando Publicação", "Aguarde...", false, false);
+    public void postPublication(View view) {
+        progressDialog = ProgressDialog.show(NewPublicationActivity.this, "Postando Publicação", "Aguarde...", false, false);
         publication = new Publication();
         populateWithActivityData(publication);
         database.savePublication(publication);
-        postPublication();
+        postCurrentPublication();
     }
 
     private void populateWithActivityData(Publication publication) {
         publication.title = etTitulo.getText().toString();
         publication.description = etDescricao.getText().toString();
         publication.setDueDate(extraiData(etValidoAte.getText().toString()));
-        publication.advertiserGuid = perfilSelecionado.advertiserGuid;
-        publication.category_id = perfilSelecionado.categoryId;
+        publication.advertiserGuid = advertiser.advertiserGuid;
+        publication.category_id = advertiser.categoryId;
     }
 
     /* Publish media first
        After complete, MediaTransferResponseHandler will dispatch publication publishing */
-    private void postPublication() {
-        progressDialog.setMessage("Enviando imagens...");
-        MediaUploadService mediaUpload = new MediaUploadService(NovaPublicacaoActivity.this);
-        mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.PUBLICATION_IMAGE_UPLOAD);
+    private void postCurrentPublication() {
+        if (mediaFileUri != null) {
+            progressDialog.setMessage("Enviando imagens...");
+            MediaUploadService mediaUpload = new MediaUploadService(NewPublicationActivity.this);
+            mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.PUBLICATION_IMAGE_UPLOAD);
+        } else {
+            sendPublicationToWebservice(publication);
+        }
     }
 
     private class MediaTransferResponseHandler extends MediaUploadService.MediaSentEvent implements Callback<ResponseBody> {
@@ -171,7 +171,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
             progressDialog.dismiss();
-            Toast.makeText(NovaPublicacaoActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
+            Toast.makeText(NewPublicationActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -190,7 +190,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Publication> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(NovaPublicacaoActivity.this, "Erro ao postar Publicação", Toast.LENGTH_LONG).show();
+                Toast.makeText(NewPublicationActivity.this, "Erro ao postar Publicação", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -200,7 +200,7 @@ public class NovaPublicacaoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    NovaPublicacaoActivity.this.finish();
+                    NewPublicationActivity.this.finish();
                 } catch (Exception e) {
 
                 }
