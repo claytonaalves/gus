@@ -241,7 +241,7 @@ public class NewAdvertiserActivity extends AppCompatActivity {
     private class MediaTransferResponseHandler extends MediaUploadService.MediaSentEvent implements Callback<ResponseBody> {
         @Override
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            advertiser.pictureFile = mediaFileName;
+            advertiser.imageFile = mediaFileName;
             sendAdvertiserProfileToWebservice(advertiser);
         }
 

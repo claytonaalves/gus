@@ -8,15 +8,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.kaora.anunciosapp.models.Advertiser;
+import com.kaora.anunciosapp.models.Preference;
 import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.models.PublicationCategory;
-import com.kaora.anunciosapp.models.Preference;
 import com.kaora.anunciosapp.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
@@ -52,7 +51,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "archived INTEGER NOT NULL DEFAULT 0, " +
             "published INTEGER )";
 
-    // Armazena os perfis de advertiser criados no aparelho
     private static final String ADVERTISER_TABLE = "" +
             "CREATE TABLE advertiser ( " +
             "advertiser_guid TEXT NOT NULL PRIMARY KEY, " +
@@ -65,6 +63,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "neighbourhood TEXT, " +
             "city_id INTEGER, " +
             "category_id INTEGER, " +
+            "image_file TEXT, " +
             "published INTEGER )";
 
     private MyDatabaseHelper(Context context) {
@@ -144,6 +143,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put("neighbourhood", advertiserProfile.neighbourhood);
         values.put("city_id", advertiserProfile.cityId);
         values.put("category_id", advertiserProfile.categoryId);
+        values.put("image_file", advertiserProfile.imageFile);
         values.put("published", (advertiserProfile.published ? 1 : 0));
         return values;
     }
@@ -151,15 +151,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public List<Advertiser> allProfiles() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM advertiser", null);
-        List<Advertiser> perfis = new ArrayList<>();
+        List<Advertiser> profiles = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Advertiser perfil = new Advertiser();
-            perfil.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
-            perfil.tradingName = cursor.getString(cursor.getColumnIndex("trading_name"));
-            perfis.add(perfil);
+            Advertiser profile = extractAdvertiserFromCursor(cursor);
+            profiles.add(profile);
         }
         cursor.close();
-        return perfis;
+        return profiles;
     }
 
     public Advertiser getProfileByGuid(String advertiserGuid) {
@@ -168,12 +166,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                                     "FROM advertiser " +
                                     "WHERE advertiser_guid='" + advertiserGuid + "'", null);
         cursor.moveToNext();
-        Advertiser advertiser = new Advertiser();
-        advertiser.advertiserGuid = cursor.getString(0);
-        advertiser.tradingName = cursor.getString(1);
-        advertiser.categoryId = cursor.getInt(2);
+        Advertiser advertiser = extractAdvertiserFromCursor(cursor);
         cursor.close();
         return advertiser;
+    }
+
+    @NonNull
+    private Advertiser extractAdvertiserFromCursor(Cursor cursor) {
+        Advertiser profile = new Advertiser();
+        profile.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
+        profile.categoryId = cursor.getInt(cursor.getColumnIndex("category_id"));
+        profile.tradingName = cursor.getString(cursor.getColumnIndex("trading_name"));
+        profile.imageFile = cursor.getString(cursor.getColumnIndex("image_file"));
+        return profile;
     }
 
     // ========================================================================

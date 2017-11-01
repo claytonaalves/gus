@@ -39,7 +39,8 @@ public class Advertiser implements Serializable {
     @SerializedName(value = "bairro")
     public String neighbourhood;
 
-    public String pictureFile;
+    @SerializedName(value = "picture_file")
+    public String imageFile;
 
     public transient boolean published = false;
     public transient int position;
