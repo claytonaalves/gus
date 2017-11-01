@@ -9,13 +9,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.adapters.PerfisAdapter;
+import com.kaora.anunciosapp.adapters.AdvertiserProfileAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
 
-public class SelecionarPerfilActivity extends AppCompatActivity {
+public class SelectAdvertiserProfileActivity extends AppCompatActivity {
 
-    ListView lvPerfis;
+    ListView profilesListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +24,8 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
 
         MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
 
-        lvPerfis = (ListView) findViewById(R.id.lvPerfis);
-        lvPerfis.setAdapter(new PerfisAdapter(database.allProfiles(), this));
+        profilesListView = (ListView) findViewById(R.id.lvPerfis);
+        profilesListView.setAdapter(new AdvertiserProfileAdapter(database.allProfiles(), this));
 
         Intent intent = getIntent();
         int modoEdicao = intent.getIntExtra("modoEdicao", 0);
@@ -40,9 +40,9 @@ public class SelecionarPerfilActivity extends AppCompatActivity {
                     mostraActivityCriacaoPerfil();
                 }
             });
-            lvPerfis.setOnItemClickListener(new EdicaoPerfilClickHandler());
+            profilesListView.setOnItemClickListener(new EdicaoPerfilClickHandler());
         } else {
-            lvPerfis.setOnItemClickListener(new SelecaoPerfilClickHandler());
+            profilesListView.setOnItemClickListener(new SelecaoPerfilClickHandler());
         }
     }
 

@@ -283,13 +283,13 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void mostraActivityPerfis() {
-        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
+        Intent intent = new Intent(this, SelectAdvertiserProfileActivity.class);
         intent.putExtra("modoEdicao", 1);
         startActivity(intent);
     }
 
     private void mostraActivitySelecaoPerfil() {
-        Intent intent = new Intent(this, SelecionarPerfilActivity.class);
+        Intent intent = new Intent(this, SelectAdvertiserProfileActivity.class);
         intent.putExtra("modoEdicao", 0);
         startActivity(intent);
     }

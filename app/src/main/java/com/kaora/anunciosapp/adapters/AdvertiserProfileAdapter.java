@@ -14,36 +14,36 @@ import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.List;
 
-public class PerfisAdapter extends BaseAdapter {
+public class AdvertiserProfileAdapter extends BaseAdapter {
 
-    private final List<Advertiser> perfis;
+    private final List<Advertiser> advertisers;
     private final Activity activity;
 
-    public PerfisAdapter(List<Advertiser> perfis, Activity activity) {
-        this.perfis = perfis;
+    public AdvertiserProfileAdapter(List<Advertiser> advertisers, Activity activity) {
+        this.advertisers = advertisers;
         this.activity = activity;
     }
 
     @Override
     public int getCount() {
-        return perfis.size();
+        return advertisers.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return perfis.get(position);
+        return advertisers.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        Advertiser perfil = perfis.get(position);
+        Advertiser perfil = advertisers.get(position);
 //        return perfil._id;
         return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Advertiser perfil = perfis.get(position);
+        Advertiser perfil = advertisers.get(position);
 
         View view = activity.getLayoutInflater()
                 .inflate(R.layout.item_listview_anunciante, parent, false);

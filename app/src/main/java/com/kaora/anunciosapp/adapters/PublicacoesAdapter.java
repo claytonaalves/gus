@@ -54,7 +54,7 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
         holder.tvDescricao.setText(publication.description);
         holder.tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publication.publicationDate));
         holder.tvDataValidade.setText(textoDataValidade(publication.dueDate));
-        if (publication.imageFile.equals("")) {
+        if ((publication.imageFile != null) && (publication.imageFile.equals(""))) {
             holder.draweeView.setImageResource(R.drawable.photo_gray);
         } else {
             holder.draweeView.setImageURI(Uri.parse(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + publication.imageFile));
