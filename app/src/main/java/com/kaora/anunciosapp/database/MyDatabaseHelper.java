@@ -37,8 +37,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String PREFERENCES_TABLE = "" +
             "CREATE TABLE preference ( " +
             "category_id INTEGER, " +
-            "description TEXT NOT NULL, " +
-            "updated INTEGER)";
+            "description TEXT NOT NULL)";
 
     private static final String PUBLICATIONS_TABLE = "" +
             "CREATE TABLE publication ( " +
@@ -188,7 +187,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("category_id", preference.categoryId);
             values.put("description", preference.descricao);
-            values.put("updated", 0);
             database.insert("preference", null, values);
         }
     }
@@ -213,24 +211,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return preferences;
-    }
-
-    public List<Preference> getOutdatedPreferences() {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT category_id, description FROM preference WHERE updated=0", null);
-        List<Preference> preferences = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            Preference preference = new Preference(cursor.getInt(0), cursor.getString(1));
-            preference.selected = true;
-            preferences.add(preference);
-        }
-        cursor.close();
-        return preferences;
-    }
-
-    public void marcaPreferenciasComoAtualizadas() {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE preference SET updated=1");
     }
 
     public List<Preference> getSelectedPreferences() {

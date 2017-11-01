@@ -56,7 +56,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayoutLayout;
 
     private String deviceId;
-    private SharedPreferences preferences;
+    private List<Preference> preferences;
 
 //    private Menu overflowMenu;
 
@@ -65,20 +65,19 @@ public class PublicacoesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicacoes);
 
-        preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
-
         deviceId = obtemDeviceId();
+
+        database = MyDatabaseHelper.getInstance(this);
+        database.removeOverduePublications();
+        preferences = database.getSelectedPreferences();
 
         swipeRefreshLayoutLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                obtemPublicacoesDoServidor();
+                fetchPublicationsFromWebService(deviceId, preferences);
             }
         });
-
-        database = MyDatabaseHelper.getInstance(this);
-        database.removeOverduePublications();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +95,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        obtemPublicacoesDoServidor();
+        fetchPublicationsFromWebService(deviceId, preferences);
         broadcastManager.registerReceiver(broadcastReceiver, new IntentFilter(Config.PUSH_NOTIFICATION));
     }
 
@@ -156,7 +155,7 @@ public class PublicacoesActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
-                    obtemPublicacoesDoServidor();
+                    fetchPublicationsFromWebService(deviceId, preferences);
                 }
             }
         };
@@ -187,14 +186,14 @@ public class PublicacoesActivity extends AppCompatActivity {
             @Override
             public void onSwiped(CustomRecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
-                marcaPublicacaoComoVista(position);
+                archivePublication(position);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(rvPublicacoes);
     }
 
-    private void marcaPublicacaoComoVista(int position) {
+    private void archivePublication(int position) {
         Publication publication = publicacoes.get(position);
         publication.archived = true;
         database.savePublication(publication);
@@ -202,12 +201,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         publicacoesAdapter.notifyItemRemoved(position);
     }
 
-    private void obtemPublicacoesDoServidor() {
-        List<Preference> preferences = database.getSelectedPreferences();
-        baixaPublicacoesDoWebservice(deviceId, preferences);
-    }
-
-    private void atualizaListaDePublicacoes(List<Publication> publicacoes) {
+    private void updatePublicationList(List<Publication> publicacoes) {
         for (Publication publication : publicacoes) {
             this.publicacoes.add(publication);
         }
@@ -222,6 +216,7 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private String obtemDeviceId() {
+        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         String deviceId = preferences.getString("device_id", "");
         if (deviceId.equals("")) {
             deviceId = UUID.randomUUID().toString();
@@ -239,20 +234,19 @@ public class PublicacoesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == CidadesActivity.PREFERENCIAS_SELECIONADAS) {
-            // Carrega lista de preferências com "atualizada=0"
-            List<Preference> preferences = database.getOutdatedPreferences();
-            baixaPublicacoesDoWebservice(deviceId, preferences);
+            // get updated preferences
+            preferences = database.getSelectedPreferences();
+            fetchPublicationsFromWebService(deviceId, preferences);
         }
     }
 
-    private void baixaPublicacoesDoWebservice(String deviceId, List<Preference> preferences) {
+    private void fetchPublicationsFromWebService(String deviceId, List<Preference> preferences) {
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
         webservice.obtemPublicacoes(deviceId, preferences, new Callback<List<Publication>>() {
             @Override
             public void onResponse(Call<List<Publication>> call, Response<List<Publication>> response) {
                 database.savePublications(response.body());
-                database.marcaPreferenciasComoAtualizadas();
-                atualizaListaDePublicacoes(response.body());
+                updatePublicationList(response.body());
                 swipeRefreshLayoutLayout.setRefreshing(false);
             }
 

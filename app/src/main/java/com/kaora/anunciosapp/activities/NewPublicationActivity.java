@@ -137,7 +137,6 @@ public class NewPublicationActivity extends AppCompatActivity {
         progressDialog = ProgressDialog.show(NewPublicationActivity.this, "Postando Publicação", "Aguarde...", false, false);
         publication = new Publication();
         populateWithActivityData(publication);
-        database.savePublication(publication);
         postCurrentPublication();
     }
 
@@ -175,7 +174,7 @@ public class NewPublicationActivity extends AppCompatActivity {
         }
     }
 
-    private void sendPublicationToWebservice(Publication publication) {
+    private void sendPublicationToWebservice(final Publication publication) {
         progressDialog.setMessage("Postando Publicação...");
         webservice = ApiRestAdapter.getInstance();
         webservice.publicaPublicacao(publication, new Callback<Publication>() {
@@ -189,6 +188,7 @@ public class NewPublicationActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Publication> call, Throwable t) {
+                database.savePublication(publication);
                 progressDialog.dismiss();
                 Toast.makeText(NewPublicationActivity.this, "Erro ao postar Publicação", Toast.LENGTH_LONG).show();
             }
