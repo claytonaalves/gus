@@ -47,7 +47,7 @@ public class PublicacoesActivity extends AppCompatActivity {
 
     private PublicacoesAdapter publicacoesAdapter;
     private MyDatabaseHelper database;
-    private List<Publication> publicacoes;
+    private List<Publication> publications;
     private CustomRecyclerView rvPublicacoes;
 
     private LocalBroadcastManager broadcastManager;
@@ -88,7 +88,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         });
 
         preparaBroadcastManager();
-        preparaListaDePublicacoes();
+        setupPublicationList();
         iniciaSchedulerRemocaoPublicacoesVencidas();
     }
 
@@ -161,9 +161,9 @@ public class PublicacoesActivity extends AppCompatActivity {
         };
     }
 
-    private void preparaListaDePublicacoes() {
-        publicacoes = database.getSavedPublications();
-        publicacoesAdapter = new PublicacoesAdapter(this, publicacoes);
+    private void setupPublicationList() {
+        publications = database.getSavedPublications();
+        publicacoesAdapter = new PublicacoesAdapter(this, publications);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -194,18 +194,18 @@ public class PublicacoesActivity extends AppCompatActivity {
     }
 
     private void archivePublication(int position) {
-        Publication publication = publicacoes.get(position);
+        Publication publication = publications.get(position);
         publication.archived = true;
         database.savePublication(publication);
-        publicacoes.remove(position);
+        publications.remove(position);
         publicacoesAdapter.notifyItemRemoved(position);
     }
 
     private void updatePublicationList(List<Publication> publicacoes) {
         for (Publication publication : publicacoes) {
-            this.publicacoes.add(publication);
+            this.publications.add(publication);
         }
-        int posicaoUltimoItem = this.publicacoes.size() - 1;
+        int posicaoUltimoItem = this.publications.size() - 1;
         if (publicacoes.size() == 1) {
             publicacoesAdapter.notifyItemInserted(posicaoUltimoItem);
         } else {
