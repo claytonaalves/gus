@@ -26,14 +26,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.ViewHolder> {
+public class PublicationsAdapter extends RecyclerView.Adapter<PublicationsAdapter.ViewHolder> {
 
     private Context context;
-    private List<Publication> publicacoes;
+    private List<Publication> publications;
     private DateFormat df;
 
-    public PublicacoesAdapter(Context context, List<Publication> publicacoes) {
-        this.publicacoes = publicacoes;
+    public PublicationsAdapter(Context context, List<Publication> publications) {
+        this.publications = publications;
         this.context = context;
         this.df = DateFormat.getDateInstance();
     }
@@ -49,7 +49,7 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Publication publication = publicacoes.get(position);
+        Publication publication = publications.get(position);
         holder.tvTitulo.setText(publication.title);
         holder.tvDescricao.setText(publication.description);
         holder.tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publication.publicationDate));
@@ -68,7 +68,7 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
 
     @Override
     public int getItemCount() {
-        return publicacoes.size();
+        return publications.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -93,7 +93,7 @@ public class PublicacoesAdapter extends RecyclerView.Adapter<PublicacoesAdapter.
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Publication publication = publicacoes.get(position);
+                Publication publication = publications.get(position);
                 obtemPublicacaoDoWebservice(publication.publicationGuid);
             }
         }

@@ -1,9 +1,9 @@
 package com.kaora.anunciosapp.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,8 +15,6 @@ import com.kaora.anunciosapp.models.Advertiser;
 
 public class SelectAdvertiserProfileActivity extends AppCompatActivity {
 
-    ListView profilesListView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +22,16 @@ public class SelectAdvertiserProfileActivity extends AppCompatActivity {
 
         MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
 
-        profilesListView = (ListView) findViewById(R.id.lvPerfis);
+        ListView profilesListView = (ListView) findViewById(R.id.lvPerfis);
         profilesListView.setAdapter(new AdvertiserProfileAdapter(database.allProfiles(), this));
 
         Intent intent = getIntent();
-        int modoEdicao = intent.getIntExtra("modoEdicao", 0);
 
-        if (modoEdicao==1) {
+        // This variable defines if this activity was opened with the intention to create
+        // new publication or add/edit profiles.
+        int editMode = intent.getIntExtra("modoEdicao", 0);
+
+        if (editMode == 1) {
             setTitle("Perfis de Anunciante");
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
             fab.setVisibility(View.VISIBLE);

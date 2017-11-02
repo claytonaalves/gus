@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.adapters.PublicacoesAdapter;
+import com.kaora.anunciosapp.adapters.PublicationsAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Preference;
@@ -43,9 +43,9 @@ import retrofit2.Response;
 
 import static com.kaora.anunciosapp.R.id.view_publicacoes_vazia;
 
-public class PublicacoesActivity extends AppCompatActivity {
+public class PublicationListActivity extends AppCompatActivity {
 
-    private PublicacoesAdapter publicacoesAdapter;
+    private PublicationsAdapter publicationsAdapter;
     private MyDatabaseHelper database;
     private List<Publication> publications;
     private CustomRecyclerView rvPublicacoes;
@@ -63,33 +63,17 @@ public class PublicacoesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publicacoes);
+        setContentView(R.layout.activity_publication_list);
 
-        deviceId = obtemDeviceId();
-
+        deviceId = getDeviceId();
         database = MyDatabaseHelper.getInstance(this);
         database.removeOverduePublications();
         preferences = database.getSelectedPreferences();
 
-        swipeRefreshLayoutLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchPublicationsFromWebService(deviceId, preferences);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                criaNovaPublicacao();
-            }
-        });
-
-        preparaBroadcastManager();
+        initializeInterface();
+        initializeBroadcastManager();
         setupPublicationList();
-        iniciaSchedulerRemocaoPublicacoesVencidas();
+        initializeRemoveOverduePublicationsSchedule();
     }
 
     @Override
@@ -134,22 +118,22 @@ public class PublicacoesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_criar_anuncio:
-                criaNovaPublicacao();
+                createNewPublication();
                 break;
             case R.id.action_meus_anuncios:
 //                mostraActivityMeusAnuncios();
                 break;
             case R.id.action_perfis:
-                mostraActivityPerfis();
+                showProfilesActivity();
                 break;
             case R.id.action_configuracoes:
-                mostraActivityCidades();
+                showCitiesActivity();
                 break;
         }
         return true;
     }
 
-    private void preparaBroadcastManager() {
+    private void initializeBroadcastManager() {
         broadcastManager = LocalBroadcastManager.getInstance(this);
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -161,22 +145,40 @@ public class PublicacoesActivity extends AppCompatActivity {
         };
     }
 
+    private void initializeInterface() {
+        swipeRefreshLayoutLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPublicationsFromWebService(deviceId, preferences);
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewPublication();
+            }
+        });
+    }
+
     private void setupPublicationList() {
         publications = database.getSavedPublications();
-        publicacoesAdapter = new PublicacoesAdapter(this, publications);
+        publicationsAdapter = new PublicationsAdapter(this, publications);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvPublicacoes = (CustomRecyclerView) findViewById(R.id.rvPublicacoes);
         rvPublicacoes.setEmptyView(findViewById(view_publicacoes_vazia));
-        rvPublicacoes.setAdapter(publicacoesAdapter);
+        rvPublicacoes.setAdapter(publicationsAdapter);
         rvPublicacoes.setLayoutManager(layoutManager);
-        adicionaFuncionalidadeSwipe(rvPublicacoes);
+        addSwipeFeature(rvPublicacoes);
     }
 
     // Swipe to left/right to delete ad
-    private void adicionaFuncionalidadeSwipe(CustomRecyclerView rvPublicacoes) {
+    private void addSwipeFeature(CustomRecyclerView rvPublicacoes) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -198,24 +200,24 @@ public class PublicacoesActivity extends AppCompatActivity {
         publication.archived = true;
         database.savePublication(publication);
         publications.remove(position);
-        publicacoesAdapter.notifyItemRemoved(position);
+        publicationsAdapter.notifyItemRemoved(position);
     }
 
-    private void updatePublicationList(List<Publication> publicacoes) {
-        for (Publication publication : publicacoes) {
+    private void updatePublicationList(List<Publication> publications) {
+        for (Publication publication : publications) {
             this.publications.add(publication);
         }
-        int posicaoUltimoItem = this.publications.size() - 1;
-        if (publicacoes.size() == 1) {
-            publicacoesAdapter.notifyItemInserted(posicaoUltimoItem);
+        int lastItemPos = this.publications.size() - 1;
+        if (publications.size() == 1) {
+            publicationsAdapter.notifyItemInserted(lastItemPos);
         } else {
-            publicacoesAdapter.notifyDataSetChanged();
+            publicationsAdapter.notifyDataSetChanged();
         }
-        if (posicaoUltimoItem >= 0)
-            rvPublicacoes.smoothScrollToPosition(posicaoUltimoItem);
+        if (lastItemPos >= 0)
+            rvPublicacoes.smoothScrollToPosition(lastItemPos);
     }
 
-    private String obtemDeviceId() {
+    private String getDeviceId() {
         SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         String deviceId = preferences.getString("device_id", "");
         if (deviceId.equals("")) {
@@ -227,7 +229,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         return deviceId;
     }
 
-    private void mostraActivityCidades() {
+    private void showCitiesActivity() {
         startActivityForResult(new Intent(this, CidadesActivity.class), CidadesActivity.PREFERENCIAS_SELECIONADAS);
     }
 
@@ -254,12 +256,12 @@ public class PublicacoesActivity extends AppCompatActivity {
             public void onFailure(Call<List<Publication>> call, Throwable t) {
                 Log.d("erro", t.toString());
                 swipeRefreshLayoutLayout.setRefreshing(false);
-                Toast.makeText(PublicacoesActivity.this, "Falha ao obter publicações!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublicationListActivity.this, "Falha ao obter publicações!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void criaNovaPublicacao() {
+    private void createNewPublication() {
         int qtdePerfisCadastrados = database.allProfiles().size();
         if (qtdePerfisCadastrados == 0) {
             mostraActivityCriacaoPerfil();
@@ -282,7 +284,7 @@ public class PublicacoesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void mostraActivityPerfis() {
+    private void showProfilesActivity() {
         Intent intent = new Intent(this, SelectAdvertiserProfileActivity.class);
         intent.putExtra("modoEdicao", 1);
         startActivity(intent);
@@ -294,7 +296,10 @@ public class PublicacoesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void iniciaSchedulerRemocaoPublicacoesVencidas() {
+    /*
+     * Schedules the removal of overdue publications
+     */
+    private void initializeRemoveOverduePublicationsSchedule() {
         Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
         final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);

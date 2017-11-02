@@ -21,7 +21,7 @@ public class LaunchActivity extends AppCompatActivity {
         Intent intent;
 
         if (database.getPreferences()) {
-            intent = new Intent(this, PublicacoesActivity.class);
+            intent = new Intent(this, PublicationListActivity.class);
         } else {
             intent = new Intent(this, CidadesActivity.class);
             intent.putExtra("configuracaoInicial", true);

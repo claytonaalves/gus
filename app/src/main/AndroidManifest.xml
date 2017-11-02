@@ -28,7 +28,7 @@
             android:name=".activities.CidadesActivity"
             android:label="Anúncios App" />
         <activity
-            android:name=".activities.PublicacoesActivity"
+            android:name=".activities.PublicationListActivity"
             android:label="Publicações" />
         <activity
             android:name=".activities.CategoriasActivity"

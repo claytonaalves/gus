@@ -5,7 +5,7 @@
     android:id="@+id/publicacoes_layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kaora.anunciosapp.activities.PublicacoesActivity">
+    tools:context="com.kaora.anunciosapp.activities.PublicationListActivity">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"

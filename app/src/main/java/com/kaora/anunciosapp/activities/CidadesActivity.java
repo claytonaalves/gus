@@ -90,7 +90,7 @@ public class CidadesActivity extends AppCompatActivity {
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         if (resultCode == PreferenciasActivity.PREFERENCIA_SELECIONADA) {
             if (configuracaoInicial) {
-                Intent intent = new Intent(this, PublicacoesActivity.class);
+                Intent intent = new Intent(this, PublicationListActivity.class);
                 startActivity(intent);
                 finish();
             }
