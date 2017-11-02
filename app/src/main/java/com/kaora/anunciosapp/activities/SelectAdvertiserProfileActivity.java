@@ -47,7 +47,7 @@ public class SelectAdvertiserProfileActivity extends AppCompatActivity {
     }
 
     private void mostraActivityCriacaoPerfil() {
-        Intent intent = new Intent(this, NewAdvertiserActivity.class);
+        Intent intent = new Intent(this, AdvertiserProfileActivity.class);
         startActivity(intent);
     }
 

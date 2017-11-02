@@ -35,11 +35,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewAdvertiserActivity extends AppCompatActivity {
+public class AdvertiserProfileActivity extends AppCompatActivity {
 
     private static final int IMG_REQUEST = 1;
 
-    ImageView imagem;
+    ImageView image;
     EditText etNome;
     EditText etTelefone;
     EditText etCelular;
@@ -52,18 +52,18 @@ public class NewAdvertiserActivity extends AppCompatActivity {
 
     private MyDatabaseHelper database;
     private ApiRestAdapter webservice;
-    private ArrayAdapter<Cidade> cidadeAdapter;
-    private ArrayAdapter<PublicationCategory> categoriaAdapter;
-    final private List<Cidade> cidades = new ArrayList<>();
-    final private List<PublicationCategory> publicationCategories = new ArrayList<>();
+    private ArrayAdapter<Cidade> cityAdapter;
+    private ArrayAdapter<PublicationCategory> categoryAdapter;
+    final private List<Cidade> cities = new ArrayList<>();
+    final private List<PublicationCategory> categories = new ArrayList<>();
     private Uri mediaFileUri;
     private final Advertiser advertiser = new Advertiser();
-    private ProgressDialog progressDialog;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_novo_perfil);
+        setContentView(R.layout.activity_advertiser_profile);
         database = MyDatabaseHelper.getInstance(this);
         webservice = ApiRestAdapter.getInstance();
         inicializaInterface();
@@ -72,11 +72,11 @@ public class NewAdvertiserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        obtemListaDeCidadesDoWebservice();
+        getCitiesFromWebService();
     }
 
     private void inicializaInterface() {
-        imagem = (ImageView) findViewById(R.id.imagem);
+        image = (ImageView) findViewById(R.id.imagem);
         etNome = (EditText) findViewById(R.id.etNome);
         etTelefone = (EditText) findViewById(R.id.etTelefone);
         etCelular = (EditText) findViewById(R.id.etCelular);
@@ -85,8 +85,8 @@ public class NewAdvertiserActivity extends AppCompatActivity {
         etEndereco = (EditText) findViewById(R.id.etEndereco);
         etNumero = (EditText) findViewById(R.id.etNumero);
         etBairro = (EditText) findViewById(R.id.etBairro);
-        criaSpinnerCidades();
-        criaSpinnerCategorias();
+        createCitySpinner();
+        createCategorySpinner();
     }
 
     private String getCellphoneNumber() {
@@ -98,15 +98,15 @@ public class NewAdvertiserActivity extends AppCompatActivity {
         return cellphoneNumber;
     }
 
-    private void criaSpinnerCidades() {
-        cidadeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
-        cidadeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    private void createCitySpinner() {
+        cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cities);
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCidades = (Spinner) findViewById(R.id.spCidade);
-        spCidades.setAdapter(cidadeAdapter);
+        spCidades.setAdapter(cityAdapter);
         spCidades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                obtemListaDeCategoriasDoWebservice(cidades.get(position).idCidade);
+                getCategoriesFromWebService(cities.get(position).idCidade);
             }
 
             @Override
@@ -116,19 +116,19 @@ public class NewAdvertiserActivity extends AppCompatActivity {
         });
     }
 
-    private void criaSpinnerCategorias() {
-        categoriaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, publicationCategories);
-        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    private void createCategorySpinner() {
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategorias = (Spinner) findViewById(R.id.spCategoria);
-        spCategorias.setAdapter(categoriaAdapter);
+        spCategorias.setAdapter(categoryAdapter);
     }
 
-    private void obtemListaDeCidadesDoWebservice() {
+    private void getCitiesFromWebService() {
         webservice.obtemCidades(new Callback<List<Cidade>>() {
 
             @Override
             public void onResponse(Call<List<Cidade>> call, Response<List<Cidade>> response) {
-                atualizaSpinnerCidades(response.body());
+                updateCitySpinner(response.body());
             }
             @Override
             public void onFailure(Call<List<Cidade>> call, Throwable t) {
@@ -137,11 +137,11 @@ public class NewAdvertiserActivity extends AppCompatActivity {
         });
     }
 
-    private void obtemListaDeCategoriasDoWebservice(int idCidade) {
+    private void getCategoriesFromWebService(int idCidade) {
         webservice.obtemCategorias(idCidade, new Callback<List<PublicationCategory>>() {
             @Override
             public void onResponse(Call<List<PublicationCategory>> call, Response<List<PublicationCategory>> response) {
-                atualizaSpinnerCategorias(response.body());
+                updateCategorySpinner(response.body());
             }
 
             @Override
@@ -151,23 +151,23 @@ public class NewAdvertiserActivity extends AppCompatActivity {
         });
     }
 
-    private void atualizaSpinnerCidades(List<Cidade> cidades) {
-        this.cidades.clear();
+    private void updateCitySpinner(List<Cidade> cidades) {
+        this.cities.clear();
         for (Cidade cidade : cidades) {
-            this.cidades.add(cidade);
+            this.cities.add(cidade);
         }
-        cidadeAdapter.notifyDataSetChanged();
+        cityAdapter.notifyDataSetChanged();
     }
 
-    private void atualizaSpinnerCategorias(List<PublicationCategory> publicationCategories) {
-        this.publicationCategories.clear();
+    private void updateCategorySpinner(List<PublicationCategory> publicationCategories) {
+        this.categories.clear();
         for (PublicationCategory publicationCategory : publicationCategories) {
-            this.publicationCategories.add(publicationCategory);
+            this.categories.add(publicationCategory);
         }
-        categoriaAdapter.notifyDataSetChanged();
+        categoryAdapter.notifyDataSetChanged();
     }
 
-    public void iniciaActivitySelecaoImagem(View view) {
+    public void startImageSelectionActivity(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, IMG_REQUEST);
@@ -180,9 +180,9 @@ public class NewAdvertiserActivity extends AppCompatActivity {
             mediaFileUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mediaFileUri);
-                imagem.setImageBitmap(bitmap);
-                imagem.getLayoutParams().height = bitmap.getHeight();
-                imagem.getLayoutParams().width = bitmap.getWidth();
+                image.setImageBitmap(bitmap);
+                image.getLayoutParams().height = bitmap.getHeight();
+                image.getLayoutParams().width = bitmap.getWidth();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -202,34 +202,34 @@ public class NewAdvertiserActivity extends AppCompatActivity {
 
         postCurrentUserProfile();
         database.saveAdvertiserProfile(advertiser);
-        mostraActivityNovaPublicacao(advertiser.advertiserGuid);
+        startNewPublicationActivity(advertiser.advertiserGuid);
     }
 
     private void postCurrentUserProfile() {
-        progressDialog = ProgressDialog.show(NewAdvertiserActivity.this, "Postando Perfil", "Aguarde...", false, false);
+        progress = ProgressDialog.show(AdvertiserProfileActivity.this, "Postando Perfil", "Aguarde...", false, false);
         // if no media file were selected...
         if (mediaFileUri != null) {
-            progressDialog.setMessage("Enviando imagens...");
-            MediaUploadService mediaUpload = new MediaUploadService(NewAdvertiserActivity.this);
+            progress.setMessage("Enviando imagens...");
+            MediaUploadService mediaUpload = new MediaUploadService(AdvertiserProfileActivity.this);
             mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.ADVERTISER_IMAGE_UPLOAD);
         } else {
             sendAdvertiserProfileToWebservice(advertiser);
         }
     }
 
-    private void mostraActivityNovaPublicacao(String guidAnunciante) {
+    private void startNewPublicationActivity(String guidAnunciante) {
         Intent intent = new Intent(this, NewPublicationActivity.class);
         intent.putExtra("guid_anunciante", guidAnunciante);
         startActivity(intent);
     }
 
-    private void fechaActivity() {
+    private void closeThisActivity() {
         Thread thread = new Thread() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(3500);
-                    NewAdvertiserActivity.this.finish();
+                    AdvertiserProfileActivity.this.finish();
                 } catch (Exception e) {
 
                 }
@@ -247,8 +247,8 @@ public class NewAdvertiserActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
-            progressDialog.dismiss();
-            Toast.makeText(NewAdvertiserActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
+            progress.dismiss();
+            Toast.makeText(AdvertiserProfileActivity.this, "Erro ao enviar Imagem", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -260,14 +260,14 @@ public class NewAdvertiserActivity extends AppCompatActivity {
                 Advertiser advertiser = response.body();
                 advertiser.published = true;
                 database.saveAdvertiserProfile(advertiser);
-                progressDialog.dismiss();
-                fechaActivity();
+                progress.dismiss();
+                closeThisActivity();
             }
 
             @Override
             public void onFailure(Call<Advertiser> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(NewAdvertiserActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
+                progress.dismiss();
+                Toast.makeText(AdvertiserProfileActivity.this, "Erro ao publicar perfil", Toast.LENGTH_LONG).show();
             }
         });
     }

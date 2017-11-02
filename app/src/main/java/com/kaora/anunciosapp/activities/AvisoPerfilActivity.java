@@ -22,7 +22,7 @@ public class AvisoPerfilActivity extends AppCompatActivity {
         btCriarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AvisoPerfilActivity.this, NewAdvertiserActivity.class);
+                Intent intent = new Intent(AvisoPerfilActivity.this, AdvertiserProfileActivity.class);
                 startActivity(intent);
                 finish();
             }

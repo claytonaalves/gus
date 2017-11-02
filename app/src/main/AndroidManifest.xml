@@ -45,7 +45,7 @@
             android:name=".activities.AvisoPerfilActivity"
             android:label="Perfil" />
         <activity
-            android:name=".activities.NewAdvertiserActivity"
+            android:name=".activities.AdvertiserProfileActivity"
             android:label="Novo perfil" />
         <activity
             android:name=".activities.SelectAdvertiserProfileActivity"

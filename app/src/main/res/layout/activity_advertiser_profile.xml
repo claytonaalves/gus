@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context="com.kaora.anunciosapp.activities.NewAdvertiserActivity">
+    tools:context="com.kaora.anunciosapp.activities.AdvertiserProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="iniciaActivitySelecaoImagem"
+                android:onClick="startImageSelectionActivity"
                 android:src="@drawable/camera" />
 
             <TextView
