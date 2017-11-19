@@ -164,12 +164,12 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void mostraActivitySelecaoPerfil() {
-        Intent intent = new Intent(this, SelectAdvertiserProfileActivity.class);
+        Intent intent = new Intent(this, ProfilesListActivity.class);
         startActivity(intent);
     }
 
     private void mostraActivityPerfis() {
-        Intent intent = new Intent(this, SelectAdvertiserProfileActivity.class);
+        Intent intent = new Intent(this, ProfilesListActivity.class);
         intent.putExtra("modoEdicao", 1);
         startActivity(intent);
     }

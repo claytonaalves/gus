@@ -13,12 +13,12 @@ import com.kaora.anunciosapp.adapters.AdvertiserProfileAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
 
-public class SelectAdvertiserProfileActivity extends AppCompatActivity {
+public class ProfilesListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selecionar_perfil);
+        setContentView(R.layout.activity_profile_list);
 
         MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
 
@@ -29,48 +29,55 @@ public class SelectAdvertiserProfileActivity extends AppCompatActivity {
 
         // This variable defines if this activity was opened with the intention to create
         // new publication or add/edit profiles.
-        int editMode = intent.getIntExtra("modoEdicao", 0);
+        boolean manageProfilesMode = intent.getBooleanExtra("manage_profiles_mode", false);
 
-        if (editMode == 1) {
+        if (manageProfilesMode) {
             setTitle("Perfis de Anunciante");
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
             fab.setVisibility(View.VISIBLE);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mostraActivityCriacaoPerfil();
+                    startNewProfileActivity();
                 }
             });
-            profilesListView.setOnItemClickListener(new EdicaoPerfilClickHandler());
+            profilesListView.setOnItemClickListener(new EditProfileClickHandler());
         } else {
-            profilesListView.setOnItemClickListener(new SelecaoPerfilClickHandler());
+            profilesListView.setOnItemClickListener(new SelectProfileClickHandler());
         }
     }
 
-    private void mostraActivityCriacaoPerfil() {
+    private void startNewProfileActivity() {
         Intent intent = new Intent(this, AdvertiserProfileActivity.class);
         startActivity(intent);
     }
 
-    private void mostraActivityNovaPublicacao(String guidAnunciante) {
+    private void startEditProfileActivity(Advertiser profile) {
+        Intent intent = new Intent(this, AdvertiserProfileActivity.class);
+        intent.putExtra("advertiser", profile);
+        startActivity(intent);
+    }
+
+    private void startNewPublicationActivity(String guidAnunciante) {
         Intent intent = new Intent(this, NewPublicationActivity.class);
         intent.putExtra("guid_anunciante", guidAnunciante);
         startActivity(intent);
         finish();
     }
 
-    private class SelecaoPerfilClickHandler implements AdapterView.OnItemClickListener {
+    private class SelectProfileClickHandler implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Advertiser perfil = (Advertiser) view.getTag();
-            mostraActivityNovaPublicacao(perfil.advertiserGuid);
+            Advertiser profile = (Advertiser) view.getTag();
+            startNewPublicationActivity(profile.advertiserGuid);
         }
     }
 
-    private class EdicaoPerfilClickHandler implements AdapterView.OnItemClickListener {
+    private class EditProfileClickHandler implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // TODO: abrir perfil para edição
+            Advertiser profile = (Advertiser) view.getTag();
+            startEditProfileActivity(profile);
         }
     }
 

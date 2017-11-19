@@ -39,16 +39,16 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
 
     private static final int IMG_REQUEST = 1;
 
-    ImageView image;
-    EditText etNome;
-    EditText etTelefone;
-    EditText etCelular;
-    EditText etEmail;
-    EditText etEndereco;
-    EditText etNumero;
-    EditText etBairro;
-    Spinner spCategorias;
-    Spinner spCidades;
+    private ImageView profileImage;
+    private EditText tradingNameEditText;
+    private EditText phoneNumberEditText;
+    private EditText cellphoneEditText;
+    private EditText emailEditText;
+    private EditText streetNameEditText;
+    private EditText addressNumberEditText;
+    private EditText neighbourhoodEditText;
+    private Spinner categorySpinner;
+    private Spinner citySpinner;
 
     private MyDatabaseHelper database;
     private ApiRestAdapter webservice;
@@ -57,8 +57,10 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
     final private List<Cidade> cities = new ArrayList<>();
     final private List<PublicationCategory> categories = new ArrayList<>();
     private Uri mediaFileUri;
-    private final Advertiser advertiser = new Advertiser();
     private ProgressDialog progress;
+
+    private Advertiser advertiser;
+    private boolean editMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,19 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_advertiser_profile);
         database = MyDatabaseHelper.getInstance(this);
         webservice = ApiRestAdapter.getInstance();
-        inicializaInterface();
+
+        initializeInterface();
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("advertiser")) {
+            advertiser = (Advertiser) intent.getSerializableExtra("advertiser");
+            editMode = true;
+        } else {
+            advertiser = new Advertiser();
+            advertiser.cellphone = getCellphoneNumber();
+            editMode = false;
+        }
+        updateInterfaceData();
     }
 
     @Override
@@ -75,18 +89,41 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         getCitiesFromWebService();
     }
 
-    private void inicializaInterface() {
-        image = (ImageView) findViewById(R.id.imagem);
-        etNome = (EditText) findViewById(R.id.etNome);
-        etTelefone = (EditText) findViewById(R.id.etTelefone);
-        etCelular = (EditText) findViewById(R.id.etCelular);
-        etCelular.setText(getCellphoneNumber());
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etEndereco = (EditText) findViewById(R.id.etEndereco);
-        etNumero = (EditText) findViewById(R.id.etNumero);
-        etBairro = (EditText) findViewById(R.id.etBairro);
+    private void initializeInterface() {
+        profileImage = (ImageView) findViewById(R.id.imagem);
+        tradingNameEditText = (EditText) findViewById(R.id.etNome);
+        phoneNumberEditText = (EditText) findViewById(R.id.etTelefone);
+        cellphoneEditText = (EditText) findViewById(R.id.etCelular);
+        emailEditText = (EditText) findViewById(R.id.etEmail);
+        streetNameEditText = (EditText) findViewById(R.id.etEndereco);
+        addressNumberEditText = (EditText) findViewById(R.id.etNumero);
+        neighbourhoodEditText = (EditText) findViewById(R.id.etBairro);
         createCitySpinner();
         createCategorySpinner();
+    }
+
+    private void updateInterfaceData() {
+        tradingNameEditText.setText(advertiser.tradingName);
+        phoneNumberEditText.setText(advertiser.phoneNumber);
+        cellphoneEditText.setText(advertiser.cellphone);
+        emailEditText.setText(advertiser.email);
+        streetNameEditText.setText(advertiser.streetName);
+        addressNumberEditText.setText(advertiser.addressNumber);
+        neighbourhoodEditText.setText(advertiser.neighbourhood);
+        citySpinner.setSelection(advertiser.cityId);
+        categorySpinner.setSelection(advertiser.categoryId);
+    }
+
+    private void loadDataFromInterface() {
+        advertiser.tradingName = tradingNameEditText.getText().toString();
+        advertiser.phoneNumber = phoneNumberEditText.getText().toString();
+        advertiser.cellphone = cellphoneEditText.getText().toString();
+        advertiser.email = emailEditText.getText().toString();
+        advertiser.streetName = streetNameEditText.getText().toString();
+        advertiser.addressNumber = addressNumberEditText.getText().toString();
+        advertiser.neighbourhood = neighbourhoodEditText.getText().toString();
+        advertiser.cityId = ((Cidade) citySpinner.getSelectedItem()).idCidade;
+        advertiser.categoryId = ((PublicationCategory) categorySpinner.getSelectedItem()).idCategoria;
     }
 
     private String getCellphoneNumber() {
@@ -101,9 +138,9 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
     private void createCitySpinner() {
         cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cities);
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCidades = (Spinner) findViewById(R.id.spCidade);
-        spCidades.setAdapter(cityAdapter);
-        spCidades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        citySpinner = (Spinner) findViewById(R.id.spCidade);
+        citySpinner.setAdapter(cityAdapter);
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 getCategoriesFromWebService(cities.get(position).idCidade);
@@ -119,8 +156,8 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
     private void createCategorySpinner() {
         categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategorias = (Spinner) findViewById(R.id.spCategoria);
-        spCategorias.setAdapter(categoryAdapter);
+        categorySpinner = (Spinner) findViewById(R.id.spCategoria);
+        categorySpinner.setAdapter(categoryAdapter);
     }
 
     private void getCitiesFromWebService() {
@@ -169,7 +206,7 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
 
     public void startImageSelectionActivity(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
+        intent.setType("profileImage/*");
         startActivityForResult(intent, IMG_REQUEST);
     }
 
@@ -180,9 +217,9 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
             mediaFileUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mediaFileUri);
-                image.setImageBitmap(bitmap);
-                image.getLayoutParams().height = bitmap.getHeight();
-                image.getLayoutParams().width = bitmap.getWidth();
+                profileImage.setImageBitmap(bitmap);
+                profileImage.getLayoutParams().height = bitmap.getHeight();
+                profileImage.getLayoutParams().width = bitmap.getWidth();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -190,19 +227,12 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
     }
 
     public void saveAdvertiserProfile(View view) {
-        advertiser.tradingName = etNome.getText().toString();
-        advertiser.phoneNumber = etTelefone.getText().toString();
-        advertiser.cellphone = etCelular.getText().toString();
-        advertiser.email = etEmail.getText().toString();
-        advertiser.streetName = etEndereco.getText().toString();
-        advertiser.addressNumber = etNumero.getText().toString();
-        advertiser.neighbourhood = etBairro.getText().toString();
-        advertiser.cityId = ((Cidade) spCidades.getSelectedItem()).idCidade;
-        advertiser.categoryId = ((PublicationCategory) spCategorias.getSelectedItem()).idCategoria;
-
+        loadDataFromInterface();
         postCurrentUserProfile();
         database.saveAdvertiserProfile(advertiser);
-        startNewPublicationActivity(advertiser.advertiserGuid);
+        if (!editMode) {
+            startNewPublicationActivity(advertiser.advertiserGuid);
+        }
     }
 
     private void postCurrentUserProfile() {

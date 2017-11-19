@@ -124,7 +124,7 @@ public class PublicationListActivity extends AppCompatActivity {
 //                mostraActivityMeusAnuncios();
                 break;
             case R.id.action_perfis:
-                showProfilesActivity();
+                startManageProfilesActivity();
                 break;
             case R.id.action_configuracoes:
                 showCitiesActivity();
@@ -268,7 +268,7 @@ public class PublicationListActivity extends AppCompatActivity {
         } else if (qtdePerfisCadastrados == 1) {
             mostraActivityNovoAnuncio();
         } else {
-            mostraActivitySelecaoPerfil();
+            startSelectProfileActivity();
         }
     }
 
@@ -284,15 +284,14 @@ public class PublicationListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showProfilesActivity() {
-        Intent intent = new Intent(this, SelectAdvertiserProfileActivity.class);
-        intent.putExtra("modoEdicao", 1);
+    private void startManageProfilesActivity() {
+        Intent intent = new Intent(this, ProfilesListActivity.class);
+        intent.putExtra("manage_profiles_mode", true);
         startActivity(intent);
     }
 
-    private void mostraActivitySelecaoPerfil() {
-        Intent intent = new Intent(this, SelectAdvertiserProfileActivity.class);
-        intent.putExtra("modoEdicao", 0);
+    private void startSelectProfileActivity() {
+        Intent intent = new Intent(this, ProfilesListActivity.class);
         startActivity(intent);
     }
 

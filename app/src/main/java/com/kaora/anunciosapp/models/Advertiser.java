@@ -47,6 +47,16 @@ public class Advertiser implements Serializable {
 
     public Advertiser() {
         this.advertiserGuid = UUID.randomUUID().toString();
+        this.cityId = 0;
+        this.categoryId = 0;
+        this.companyName = "";
+        this.tradingName = "";
+        this.phoneNumber = "";
+        this.cellphone = "";
+        this.email = "";
+        this.streetName = "";
+        this.addressNumber = "S/N";
+        this.neighbourhood = "Centro";
     }
 
     @Override

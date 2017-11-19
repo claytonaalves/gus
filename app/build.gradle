@@ -14,12 +14,13 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'String', 'API_URL', '"http://10.1.1.102"'
+//            buildConfigField 'String', 'API_URL', '"http://10.1.1.102"'
+            buildConfigField 'String', 'API_URL', '"http://45.55.73.76:8080"'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'API_URL', '"http://177.221.202.42:8080"'
+            buildConfigField 'String', 'API_URL', '"http://45.55.73.76:8080"'
         }
     }
 }
