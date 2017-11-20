@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PublicationActivity extends AppCompatActivity {
+public class PublicationDetailActivity extends AppCompatActivity {
 
     private Publication publication;
 
@@ -56,7 +56,7 @@ public class PublicationActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Publication> call, Throwable t) {
-                Toast.makeText(PublicationActivity.this, "Falha ao baixar Publicação", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublicationDetailActivity.this, "Falha ao baixar Publicação", Toast.LENGTH_SHORT).show();
             }
         });
     }
