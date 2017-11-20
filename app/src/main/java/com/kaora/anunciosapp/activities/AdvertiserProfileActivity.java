@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
@@ -75,18 +76,19 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         if (intent.hasExtra("advertiser")) {
             advertiser = (Advertiser) intent.getSerializableExtra("advertiser");
             editMode = true;
+            setTitle("Editando Perfil");
         } else {
             advertiser = new Advertiser();
             advertiser.cellphone = getCellphoneNumber();
             editMode = false;
         }
-        updateInterfaceData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         getCitiesFromWebService();
+        updateInterfaceData();
     }
 
     private void initializeInterface() {
@@ -110,8 +112,35 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         streetNameEditText.setText(advertiser.streetName);
         addressNumberEditText.setText(advertiser.addressNumber);
         neighbourhoodEditText.setText(advertiser.neighbourhood);
-        citySpinner.setSelection(advertiser.cityId);
-        categorySpinner.setSelection(advertiser.categoryId);
+
+        if (!(advertiser.imageFile == null) && (!advertiser.imageFile.equals(""))) {
+            SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem);
+            imagem.setImageURI(ApiRestAdapter.ADVERTISERS_IMAGE_PATH + advertiser.imageFile);
+        }
+    }
+
+    private int getCityIndexFromId(int cityId) {
+        if (cities.size() == 0) return 0;
+        Cidade city;
+        for (int i = 0; i < cities.size(); i++) {
+            city = cities.get(i);
+            if (city.idCidade == cityId) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private int getCategoryIndexFromId(int categoryId) {
+        if (categories.size() == 0) return 0;
+        PublicationCategory category;
+        for (int i = 0; i < categories.size(); i++) {
+            category = categories.get(i);
+            if (category.idCategoria == categoryId) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void loadDataFromInterface() {
@@ -194,6 +223,7 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
             this.cities.add(cidade);
         }
         cityAdapter.notifyDataSetChanged();
+        citySpinner.setSelection(getCityIndexFromId(advertiser.cityId));
     }
 
     private void updateCategorySpinner(List<PublicationCategory> publicationCategories) {
@@ -202,6 +232,7 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
             this.categories.add(publicationCategory);
         }
         categoryAdapter.notifyDataSetChanged();
+        categorySpinner.setSelection(getCategoryIndexFromId(advertiser.categoryId));
     }
 
     public void startImageSelectionActivity(View view) {
@@ -227,16 +258,19 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
     }
 
     public void saveAdvertiserProfile(View view) {
+        progress = ProgressDialog.show(AdvertiserProfileActivity.this,
+                "Atualizando Perfil", "Aguarde...", false, false);
         loadDataFromInterface();
         postCurrentUserProfile();
         database.saveAdvertiserProfile(advertiser);
-        if (!editMode) {
+        if (editMode) {
+            closeThisActivity();
+        } else {
             startNewPublicationActivity(advertiser.advertiserGuid);
         }
     }
 
     private void postCurrentUserProfile() {
-        progress = ProgressDialog.show(AdvertiserProfileActivity.this, "Postando Perfil", "Aguarde...", false, false);
         // if no media file were selected...
         if (mediaFileUri != null) {
             progress.setMessage("Enviando imagens...");
@@ -259,6 +293,7 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
             public void run() {
                 try {
                     Thread.sleep(3500);
+                    progress.dismiss();
                     AdvertiserProfileActivity.this.finish();
                 } catch (Exception e) {
 
@@ -290,7 +325,6 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
                 Advertiser advertiser = response.body();
                 advertiser.published = true;
                 database.saveAdvertiserProfile(advertiser);
-                progress.dismiss();
                 closeThisActivity();
             }
 

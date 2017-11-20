@@ -162,8 +162,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public Advertiser getProfileByGuid(String advertiserGuid) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT advertiser_guid, trading_name, category_id " +
-                                    "FROM advertiser " +
+        Cursor cursor = db.rawQuery("SELECT * FROM advertiser " +
                                     "WHERE advertiser_guid='" + advertiserGuid + "'", null);
         cursor.moveToNext();
         Advertiser advertiser = extractAdvertiserFromCursor(cursor);
@@ -177,6 +176,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         profile.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
         profile.categoryId = cursor.getInt(cursor.getColumnIndex("category_id"));
         profile.tradingName = cursor.getString(cursor.getColumnIndex("trading_name"));
+        profile.phoneNumber = cursor.getString(cursor.getColumnIndex("phone_number"));
+        profile.cellphone = cursor.getString(cursor.getColumnIndex("cellphone"));
+        profile.email = cursor.getString(cursor.getColumnIndex("email"));
+        profile.streetName = cursor.getString(cursor.getColumnIndex("street_name"));
+        profile.addressNumber = cursor.getString(cursor.getColumnIndex("address_number"));
+        profile.neighbourhood = cursor.getString(cursor.getColumnIndex("neighbourhood"));
+        profile.cityId = cursor.getInt(cursor.getColumnIndex("city_id"));
         profile.imageFile = cursor.getString(cursor.getColumnIndex("image_file"));
         return profile;
     }

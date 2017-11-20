@@ -15,22 +15,30 @@ import com.kaora.anunciosapp.models.Advertiser;
 
 public class ProfilesListActivity extends AppCompatActivity {
 
+    private ListView profilesListView;
+    private boolean manageProfilesMode;
+    private MyDatabaseHelper database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_list);
 
-        MyDatabaseHelper database = MyDatabaseHelper.getInstance(this);
-
-        ListView profilesListView = (ListView) findViewById(R.id.lvPerfis);
-        profilesListView.setAdapter(new AdvertiserProfileAdapter(database.allProfiles(), this));
+        database = MyDatabaseHelper.getInstance(this);
 
         Intent intent = getIntent();
 
         // This variable defines if this activity was opened with the intention to create
         // new publication or add/edit profiles.
-        boolean manageProfilesMode = intent.getBooleanExtra("manage_profiles_mode", false);
+        manageProfilesMode = intent.getBooleanExtra("manage_profiles_mode", false);
 
+        profilesListView = (ListView) findViewById(R.id.lvPerfis);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        profilesListView.setAdapter(new AdvertiserProfileAdapter(database.allProfiles(), this));
         if (manageProfilesMode) {
             setTitle("Perfis de Anunciante");
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
