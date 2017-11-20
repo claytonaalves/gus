@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.activities.PublicacaoActivity;
+import com.kaora.anunciosapp.activities.PublicationActivity;
 import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.utils.DateUtils;
@@ -104,7 +104,7 @@ public class PublicationsAdapter extends RecyclerView.Adapter<PublicationsAdapte
                 @Override
                 public void onResponse(Call<Publication> call, Response<Publication> response) {
                     Publication publication = response.body();
-                    Intent intent = new Intent(context, PublicacaoActivity.class);
+                    Intent intent = new Intent(context, PublicationActivity.class);
                     intent.putExtra("publication", publication);
                     context.startActivity(intent);
                 }

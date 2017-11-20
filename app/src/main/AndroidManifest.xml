@@ -54,19 +54,15 @@
             android:name=".activities.NewPublicationActivity"
             android:label="Nova Publicação" />
         <activity
-            android:name=".activities.AnuncioPublicado"
-            android:label="@string/title_activity_anuncio_publicado"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".activities.PublicationActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="ACTION_NOVO_ANUNCIO" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
 
-        <activity
-            android:name=".activities.PublicacaoActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        </activity>
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>

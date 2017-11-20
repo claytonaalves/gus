@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
@@ -20,7 +21,11 @@ import com.kaora.anunciosapp.utils.DateUtils;
 
 import java.text.DateFormat;
 
-public class PublicacaoActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class PublicationActivity extends AppCompatActivity {
 
     private Publication publication;
 
@@ -29,8 +34,31 @@ public class PublicacaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicacao);
 
-        publication = (Publication) getIntent().getSerializableExtra("publication");
-        atualizaDadosPublicacao(publication);
+        Intent intent = getIntent();
+
+        if (intent.hasExtra("publication")) {
+            publication = (Publication) intent.getSerializableExtra("publication");
+            atualizaDadosPublicacao(publication);
+        } else {
+            String guidPublicacao = intent.getStringExtra("guid_publicacao");
+            obtemPublicacaoDoWebservice(guidPublicacao);
+        }
+    }
+
+    private void obtemPublicacaoDoWebservice(String guidPublicacao) {
+        ApiRestAdapter webservice = ApiRestAdapter.getInstance();
+        webservice.obtemPublicacao(guidPublicacao, new Callback<Publication>() {
+            @Override
+            public void onResponse(Call<Publication> call, Response<Publication> response) {
+                Publication publication = response.body();
+                atualizaDadosPublicacao(publication);
+            }
+
+            @Override
+            public void onFailure(Call<Publication> call, Throwable t) {
+                Toast.makeText(PublicationActivity.this, "Falha ao baixar Publicação", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void atualizaDadosPublicacao(Publication publication) {

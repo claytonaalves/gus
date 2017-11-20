@@ -111,7 +111,7 @@ public class NewPublicationActivity extends AppCompatActivity {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    public void iniciaActivitySelecaoImagem(View view) {
+    public void startImageSelectionActivity(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Selecione a foto"), IMG_REQUEST);
