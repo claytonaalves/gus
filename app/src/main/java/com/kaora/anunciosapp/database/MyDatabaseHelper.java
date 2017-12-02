@@ -16,6 +16,7 @@ import com.kaora.anunciosapp.utils.DateUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
@@ -47,9 +48,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "description TEXT, " +
             "publication_date INTEGER NOT NULL, " +
             "due_date INTEGER NOT NULL, " +
-            "image_file TEXT, " +
             "archived INTEGER NOT NULL DEFAULT 0, " +
             "published INTEGER )";
+
+    private static final String PUBLICATION_IMAGES_TABLE = "" +
+            "CREATE TABLE publication_image ( " +
+            "image_guid TEXT, " +
+            "publication_guid TEXT, " +
+            "filename TEXT) ";
 
     private static final String ADVERTISER_TABLE = "" +
             "CREATE TABLE advertiser ( " +
@@ -83,6 +89,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(PREFERENCES_TABLE);
         db.execSQL(ADVERTISER_TABLE);
         db.execSQL(PUBLICATIONS_TABLE);
+        db.execSQL(PUBLICATION_IMAGES_TABLE);
     }
 
     @Override
@@ -247,22 +254,38 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void savePublication(Publication publication) {
-        int rowsAffected = updatePublication(publication);
+        SQLiteDatabase db = getWritableDatabase();
+        int rowsAffected = updatePublication(publication, db);
         if (rowsAffected == 0) {
-            insertPublication(publication);
+            insertPublication(publication, db);
         }
+        updatePublicationImages(publication, db);
     }
 
-    private void insertPublication(Publication publication) {
+    private void insertPublication(Publication publication, SQLiteDatabase db) {
         ContentValues values = createPublicationContentValues(publication);
-        SQLiteDatabase db = getWritableDatabase();
         db.insert("publication", null, values);
     }
 
-    private int updatePublication(Publication publication) {
-        SQLiteDatabase db = getWritableDatabase();
+    private int updatePublication(Publication publication, SQLiteDatabase db) {
         ContentValues values = createPublicationContentValues(publication);
         return db.update("publication", values, "publication_guid=?", new String[] {publication.publicationGuid});
+    }
+
+    private void updatePublicationImages(Publication publication, SQLiteDatabase db) {
+        // Remove old images
+        db.execSQL("DELETE FROM publication_image WHERE publication_guid='" + publication.publicationGuid + "'");
+
+        if (!publication.hasImages()) return;
+
+        // Re-insert images
+        for (String filename : publication.images) {
+            ContentValues values = new ContentValues();
+            values.put("image_guid", UUID.randomUUID().toString());
+            values.put("publication_guid", publication.publicationGuid);
+            values.put("filename", filename);
+            db.insert("publication_image", null, values);
+        }
     }
 
     private ContentValues createPublicationContentValues(Publication publication) {
@@ -274,19 +297,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put("category_id", publication.category_id);
         values.put("publication_date", DateUtils.dateToString(publication.publicationDate));
         values.put("due_date", DateUtils.dateToString(publication.dueDate));
-        values.put("image_file", publication.imageFile);
         values.put("published", (publication.published ? 1 : 0));
         values.put("archived", (publication.archived ? 1 : 0));
         return values;
     }
 
-    // Retorna a lista de publicações não arquivadas
+    // Returns a list if non archived publications
     public List<Publication> getSavedPublications() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM publication WHERE archived=0 ORDER BY publication_date", null);
         List<Publication> publications = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Publication publication = getPublicationFromCursor(cursor);
+            Publication publication = loadPublicationFromCursor(cursor);
+            loadImagesForPublication(publication, db);
             publications.add(publication);
         }
         cursor.close();
@@ -297,11 +320,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 //        SQLiteDatabase db = getReadableDatabase();
 //        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE guid_publicacao='" + guidPublicacao + "'", null);
 //        cursor.moveToNext();
-//        return getPublicationFromCursor(cursor);
+//        return loadPublicationFromCursor(cursor);
 //    }
 
     @NonNull
-    private Publication getPublicationFromCursor(Cursor cursor) {
+    private Publication loadPublicationFromCursor(Cursor cursor) {
         Publication publication = new Publication();
         publication.publicationGuid = cursor.getString(cursor.getColumnIndex("publication_guid"));
         publication.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
@@ -310,8 +333,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         publication.description = cursor.getString(cursor.getColumnIndex("description"));
         publication.publicationDate = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("publication_date")));
         publication.dueDate = DateUtils.stringToDate(cursor.getString(cursor.getColumnIndex("due_date")));
-        publication.imageFile = cursor.getString(cursor.getColumnIndex("image_file"));
         return publication;
+    }
+
+    private void loadImagesForPublication(Publication publication, SQLiteDatabase db) {
+        Cursor cursor = db.query("publication_image",
+                                 new String[] {"filename"},
+                                 "publication_guid=?",
+                                 new String[] {publication.publicationGuid},
+                                 null, null, null, null);
+        while (cursor.moveToNext()) {
+            publication.images.add(cursor.getString(0));
+        }
+        cursor.close();
     }
 
     public void removeOverduePublications() {

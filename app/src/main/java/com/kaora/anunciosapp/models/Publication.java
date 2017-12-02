@@ -3,7 +3,9 @@ package com.kaora.anunciosapp.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class Publication implements Serializable {
@@ -29,8 +31,8 @@ public class Publication implements Serializable {
     @SerializedName(value = "data_validade")
     public Date dueDate;
 
-    @SerializedName(value = "imagem")
-    public String imageFile;
+    @SerializedName(value = "imagens")
+    public List<String> images;
 
     @SerializedName(value = "anunciante")
     public Advertiser advertiser;
@@ -41,6 +43,11 @@ public class Publication implements Serializable {
     public Publication() {
         this.publicationGuid = UUID.randomUUID().toString();
         this.publicationDate = new Date();
+        this.images = new ArrayList<>();
+    }
+
+    public boolean hasImages() {
+        return this.images.size()>0;
     }
 
     public void setDueDate(Date dueDate) {

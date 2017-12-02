@@ -163,7 +163,7 @@ public class NewPublicationActivity extends AppCompatActivity {
     private class MediaTransferResponseHandler extends MediaUploadService.MediaSentEvent implements Callback<ResponseBody> {
         @Override
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            publication.imageFile = mediaFileName;
+//            publication.imageFile = mediaFileName;
             sendPublicationToWebservice(publication);
         }
 
