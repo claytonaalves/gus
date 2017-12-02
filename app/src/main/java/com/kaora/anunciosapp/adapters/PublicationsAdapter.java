@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
@@ -21,10 +20,6 @@ import com.kaora.anunciosapp.utils.DateUtils;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PublicationsAdapter extends RecyclerView.Adapter<PublicationsAdapter.ViewHolder> {
 
@@ -61,6 +56,8 @@ public class PublicationsAdapter extends RecyclerView.Adapter<PublicationsAdapte
             } else {
                 holder.draweeView.setImageResource(R.drawable.photo_gray);
             }
+        } else {
+            holder.draweeView.setImageResource(R.drawable.photo_gray);
         }
     }
 
@@ -97,26 +94,10 @@ public class PublicationsAdapter extends RecyclerView.Adapter<PublicationsAdapte
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Publication publication = publications.get(position);
-                obtemPublicacaoDoWebservice(publication.publicationGuid);
+                Intent intent = new Intent(context, PublicationDetailActivity.class);
+                intent.putExtra("publication", publication);
+                context.startActivity(intent);
             }
-        }
-
-        private void obtemPublicacaoDoWebservice(String guidPublicacao) {
-            ApiRestAdapter webservice = ApiRestAdapter.getInstance();
-            webservice.obtemPublicacao(guidPublicacao, new Callback<Publication>() {
-                @Override
-                public void onResponse(Call<Publication> call, Response<Publication> response) {
-                    Publication publication = response.body();
-                    Intent intent = new Intent(context, PublicationDetailActivity.class);
-                    intent.putExtra("publication", publication);
-                    context.startActivity(intent);
-                }
-
-                @Override
-                public void onFailure(Call<Publication> call, Throwable t) {
-                    Toast.makeText(context, "Falha ao baixar Publicação", Toast.LENGTH_SHORT).show();
-                }
-            });
         }
 
     }

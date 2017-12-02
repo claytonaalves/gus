@@ -42,6 +42,8 @@ public class Advertiser implements Serializable {
     @SerializedName(value = "picture_file")
     public String imageFile;
 
+    public boolean localProfile;
+
     public transient boolean published = false;
     public transient int position;
 
@@ -57,6 +59,7 @@ public class Advertiser implements Serializable {
         this.streetName = "";
         this.addressNumber = "S/N";
         this.neighbourhood = "Centro";
+        this.localProfile = false;
     }
 
     @Override

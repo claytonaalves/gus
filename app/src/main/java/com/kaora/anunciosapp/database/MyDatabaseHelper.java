@@ -70,7 +70,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "city_id INTEGER, " +
             "category_id INTEGER, " +
             "image_file TEXT, " +
-            "published INTEGER )";
+            "published INTEGER, " +
+            "local_profile INTEGER)";
 
     private MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -115,30 +116,30 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // ========================================================================
-    // Advertiser Profiles
+    // Advertisers
     // ========================================================================
 
-    public void saveAdvertiserProfile(Advertiser advertiser) {
-        int rowsAffected = updateAdvertiserProfile(advertiser);
+    public void saveAdvertiser(Advertiser advertiser) {
+        int rowsAffected = updateAdvertiser(advertiser);
         if (rowsAffected == 0) {
-            insertAdvertiserProfile(advertiser);
+            insertAdvertiser(advertiser);
         }
     }
 
-    private int updateAdvertiserProfile(Advertiser advertiser) {
+    private int updateAdvertiser(Advertiser advertiser) {
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = createAdvertiserProfileContentValues(advertiser);
+        ContentValues values = createAdvertiserContentValues(advertiser);
         return db.update("advertiser", values, "advertiser_guid=?", new String[] {advertiser.advertiserGuid});
     }
 
-    private void insertAdvertiserProfile(Advertiser advertiser) {
-        ContentValues values = createAdvertiserProfileContentValues(advertiser);
+    private void insertAdvertiser(Advertiser advertiser) {
+        ContentValues values = createAdvertiserContentValues(advertiser);
         SQLiteDatabase db = getWritableDatabase();
         db.insert("advertiser", null, values);
     }
 
     @NonNull
-    private ContentValues createAdvertiserProfileContentValues(Advertiser advertiserProfile) {
+    private ContentValues createAdvertiserContentValues(Advertiser advertiserProfile) {
         ContentValues values = new ContentValues();
         values.put("advertiser_guid", advertiserProfile.advertiserGuid);
         values.put("trading_name", advertiserProfile.tradingName);
@@ -152,10 +153,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put("category_id", advertiserProfile.categoryId);
         values.put("image_file", advertiserProfile.imageFile);
         values.put("published", (advertiserProfile.published ? 1 : 0));
+        values.put("local_profile", (advertiserProfile.localProfile ? 1 : 0));
         return values;
     }
 
-    public List<Advertiser> allProfiles() {
+    public List<Advertiser> allAdvertisers() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM advertiser", null);
         List<Advertiser> profiles = new ArrayList<>();
@@ -167,7 +169,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return profiles;
     }
 
-    public Advertiser getProfileByGuid(String advertiserGuid) {
+    public List<Advertiser> allLocalProfiles() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM advertiser WHERE local_profile=1", null);
+        List<Advertiser> profiles = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Advertiser profile = extractAdvertiserFromCursor(cursor);
+            profiles.add(profile);
+        }
+        cursor.close();
+        return profiles;
+    }
+
+    public Advertiser getAdvertiserByGuid(String advertiserGuid) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM advertiser " +
                                     "WHERE advertiser_guid='" + advertiserGuid + "'", null);
@@ -179,19 +193,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     @NonNull
     private Advertiser extractAdvertiserFromCursor(Cursor cursor) {
-        Advertiser profile = new Advertiser();
-        profile.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
-        profile.categoryId = cursor.getInt(cursor.getColumnIndex("category_id"));
-        profile.tradingName = cursor.getString(cursor.getColumnIndex("trading_name"));
-        profile.phoneNumber = cursor.getString(cursor.getColumnIndex("phone_number"));
-        profile.cellphone = cursor.getString(cursor.getColumnIndex("cellphone"));
-        profile.email = cursor.getString(cursor.getColumnIndex("email"));
-        profile.streetName = cursor.getString(cursor.getColumnIndex("street_name"));
-        profile.addressNumber = cursor.getString(cursor.getColumnIndex("address_number"));
-        profile.neighbourhood = cursor.getString(cursor.getColumnIndex("neighbourhood"));
-        profile.cityId = cursor.getInt(cursor.getColumnIndex("city_id"));
-        profile.imageFile = cursor.getString(cursor.getColumnIndex("image_file"));
-        return profile;
+        Advertiser advertiser = new Advertiser();
+        advertiser.advertiserGuid = cursor.getString(cursor.getColumnIndex("advertiser_guid"));
+        advertiser.categoryId = cursor.getInt(cursor.getColumnIndex("category_id"));
+        advertiser.tradingName = cursor.getString(cursor.getColumnIndex("trading_name"));
+        advertiser.phoneNumber = cursor.getString(cursor.getColumnIndex("phone_number"));
+        advertiser.cellphone = cursor.getString(cursor.getColumnIndex("cellphone"));
+        advertiser.email = cursor.getString(cursor.getColumnIndex("email"));
+        advertiser.streetName = cursor.getString(cursor.getColumnIndex("street_name"));
+        advertiser.addressNumber = cursor.getString(cursor.getColumnIndex("address_number"));
+        advertiser.neighbourhood = cursor.getString(cursor.getColumnIndex("neighbourhood"));
+        advertiser.cityId = cursor.getInt(cursor.getColumnIndex("city_id"));
+        advertiser.imageFile = cursor.getString(cursor.getColumnIndex("image_file"));
+        advertiser.localProfile = (cursor.getInt(cursor.getColumnIndex("local_profile"))==1);
+        return advertiser;
     }
 
     // ========================================================================
@@ -255,6 +270,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public void savePublication(Publication publication) {
         SQLiteDatabase db = getWritableDatabase();
+
+        // First, save the advertiser data
+        saveAdvertiser(publication.advertiser);
+
         int rowsAffected = updatePublication(publication, db);
         if (rowsAffected == 0) {
             insertPublication(publication, db);
@@ -309,19 +328,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         List<Publication> publications = new ArrayList<>();
         while (cursor.moveToNext()) {
             Publication publication = loadPublicationFromCursor(cursor);
+            publication.advertiser = getAdvertiserByGuid(publication.advertiserGuid);
             loadImagesForPublication(publication, db);
             publications.add(publication);
         }
         cursor.close();
         return publications;
     }
-
-//    public Publication obtemPublicacao(String guidPublicacao) {
-//        SQLiteDatabase db = getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT * FROM publicacao WHERE guid_publicacao='" + guidPublicacao + "'", null);
-//        cursor.moveToNext();
-//        return loadPublicationFromCursor(cursor);
-//    }
 
     @NonNull
     private Publication loadPublicationFromCursor(Cursor cursor) {

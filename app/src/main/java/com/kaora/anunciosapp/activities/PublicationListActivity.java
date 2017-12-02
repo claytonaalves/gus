@@ -262,10 +262,10 @@ public class PublicationListActivity extends AppCompatActivity {
     }
 
     private void createNewPublication() {
-        int qtdePerfisCadastrados = database.allProfiles().size();
-        if (qtdePerfisCadastrados == 0) {
+        int localProfileCount = database.allLocalProfiles().size();
+        if (localProfileCount == 0) {
             mostraActivityCriacaoPerfil();
-        } else if (qtdePerfisCadastrados == 1) {
+        } else if (localProfileCount == 1) {
             mostraActivityNovoAnuncio();
         } else {
             startSelectProfileActivity();
@@ -278,7 +278,7 @@ public class PublicationListActivity extends AppCompatActivity {
     }
 
     private void mostraActivityNovoAnuncio() {
-        Advertiser perfil = database.allProfiles().get(0); // Pega o primeiro perfil
+        Advertiser perfil = database.allLocalProfiles().get(0); // Pega o primeiro perfil
         Intent intent = new Intent(this, NewPublicationActivity.class);
         intent.putExtra("guid_anunciante", perfil.advertiserGuid);
         startActivity(intent);

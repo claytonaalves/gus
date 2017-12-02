@@ -44,6 +44,7 @@ public class Publication implements Serializable {
         this.publicationGuid = UUID.randomUUID().toString();
         this.publicationDate = new Date();
         this.images = new ArrayList<>();
+        this.advertiser = new Advertiser();
     }
 
     public boolean hasImages() {

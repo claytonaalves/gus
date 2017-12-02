@@ -38,7 +38,7 @@ public class ProfilesListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        profilesListView.setAdapter(new AdvertiserProfileAdapter(database.allProfiles(), this));
+        profilesListView.setAdapter(new AdvertiserProfileAdapter(database.allLocalProfiles(), this));
         if (manageProfilesMode) {
             setTitle("Perfis de Anunciante");
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);

@@ -76,7 +76,7 @@ public class NewPublicationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String guidAnunciante = intent.getStringExtra("guid_anunciante");
-        advertiser = database.getProfileByGuid(guidAnunciante);
+        advertiser = database.getAdvertiserByGuid(guidAnunciante);
 
         tvNomeAnunciante.setText(advertiser.tradingName);
 
@@ -144,8 +144,9 @@ public class NewPublicationActivity extends AppCompatActivity {
         publication.title = etTitulo.getText().toString();
         publication.description = etDescricao.getText().toString();
         publication.setDueDate(extraiData(etValidoAte.getText().toString()));
-        publication.advertiserGuid = advertiser.advertiserGuid;
         publication.category_id = advertiser.categoryId;
+        publication.advertiserGuid = advertiser.advertiserGuid;
+        publication.advertiser = advertiser;
     }
 
     /* Publish media first
@@ -180,7 +181,6 @@ public class NewPublicationActivity extends AppCompatActivity {
         webservice.publicaPublicacao(publication, new Callback<Publication>() {
             @Override
             public void onResponse(Call<Publication> call, Response<Publication> response) {
-                Publication publication = response.body();
                 database.savePublication(publication);
                 progressDialog.dismiss();
                 fechaActivity();

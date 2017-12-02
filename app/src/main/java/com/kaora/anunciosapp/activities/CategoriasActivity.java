@@ -148,10 +148,10 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void criarNovoAnuncio() {
-        int qtdePerfisCadastrados = database.allProfiles().size();
-        if (qtdePerfisCadastrados==0) {
+        int localProfileCount = database.allLocalProfiles().size();
+        if (localProfileCount==0) {
             mostraActivityCriacaoPerfil();
-        } else if (qtdePerfisCadastrados==1) {
+        } else if (localProfileCount==1) {
             mostraActivityNovoAnuncio();
         } else {
             mostraActivitySelecaoPerfil();
@@ -186,7 +186,7 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void mostraActivityPreferencias() {
-//        Advertiser perfil = database.getProfileByGuid();
+//        Advertiser perfil = database.getAdvertiserByGuid();
 //        Intent intent = new Intent(this, PreferenciasActivity.class);
 //        intent.putExtra("idperfil", perfil._id);
 //        startActivity(intent);

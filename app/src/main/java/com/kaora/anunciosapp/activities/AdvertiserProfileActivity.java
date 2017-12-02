@@ -79,6 +79,7 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
             setTitle("Editando Perfil");
         } else {
             advertiser = new Advertiser();
+            advertiser.localProfile = true;
             advertiser.cellphone = getCellphoneNumber();
             editMode = false;
         }
@@ -237,7 +238,7 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
 
     public void startImageSelectionActivity(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("profileImage/*");
+        intent.setType("image/*");
         startActivityForResult(intent, IMG_REQUEST);
     }
 
@@ -262,7 +263,7 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
                 "Atualizando Perfil", "Aguarde...", false, false);
         loadDataFromInterface();
         postCurrentUserProfile();
-        database.saveAdvertiserProfile(advertiser);
+        database.saveAdvertiser(advertiser);
         if (editMode) {
             closeThisActivity();
         } else {
@@ -317,14 +318,13 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void sendAdvertiserProfileToWebservice(Advertiser advertiser) {
+    private void sendAdvertiserProfileToWebservice(final Advertiser advertiser) {
         ApiRestAdapter api = ApiRestAdapter.getInstance();
         api.postAdvertiserProfile(advertiser, new Callback<Advertiser>() {
             @Override
             public void onResponse(Call<Advertiser> call, Response<Advertiser> response) {
-                Advertiser advertiser = response.body();
                 advertiser.published = true;
-                database.saveAdvertiserProfile(advertiser);
+                database.saveAdvertiser(advertiser);
                 closeThisActivity();
             }
 
