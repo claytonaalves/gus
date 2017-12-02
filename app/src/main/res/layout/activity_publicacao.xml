@@ -15,53 +15,92 @@
         android:paddingRight="15dp"
         android:paddingTop="15dp">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/imagem_publicacao"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            fresco:actualImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/photo_placeholder_750_415" />
-
-        <TextView
-            android:id="@+id/tvTitulo"
-            style="@style/titulo"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Aqui vai o título que pode ser bem grande que não tem problema" />
+            android:background="@drawable/layer_list"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/imagem_publicacao"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                fresco:actualImageScaleType="centerInside"
+                fresco:placeholderImage="@drawable/photo_placeholder_750_415" />
+
+            <TextView
+                android:id="@+id/tvTitulo"
+                style="@style/titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Aqui vai o título que pode ser bem grande que não tem problema" />
+
+            <TextView
+                android:id="@+id/tvDescricao"
+                style="@style/texto_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:text="Aqui vai a descrição da publicação que pode conter um texto bem grande que não vai ter nenhum problema teste 1234 Brasil bla bla bla outro tese de uma palavramuitograndesobravercomofi caotextoquebrado." />
+
+            <TextView
+                android:id="@+id/tvDataPublicacao"
+                style="@style/data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="Publicado em 12/08/2017" />
+
+            <TextView
+                android:id="@+id/tvDataValidade"
+                style="@style/data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/data_validade" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvDescricao"
-            style="@style/texto_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            android:text="Aqui vai a descrição da publicação que pode conter um texto bem grande que não vai ter nenhum problema teste 1234 Brasil bla bla bla outro tese de uma palavramuitograndesobravercomofi caotextoquebrado." />
-
-        <TextView
-            style="@style/texto_normal"
             android:id="@+id/tvNomeAnunciante"
+            style="@style/texto_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="start"
+            android:layout_marginTop="10dp"
             android:text="Divina Pizza" />
 
-        <TextView
-            android:id="@+id/tvDataPublicacao"
-            style="@style/data"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="Publicado em 12/08/2017" />
+            android:background="@drawable/layer_list"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvDataValidade"
-            style="@style/data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="@string/data_validade" />
+            <TextView
+                android:id="@+id/tvStreetName"
+                style="@style/texto_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Endereço" />
+
+            <TextView
+                android:id="@+id/tvAddressNumber"
+                style="@style/texto_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número" />
+
+            <TextView
+                android:id="@+id/tvNeighbourhood"
+                style="@style/texto_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bairro" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btLigarPara"

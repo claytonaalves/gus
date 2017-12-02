@@ -28,30 +28,50 @@ import retrofit2.Response;
 public class PublicationDetailActivity extends AppCompatActivity {
 
     private Publication publication;
+    private TextView tvPublicationTitle;
+    private TextView tvPublicationDescription;
+    private TextView tvPublicationDate;
+    private TextView tvPublicationDueDate;
+    private TextView tvAdvertiserName;
+    private TextView tvStreetName;
+    private TextView tvAddressNumber;
+    private TextView tvNeighbourhood;
+    private Button btCallAdvertiser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicacao);
 
+        tvPublicationTitle = (TextView) findViewById(R.id.tvTitulo);
+        tvPublicationDescription = (TextView) findViewById(R.id.tvDescricao);
+        tvPublicationDate = (TextView) findViewById(R.id.tvDataPublicacao);
+        tvPublicationDueDate = (TextView) findViewById(R.id.tvDataValidade);
+
+        tvAdvertiserName = (TextView) findViewById(R.id.tvNomeAnunciante);
+        tvStreetName = (TextView) findViewById(R.id.tvStreetName);
+        tvAddressNumber = (TextView) findViewById(R.id.tvAddressNumber);
+        tvNeighbourhood = (TextView) findViewById(R.id.tvNeighbourhood);
+
+        btCallAdvertiser = (Button) findViewById(R.id.btLigarPara);
+
         Intent intent = getIntent();
 
         if (intent.hasExtra("publication")) {
             publication = (Publication) intent.getSerializableExtra("publication");
-            atualizaDadosPublicacao(publication);
+            updateViewItems(publication);
         } else {
             String guidPublicacao = intent.getStringExtra("guid_publicacao");
             obtemPublicacaoDoWebservice(guidPublicacao);
         }
     }
-
     private void obtemPublicacaoDoWebservice(String guidPublicacao) {
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
         webservice.obtemPublicacao(guidPublicacao, new Callback<Publication>() {
             @Override
             public void onResponse(Call<Publication> call, Response<Publication> response) {
                 Publication publication = response.body();
-                atualizaDadosPublicacao(publication);
+                updateViewItems(publication);
             }
 
             @Override
@@ -61,28 +81,29 @@ public class PublicationDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void atualizaDadosPublicacao(Publication publication) {
-        TextView tvTitulo = (TextView) findViewById(R.id.tvTitulo);
-        TextView tvDescricao = (TextView) findViewById(R.id.tvDescricao);
-        TextView tvNomeAnunciante = (TextView) findViewById(R.id.tvNomeAnunciante);
-        TextView tvDataPublicacao = (TextView) findViewById(R.id.tvDataPublicacao);
-        TextView tvDataValidade = (TextView) findViewById(R.id.tvDataValidade);
-        Button btLigarPara = (Button) findViewById(R.id.btLigarPara);
-
-        if (!(publication.imageFile ==null) && (!publication.imageFile.equals(""))) {
-            SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem_publicacao);
-            imagem.setImageURI(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + publication.imageFile);
+    private void updateViewItems(Publication publication) {
+        if (publication.hasImages()) {
+            String firstImage = publication.images.get(0);
+            if (!firstImage.equals("")) {
+                SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem_publicacao);
+                imagem.setImageURI(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + firstImage);
+            }
         }
 
-        tvTitulo.setText(publication.title);
-        tvDescricao.setText(publication.description);
-        tvNomeAnunciante.setText(publication.advertiser.tradingName);
-        tvDataPublicacao.setText(DateUtils.textoDataPublicacao(publication.publicationDate));
-        btLigarPara.setText("Ligar para " + publication.advertiser.tradingName + "\n" + publication.advertiser.phoneNumber);
+        tvPublicationTitle.setText(publication.title);
+        tvPublicationDescription.setText(publication.description);
+        tvPublicationDate.setText(DateUtils.textoDataPublicacao(publication.publicationDate));
+
+        tvAdvertiserName.setText(publication.advertiser.tradingName);
+        tvStreetName.setText(publication.advertiser.streetName);
+        tvAddressNumber.setText(publication.advertiser.addressNumber);
+        tvNeighbourhood.setText(publication.advertiser.neighbourhood);
+
+        btCallAdvertiser.setText("Ligar para " + publication.advertiser.tradingName + "\n" + publication.advertiser.phoneNumber);
 
         Resources res = this.getResources();
         DateFormat df = DateFormat.getDateInstance();
-        tvDataValidade.setText(
+        tvPublicationDueDate.setText(
             String.format(res.getString(R.string.data_validade), df.format(publication.dueDate))
         );
     }
@@ -102,4 +123,5 @@ public class PublicationDetailActivity extends AppCompatActivity {
         }
         startActivity(callIntent);
     }
+
 }
