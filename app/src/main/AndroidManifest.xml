@@ -30,6 +30,7 @@
         <activity
             android:name=".activities.PublicationListActivity"
             android:label="Publicações" />
+
         <activity
             android:name=".activities.CategoriasActivity"
             android:label="Categorias" />
@@ -55,7 +56,7 @@
             android:label="Nova Publicação" />
         <activity
             android:name=".activities.PublicationDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="ACTION_NOVO_ANUNCIO" />
 

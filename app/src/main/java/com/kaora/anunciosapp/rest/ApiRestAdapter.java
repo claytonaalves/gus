@@ -98,6 +98,11 @@ public class ApiRestAdapter {
         request.enqueue(cb);
     }
 
+    public void searchAdvertiser(String query, Callback<List<Advertiser>> cb) {
+        Call<List<Advertiser>> request = service.searchAdvertiser(query);
+        request.enqueue(cb);
+    }
+
     public Call<ResponseBody> postaFotoPublicacao(RequestBody description, MultipartBody.Part body) {
         return service.postaFotoPublicacao(description, body);
     }

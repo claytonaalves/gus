@@ -50,6 +50,9 @@ public interface ApiRestInterface {
     @POST("anunciantes/")
     Call<Advertiser> postAdvertiserProfile(@Body Advertiser advertiser);
 
+    @GET("anunciantes/search")
+    Call<List<Advertiser>> searchAdvertiser(@Query("q") String query);
+
     @GET("categoria/{id}")
     Call<List<Advertiser>> anunciantesPorCategoria(@Path("id") int idCategoria);
 

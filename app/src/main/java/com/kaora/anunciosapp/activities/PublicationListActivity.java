@@ -10,10 +10,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
@@ -57,6 +59,7 @@ public class PublicationListActivity extends AppCompatActivity {
 
     private String deviceId;
     private List<Preference> preferences;
+    private ApiRestAdapter webservice;
 
 //    private Menu overflowMenu;
 
@@ -69,6 +72,7 @@ public class PublicationListActivity extends AppCompatActivity {
         database = MyDatabaseHelper.getInstance(this);
         database.removeOverduePublications();
         preferences = database.getSelectedPreferences();
+        webservice = ApiRestAdapter.getInstance();
 
         initializeInterface();
         initializeBroadcastManager();
@@ -100,7 +104,43 @@ public class PublicationListActivity extends AppCompatActivity {
             inflater.inflate(R.menu.main_menu_overflow, menu);
         }
 //        overflowMenu = menu;
-        return true;
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("Pesquisar");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // perform query here
+
+                webservice.searchAdvertiser(query, new Callback<List<Advertiser>>() {
+                    @Override
+                    public void onResponse(Call<List<Advertiser>> call, Response<List<Advertiser>> response) {
+                        Log.d("Response", "OK");
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Advertiser>> call, Throwable t) {
+                        Log.d("Response", "Falhou");
+                    }
+                });
+
+                // workaround to avoid issues with some emulators and keyboard
+                // devices firing twice if a keyboard enter is used
+                // see https://code.google.com/p/android/issues/detail?id=24599
+                searchView.clearFocus();
+
+                searchItem.collapseActionView();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+
     }
 
 //    @Override
@@ -243,7 +283,6 @@ public class PublicationListActivity extends AppCompatActivity {
     }
 
     private void fetchPublicationsFromWebService(String deviceId, List<Preference> preferences) {
-        ApiRestAdapter webservice = ApiRestAdapter.getInstance();
         webservice.obtemPublicacoes(deviceId, preferences, new Callback<List<Publication>>() {
             @Override
             public void onResponse(Call<List<Publication>> call, Response<List<Publication>> response) {
