@@ -18,8 +18,12 @@ import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.utils.DateUtils;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ViewListener;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,10 +42,17 @@ public class PublicationDetailActivity extends AppCompatActivity {
     private TextView tvNeighbourhood;
     private Button btCallAdvertiser;
 
+    private List<SimpleDraweeView> images = new ArrayList<>();
+
+    CarouselView carouselView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicacao);
+
+        carouselView = (CarouselView) findViewById(R.id.carouselView);
+        carouselView.setViewListener(viewListener);
 
         tvPublicationTitle = (TextView) findViewById(R.id.tvTitulo);
         tvPublicationDescription = (TextView) findViewById(R.id.tvDescricao);
@@ -65,6 +76,14 @@ public class PublicationDetailActivity extends AppCompatActivity {
             obtemPublicacaoDoWebservice(guidPublicacao);
         }
     }
+
+    ViewListener viewListener = new ViewListener() {
+        @Override
+        public View setViewForPosition(int position) {
+            return images.get(position);
+        }
+    };
+
     private void obtemPublicacaoDoWebservice(String guidPublicacao) {
         ApiRestAdapter webservice = ApiRestAdapter.getInstance();
         webservice.obtemPublicacao(guidPublicacao, new Callback<Publication>() {
@@ -82,13 +101,9 @@ public class PublicationDetailActivity extends AppCompatActivity {
     }
 
     private void updateViewItems(Publication publication) {
-        if (publication.hasImages()) {
-            String firstImage = publication.images.get(0);
-            if (!firstImage.equals("")) {
-                SimpleDraweeView imagem = (SimpleDraweeView) findViewById(R.id.imagem_publicacao);
-                imagem.setImageURI(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + firstImage);
-            }
-        }
+        loadPublicationImages(publication);
+
+        carouselView.setPageCount(publication.images.size());
 
         tvPublicationTitle.setText(publication.title);
         tvPublicationDescription.setText(publication.description);
@@ -106,6 +121,16 @@ public class PublicationDetailActivity extends AppCompatActivity {
         tvPublicationDueDate.setText(
             String.format(res.getString(R.string.data_validade), df.format(publication.dueDate))
         );
+    }
+
+    private void loadPublicationImages(Publication publication) {
+        if (!publication.hasImages()) return;
+        SimpleDraweeView image;
+        for (String imageFilename : publication.images) {
+            image = new SimpleDraweeView(this);
+            image.setImageURI(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + imageFilename);
+            images.add(image);
+        }
     }
 
     public void ligarParaAnunciante(View view) {

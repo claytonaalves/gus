@@ -45,7 +45,7 @@ import retrofit2.Response;
 
 import static com.kaora.anunciosapp.R.id.view_publicacoes_vazia;
 
-public class PublicationListActivity extends AppCompatActivity {
+public class PublicationListActivity extends AppCompatActivity implements android.support.v7.widget.SearchView.OnQueryTextListener {
 
     private PublicationsAdapter publicationsAdapter;
     private MyDatabaseHelper database;
@@ -106,39 +106,39 @@ public class PublicationListActivity extends AppCompatActivity {
 //        overflowMenu = menu;
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("Pesquisar");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // perform query here
-
-                webservice.searchAdvertiser(query, new Callback<List<Advertiser>>() {
-                    @Override
-                    public void onResponse(Call<List<Advertiser>> call, Response<List<Advertiser>> response) {
-                        Log.d("Response", "OK");
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Advertiser>> call, Throwable t) {
-                        Log.d("Response", "Falhou");
-                    }
-                });
-
-                // workaround to avoid issues with some emulators and keyboard
-                // devices firing twice if a keyboard enter is used
-                // see https://code.google.com/p/android/issues/detail?id=24599
-                searchView.clearFocus();
-
-                searchItem.collapseActionView();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        searchView.setQueryHint("Pesquisar");
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                // perform query here
+//
+//                webservice.searchAdvertiser(query, new Callback<List<Advertiser>>() {
+//                    @Override
+//                    public void onResponse(Call<List<Advertiser>> call, Response<List<Advertiser>> response) {
+//                        Log.d("Response", "OK");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<Advertiser>> call, Throwable t) {
+//                        Log.d("Response", "Falhou");
+//                    }
+//                });
+//
+//                // workaround to avoid issues with some emulators and keyboard
+//                // devices firing twice if a keyboard enter is used
+//                // see https://code.google.com/p/android/issues/detail?id=24599
+//                searchView.clearFocus();
+//
+//                searchItem.collapseActionView();
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -347,4 +347,13 @@ public class PublicationListActivity extends AppCompatActivity {
                 AlarmManager.INTERVAL_DAY, pIntent);
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }

@@ -22,12 +22,16 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/imagem_publicacao"
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/carouselView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                fresco:actualImageScaleType="centerInside"
-                fresco:placeholderImage="@drawable/photo_placeholder_750_415" />
+                app:fillColor="#FFFFFFFF"
+                app:pageColor="#00000000"
+                app:radius="6dp"
+                app:slideInterval="3000"
+                app:strokeColor="#FF777777"
+                app:strokeWidth="1dp"/>
 
             <TextView
                 android:id="@+id/tvTitulo"
