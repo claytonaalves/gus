@@ -51,7 +51,7 @@ public class CategoriasActivity extends AppCompatActivity {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                PublicationCategory categoriaSelecionada = (PublicationCategory) view.getTag();
-//                Intent intent = new Intent(CategoriasActivity.this, AnunciantesActivity.class);
+//                Intent intent = new Intent(CategoriasActivity.this, AdvertiserListActivity.class);
 //                intent.putExtra("category_id", categoriaSelecionada.category_id);
 //                startActivity(intent);
 //            }

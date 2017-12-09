@@ -6,18 +6,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.models.Advertiser;
+import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 
-public class AnuncianteAdapter extends BaseAdapter {
+public class AdvertiserListAdapter extends BaseAdapter {
 
     private final List<Advertiser> anunciantes;
     private final Activity activity;
 
-    public AnuncianteAdapter(List<Advertiser> anunciantes, Activity activity) {
+    public AdvertiserListAdapter(List<Advertiser> anunciantes, Activity activity) {
         this.anunciantes = anunciantes;
         this.activity = activity;
     }
@@ -40,15 +43,23 @@ public class AnuncianteAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Advertiser anunciante = anunciantes.get(position);
+        Advertiser advertiser = anunciantes.get(position);
 
         View view = activity.getLayoutInflater()
-                .inflate(R.layout.item_listview_anunciante, parent, false);
+                .inflate(R.layout.li_advertiser, parent, false);
 
         TextView tvNomeAnunciante = (TextView) view.findViewById(R.id.tvNomeAnunciante);
-        tvNomeAnunciante.setText(anunciante.tradingName);
+        SimpleDraweeView image = (SimpleDraweeView) view.findViewById(R.id.main_image);
 
-        view.setTag(anunciante);
+        tvNomeAnunciante.setText(advertiser.tradingName);
+
+        view.setTag(advertiser);
+
+        if (advertiser.imageFile != null) {
+            if (!advertiser.imageFile.equals("")) {
+                image.setImageURI(ApiRestAdapter.ADVERTISERS_IMAGE_PATH + advertiser.imageFile);
+            }
+        }
 
         return view;
     }

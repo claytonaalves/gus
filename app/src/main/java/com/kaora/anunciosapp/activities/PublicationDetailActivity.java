@@ -49,7 +49,7 @@ public class PublicationDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publicacao);
+        setContentView(R.layout.activity_publication_detail);
 
         carouselView = (CarouselView) findViewById(R.id.carouselView);
         carouselView.setViewListener(viewListener);

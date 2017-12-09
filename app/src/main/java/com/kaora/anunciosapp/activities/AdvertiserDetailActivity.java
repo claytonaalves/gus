@@ -6,22 +6,25 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.models.Advertiser;
+import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
-public class AnuncianteActivity extends AppCompatActivity {
+public class AdvertiserDetailActivity extends AppCompatActivity {
 
     TextView tvNomeAnunciante;
     TextView tvTelefone;
     TextView tvEndereco;
     TextView tvNumero;
+    SimpleDraweeView image;
 
     private Advertiser advertiser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_anunciante);
+        setContentView(R.layout.activity_advertiser_detail);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -34,6 +37,7 @@ public class AnuncianteActivity extends AppCompatActivity {
         tvTelefone = (TextView) findViewById(R.id.tvTelefone);
         tvEndereco = (TextView) findViewById(R.id.tvEndereco);
         tvNumero = (TextView) findViewById(R.id.tvNumero);
+        image = (SimpleDraweeView) findViewById(R.id.main_image);
     }
 
     @Override
@@ -43,6 +47,15 @@ public class AnuncianteActivity extends AppCompatActivity {
         tvTelefone.setText(advertiser.phoneNumber);
         tvEndereco.setText(advertiser.streetName);
         tvNumero.setText(advertiser.addressNumber);
+        if (advertiser.imageFile != null) {
+            if (!advertiser.imageFile.equals("")) {
+                image.setImageURI(ApiRestAdapter.ADVERTISERS_IMAGE_PATH + advertiser.imageFile);
+            } else {
+                image.setImageResource(R.drawable.photo_gray);
+            }
+        } else {
+            image.setImageResource(R.drawable.photo_gray);
+        }
     }
 
     @Override

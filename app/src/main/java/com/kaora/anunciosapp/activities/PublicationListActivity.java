@@ -2,6 +2,7 @@ package com.kaora.anunciosapp.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -45,7 +47,7 @@ import retrofit2.Response;
 
 import static com.kaora.anunciosapp.R.id.view_publicacoes_vazia;
 
-public class PublicationListActivity extends AppCompatActivity implements android.support.v7.widget.SearchView.OnQueryTextListener {
+public class PublicationListActivity extends AppCompatActivity {
 
     private PublicationsAdapter publicationsAdapter;
     private MyDatabaseHelper database;
@@ -103,44 +105,16 @@ public class PublicationListActivity extends AppCompatActivity implements androi
             // Device without hardware menu button
             inflater.inflate(R.menu.main_menu_overflow, menu);
         }
-//        overflowMenu = menu;
 
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        searchView.setQueryHint("Pesquisar");
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // perform query here
-//
-//                webservice.searchAdvertiser(query, new Callback<List<Advertiser>>() {
-//                    @Override
-//                    public void onResponse(Call<List<Advertiser>> call, Response<List<Advertiser>> response) {
-//                        Log.d("Response", "OK");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<Advertiser>> call, Throwable t) {
-//                        Log.d("Response", "Falhou");
-//                    }
-//                });
-//
-//                // workaround to avoid issues with some emulators and keyboard
-//                // devices firing twice if a keyboard enter is used
-//                // see https://code.google.com/p/android/issues/detail?id=24599
-//                searchView.clearFocus();
-//
-//                searchItem.collapseActionView();
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
-        return super.onCreateOptionsMenu(menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
 
+        return true;
     }
 
 //    @Override
@@ -347,13 +321,4 @@ public class PublicationListActivity extends AppCompatActivity implements androi
                 AlarmManager.INTERVAL_DAY, pIntent);
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
-    }
 }

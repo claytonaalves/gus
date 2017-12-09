@@ -46,12 +46,12 @@ public class AdvertiserProfileAdapter extends BaseAdapter {
         Advertiser advertiser = advertisers.get(position);
 
         View view = activity.getLayoutInflater()
-                .inflate(R.layout.item_listview_anunciante, parent, false);
+                .inflate(R.layout.li_advertiser, parent, false);
 
         TextView tvNomeAnunciante = (TextView) view.findViewById(R.id.tvNomeAnunciante);
         tvNomeAnunciante.setText(advertiser.tradingName);
 
-        SimpleDraweeView profileLogo = (SimpleDraweeView) view.findViewById(R.id.imgLogoAnunciante);
+        SimpleDraweeView profileLogo = (SimpleDraweeView) view.findViewById(R.id.main_image);
         profileLogo.setImageURI(Uri.parse(ApiRestAdapter.ADVERTISERS_IMAGE_PATH + advertiser.imageFile));
 
         view.setTag(advertiser);

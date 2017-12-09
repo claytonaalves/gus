@@ -29,7 +29,11 @@
             android:label="Anúncios App" />
         <activity
             android:name=".activities.PublicationListActivity"
-            android:label="Publicações" />
+            android:label="Publicações">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activities.AdvertiserListActivity" />
+        </activity>
 
         <activity
             android:name=".activities.CategoriasActivity"
@@ -38,9 +42,18 @@
             android:name=".activities.PreferenciasActivity"
             android:label="Preferências" />
         <activity
-            android:name=".activities.AnunciantesActivity"
-            android:label="Anunciantes" />
-        <activity android:name=".activities.AnuncianteActivity" />
+            android:name=".activities.AdvertiserListActivity"
+            android:label="Anunciantes"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity android:name=".activities.AdvertiserDetailActivity" />
         <activity android:name=".activities.MeusAnunciosActivity" />
         <activity
             android:name=".activities.AvisoPerfilActivity"
