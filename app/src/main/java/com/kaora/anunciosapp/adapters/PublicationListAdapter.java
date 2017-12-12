@@ -21,13 +21,13 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class PublicationsAdapter extends RecyclerView.Adapter<PublicationsAdapter.ViewHolder> {
+public class PublicationListAdapter extends RecyclerView.Adapter<PublicationListAdapter.ViewHolder> {
 
     private Context context;
     private List<Publication> publications;
     private DateFormat df;
 
-    public PublicationsAdapter(Context context, List<Publication> publications) {
+    public PublicationListAdapter(Context context, List<Publication> publications) {
         this.publications = publications;
         this.context = context;
         this.df = DateFormat.getDateInstance();

@@ -14,12 +14,12 @@ import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 import java.util.List;
 
-public class CategoriasAdapter extends BaseAdapter {
+public class CategoryListAdapter extends BaseAdapter {
 
     private final List<PublicationCategory> publicationCategories;
     private final Activity activity;
 
-    public CategoriasAdapter(List<PublicationCategory> publicationCategories, Activity activity) {
+    public CategoryListAdapter(List<PublicationCategory> publicationCategories, Activity activity) {
         this.publicationCategories = publicationCategories;
         this.activity = activity;
     }

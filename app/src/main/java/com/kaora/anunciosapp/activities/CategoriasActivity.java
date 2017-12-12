@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.adapters.CategoriasAdapter;
+import com.kaora.anunciosapp.adapters.CategoryListAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
@@ -32,7 +32,7 @@ public class CategoriasActivity extends AppCompatActivity {
     MyDatabaseHelper database;
     List<PublicationCategory> publicationCategories;
 
-    CategoriasAdapter categoriasAdapter;
+    CategoryListAdapter categoryListAdapter;
     private BroadcastReceiver notificationBroadcastReceiver;
 
     @Override
@@ -43,9 +43,9 @@ public class CategoriasActivity extends AppCompatActivity {
 //        database = MyDatabaseHelper.getInstance(this);
 //        publicationCategories = database.categoriasPreferidas();
 //
-//        categoriasAdapter = new CategoriasAdapter(publicationCategories, this);
+//        categoryListAdapter = new CategoryListAdapter(publicationCategories, this);
 //        ListView lvCategorias = (ListView) findViewById(R.id.lvOfertas);
-//        lvCategorias.setAdapter(categoriasAdapter);
+//        lvCategorias.setAdapter(categoryListAdapter);
 //
 //        lvCategorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -117,7 +117,7 @@ public class CategoriasActivity extends AppCompatActivity {
 //        for (PublicationCategory categoria : database.categoriasPreferidas()) {
 //            publicationCategories.add(categoria);
 //        }
-//        categoriasAdapter.notifyDataSetChanged();
+//        categoryListAdapter.notifyDataSetChanged();
     }
 
     @Override

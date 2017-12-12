@@ -10,9 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +27,7 @@ import android.widget.Toast;
 
 import com.kaora.anunciosapp.Config;
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.adapters.PublicationsAdapter;
+import com.kaora.anunciosapp.adapters.PublicationListAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.models.Preference;
@@ -49,7 +47,7 @@ import static com.kaora.anunciosapp.R.id.view_publicacoes_vazia;
 
 public class PublicationListActivity extends AppCompatActivity {
 
-    private PublicationsAdapter publicationsAdapter;
+    private PublicationListAdapter publicationListAdapter;
     private MyDatabaseHelper database;
     private List<Publication> publications;
     private CustomRecyclerView rvPublicacoes;
@@ -179,14 +177,14 @@ public class PublicationListActivity extends AppCompatActivity {
 
     private void setupPublicationList() {
         publications = database.getSavedPublications();
-        publicationsAdapter = new PublicationsAdapter(this, publications);
+        publicationListAdapter = new PublicationListAdapter(this, publications);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvPublicacoes = (CustomRecyclerView) findViewById(R.id.rvPublicacoes);
         rvPublicacoes.setEmptyView(findViewById(view_publicacoes_vazia));
-        rvPublicacoes.setAdapter(publicationsAdapter);
+        rvPublicacoes.setAdapter(publicationListAdapter);
         rvPublicacoes.setLayoutManager(layoutManager);
         addSwipeFeature(rvPublicacoes);
     }
@@ -214,7 +212,7 @@ public class PublicationListActivity extends AppCompatActivity {
         publication.archived = true;
         database.savePublication(publication);
         publications.remove(position);
-        publicationsAdapter.notifyItemRemoved(position);
+        publicationListAdapter.notifyItemRemoved(position);
     }
 
     private void updatePublicationList(List<Publication> publications) {
@@ -223,9 +221,9 @@ public class PublicationListActivity extends AppCompatActivity {
         }
         int lastItemPos = this.publications.size() - 1;
         if (publications.size() == 1) {
-            publicationsAdapter.notifyItemInserted(lastItemPos);
+            publicationListAdapter.notifyItemInserted(lastItemPos);
         } else {
-            publicationsAdapter.notifyDataSetChanged();
+            publicationListAdapter.notifyDataSetChanged();
         }
         if (lastItemPos >= 0)
             rvPublicacoes.smoothScrollToPosition(lastItemPos);

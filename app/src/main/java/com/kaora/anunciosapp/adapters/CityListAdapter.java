@@ -13,9 +13,9 @@ import com.kaora.anunciosapp.models.Cidade;
 
 import java.util.List;
 
-public class CidadesAdapter extends ArrayAdapter<Cidade> {
+public class CityListAdapter extends ArrayAdapter<Cidade> {
 
-    public CidadesAdapter(@NonNull Context context, List<Cidade> cidades) {
+    public CityListAdapter(@NonNull Context context, List<Cidade> cidades) {
         super(context, 0, cidades);
     }
 

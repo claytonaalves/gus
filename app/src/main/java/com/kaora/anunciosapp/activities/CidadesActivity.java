@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.adapters.CidadesAdapter;
+import com.kaora.anunciosapp.adapters.CityListAdapter;
 import com.kaora.anunciosapp.models.Cidade;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
@@ -26,7 +26,7 @@ public class CidadesActivity extends AppCompatActivity {
     public static final int PREFERENCIAS_SELECIONADAS = 1;
 
     List<Cidade> cidades;
-    CidadesAdapter cidadesAdapter;
+    CityListAdapter cityListAdapter;
     private boolean configuracaoInicial;
 
     @Override
@@ -56,9 +56,9 @@ public class CidadesActivity extends AppCompatActivity {
     }
 
     private void preparaListaDeCidades(List<Cidade> cidades) {
-        cidadesAdapter = new CidadesAdapter(this, cidades);
+        cityListAdapter = new CityListAdapter(this, cidades);
         ListView lvCidades = (ListView) findViewById(R.id.lvCidades);
-        lvCidades.setAdapter(cidadesAdapter);
+        lvCidades.setAdapter(cityListAdapter);
         lvCidades.setOnItemClickListener(new CidadeItemClickListener());
     }
 
@@ -83,7 +83,7 @@ public class CidadesActivity extends AppCompatActivity {
         this.cidades.clear();
         for (Cidade cidade : cidades)
             this.cidades.add(cidade);
-        cidadesAdapter.notifyDataSetChanged();
+        cityListAdapter.notifyDataSetChanged();
     }
 
     @Override
