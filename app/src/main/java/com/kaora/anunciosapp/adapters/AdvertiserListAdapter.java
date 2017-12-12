@@ -11,39 +11,38 @@ import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.models.Advertiser;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
-import java.util.AbstractMap;
 import java.util.List;
 
 
 public class AdvertiserListAdapter extends BaseAdapter {
 
-    private final List<Advertiser> anunciantes;
+    private final List<Advertiser> advertisers;
     private final Activity activity;
 
-    public AdvertiserListAdapter(List<Advertiser> anunciantes, Activity activity) {
-        this.anunciantes = anunciantes;
+    public AdvertiserListAdapter(List<Advertiser> advertisers, Activity activity) {
+        this.advertisers = advertisers;
         this.activity = activity;
     }
 
     @Override
     public int getCount() {
-        return anunciantes.size();
+        return advertisers.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return anunciantes.get(position);
+        return advertisers.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        Advertiser anunciante = anunciantes.get(position);
+        Advertiser anunciante = advertisers.get(position);
         return anunciante.position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Advertiser advertiser = anunciantes.get(position);
+        Advertiser advertiser = advertisers.get(position);
 
         View view = activity.getLayoutInflater()
                 .inflate(R.layout.li_advertiser, parent, false);
