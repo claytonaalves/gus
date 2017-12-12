@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kaora.anunciosapp.R;
-import com.kaora.anunciosapp.adapters.AdvertiserProfileAdapter;
+import com.kaora.anunciosapp.adapters.AdvertiserListAdapter;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
 
@@ -38,7 +38,7 @@ public class ProfilesListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        profilesListView.setAdapter(new AdvertiserProfileAdapter(database.allLocalProfiles(), this));
+        profilesListView.setAdapter(new AdvertiserListAdapter(database.allLocalProfiles(), this));
         if (manageProfilesMode) {
             setTitle("Perfis de Anunciante");
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
