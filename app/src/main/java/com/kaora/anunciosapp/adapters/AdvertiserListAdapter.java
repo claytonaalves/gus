@@ -42,24 +42,42 @@ public class AdvertiserListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        View view;
+        ViewHolder holder;
+
+        if (convertView == null) {
+            view = activity.getLayoutInflater()
+                    .inflate(R.layout.li_advertiser, parent, false);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
+        } else {
+            view = convertView;
+            holder = (ViewHolder) view.getTag();
+        }
+
         Advertiser advertiser = advertisers.get(position);
-
-        View view = activity.getLayoutInflater()
-                .inflate(R.layout.li_advertiser, parent, false);
-
-        TextView tvNomeAnunciante = (TextView) view.findViewById(R.id.tvNomeAnunciante);
-        SimpleDraweeView image = (SimpleDraweeView) view.findViewById(R.id.main_image);
-
-        tvNomeAnunciante.setText(advertiser.tradingName);
+        holder.tvNomeAnunciante.setText(advertiser.tradingName);
 
         view.setTag(advertiser);
 
         if (advertiser.imageFile != null) {
             if (!advertiser.imageFile.equals("")) {
-                image.setImageURI(ApiRestAdapter.ADVERTISERS_IMAGE_PATH + advertiser.imageFile);
+                holder.image.setImageURI(ApiRestAdapter.ADVERTISERS_IMAGE_PATH + advertiser.imageFile);
             }
         }
 
         return view;
+    }
+
+    public class ViewHolder {
+
+        final TextView tvNomeAnunciante;
+        final SimpleDraweeView image;
+
+        public ViewHolder(View view) {
+            this.tvNomeAnunciante = (TextView) view.findViewById(R.id.tvNomeAnunciante);
+            this.image = (SimpleDraweeView) view.findViewById(R.id.main_image);
+        }
+
     }
 }
