@@ -19,6 +19,7 @@ import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.utils.DateUtils;
 import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ViewListener;
 
 import java.text.DateFormat;
@@ -53,6 +54,14 @@ public class PublicationDetailActivity extends AppCompatActivity {
 
         carouselView = (CarouselView) findViewById(R.id.carouselView);
         carouselView.setViewListener(viewListener);
+        carouselView.setImageClickListener(new ImageClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(PublicationDetailActivity.this, PublicationImage.class);
+                intent.putExtra("image_url", ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + publication.images.get(position));
+                startActivity(intent);
+            }
+        });
 
         tvPublicationTitle = (TextView) findViewById(R.id.tvTitulo);
         tvPublicationDescription = (TextView) findViewById(R.id.tvDescricao);

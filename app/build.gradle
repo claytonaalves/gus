@@ -7,14 +7,14 @@ android {
         applicationId "com.kaora.anunciosapp"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug {
-//            buildConfigField 'String', 'API_URL', '"http://10.1.1.102"'
+//            buildConfigField 'String', 'API_URL', '"http://10.1.1.103:8080"'
             buildConfigField 'String', 'API_URL', '"http://45.55.73.76:8080"'
         }
         release {
@@ -47,6 +47,8 @@ dependencies {
     compile 'com.synnapps:carouselview:0.1.4'
     testCompile 'junit:junit:4.12'
 }
+
+
 
 
 

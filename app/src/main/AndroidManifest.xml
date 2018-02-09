@@ -34,7 +34,6 @@
                 android:name="android.app.default_searchable"
                 android:value=".activities.AdvertiserListActivity" />
         </activity>
-
         <activity
             android:name=".activities.CategoriasActivity"
             android:label="Categorias" />
@@ -48,11 +47,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity android:name=".activities.AdvertiserDetailActivity" />
         <activity android:name=".activities.MeusAnunciosActivity" />
         <activity
@@ -75,7 +74,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
 
         <service android:name=".services.MyFirebaseMessagingService">
@@ -96,6 +94,8 @@
             android:name=".receivers.MyAlarmReceiver"
             android:process=":remote" />
 
+        <activity android:name=".activities.PublicationImage"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
