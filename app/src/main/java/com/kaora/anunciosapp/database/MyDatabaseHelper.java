@@ -120,10 +120,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // ========================================================================
 
     public void saveAdvertiser(Advertiser advertiser) {
+        advertiser.localProfile = advertiserExists(advertiser);
         int rowsAffected = updateAdvertiser(advertiser);
         if (rowsAffected == 0) {
             insertAdvertiser(advertiser);
         }
+    }
+
+    private boolean advertiserExists(Advertiser advertiser) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+            "SELECT * FROM advertiser " +
+            "WHERE advertiser_guid='" + advertiser.advertiserGuid + "'", null);
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
     }
 
     private int updateAdvertiser(Advertiser advertiser) {
