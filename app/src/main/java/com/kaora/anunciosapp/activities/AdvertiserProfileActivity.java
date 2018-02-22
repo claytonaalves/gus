@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -157,6 +158,10 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
     }
 
     private String getCellphoneNumber() {
+        /* Marshmallow changes the way permissions are granted. Review this later */
+        if (Build.VERSION.SDK_INT > 23) {
+            return "";
+        }
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String cellphoneNumber = telephonyManager.getLine1Number();
         if (cellphoneNumber == null) {
