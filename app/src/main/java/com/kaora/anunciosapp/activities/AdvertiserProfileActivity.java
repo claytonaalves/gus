@@ -23,8 +23,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.database.MyDatabaseHelper;
 import com.kaora.anunciosapp.models.Advertiser;
-import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.models.Cidade;
+import com.kaora.anunciosapp.models.PublicationCategory;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
 import com.kaora.anunciosapp.rest.MediaUploadService;
 
@@ -84,13 +84,14 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
             advertiser.cellphone = getCellphoneNumber();
             editMode = false;
         }
+
+        getCitiesFromWebService();
+        updateInterfaceData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getCitiesFromWebService();
-        updateInterfaceData();
     }
 
     private void initializeInterface() {
@@ -280,8 +281,8 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         // if no media file were selected...
         if (mediaFileUri != null) {
             progress.setMessage("Enviando imagens...");
-            MediaUploadService mediaUpload = new MediaUploadService(AdvertiserProfileActivity.this);
-            mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.ADVERTISER_IMAGE_UPLOAD);
+            MediaUploadService mediaUpload = new MediaUploadService(AdvertiserProfileActivity.this, new MediaTransferResponseHandler(), MediaUploadService.ADVERTISER_IMAGE_UPLOAD);
+            mediaUpload.upload(mediaFileUri);
         } else {
             sendAdvertiserProfileToWebservice(advertiser);
         }

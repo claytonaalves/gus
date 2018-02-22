@@ -154,8 +154,8 @@ public class NewPublicationActivity extends AppCompatActivity {
     private void postCurrentPublication() {
         if (mediaFileUri != null) {
             progressDialog.setMessage("Enviando imagens...");
-            MediaUploadService mediaUpload = new MediaUploadService(NewPublicationActivity.this);
-            mediaUpload.upload(mediaFileUri, new MediaTransferResponseHandler(), MediaUploadService.PUBLICATION_IMAGE_UPLOAD);
+            MediaUploadService mediaUpload = new MediaUploadService(NewPublicationActivity.this, new MediaTransferResponseHandler(), MediaUploadService.PUBLICATION_IMAGE_UPLOAD);
+            mediaUpload.upload(mediaFileUri);
         } else {
             sendPublicationToWebservice(publication);
         }
