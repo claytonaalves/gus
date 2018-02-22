@@ -28,10 +28,10 @@ public class ApiRestAdapter {
     private static ApiRestAdapter instance;
     private ApiRestInterface service;
 
-    private static final String HOST = BuildConfig.API_URL;
-    public static final String BASE_URL = HOST + "/api/v1/";
-    public static final String PUBLICATIONS_IMAGE_PATH = HOST + "/images/publicacoes/";
-    public static final String ADVERTISERS_IMAGE_PATH = HOST + "/images/anunciantes/";
+    private static final String HOST = BuildConfig.API_HOST;
+    public static final String BASE_URL = BuildConfig.API_URL;
+    public static final String PUBLICATIONS_IMAGE_PATH = BuildConfig.API_HOST + "/images/publicacoes/";
+    public static final String ADVERTISERS_IMAGE_PATH = BuildConfig.API_HOST + "/images/anunciantes/";
 
     public static ApiRestAdapter getInstance() {
         if (instance == null) {

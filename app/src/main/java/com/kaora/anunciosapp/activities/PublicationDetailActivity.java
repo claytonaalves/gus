@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kaora.anunciosapp.BuildConfig;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.models.Publication;
 import com.kaora.anunciosapp.rest.ApiRestAdapter;
@@ -137,7 +138,12 @@ public class PublicationDetailActivity extends AppCompatActivity {
         SimpleDraweeView image;
         for (String imageFilename : publication.images) {
             image = new SimpleDraweeView(this);
-            image.setImageURI(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + imageFilename);
+
+            // Prepares proxied image URI
+            String imageUri = ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + imageFilename;
+            String proxiedImageUri = BuildConfig.IMG_PROXY + "/300x,q90/" + imageUri;
+
+            image.setImageURI(proxiedImageUri);
             images.add(image);
         }
     }

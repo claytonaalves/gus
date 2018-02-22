@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kaora.anunciosapp.BuildConfig;
 import com.kaora.anunciosapp.R;
+import com.kaora.anunciosapp.rest.ApiRestAdapter;
 
 public class PublicationImage extends AppCompatActivity {
 
@@ -21,6 +23,9 @@ public class PublicationImage extends AppCompatActivity {
         Intent intent = getIntent();
         String imageUrl = intent.getStringExtra("image_url");
 
-        image.setImageURI(imageUrl);
+        // Prepares proxied image URI
+        String proxiedImageUri = BuildConfig.IMG_PROXY + "/600x,q90/" + imageUrl;
+
+        image.setImageURI(proxiedImageUri);
     }
 }

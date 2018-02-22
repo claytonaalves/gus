@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kaora.anunciosapp.BuildConfig;
 import com.kaora.anunciosapp.R;
 import com.kaora.anunciosapp.activities.PublicationDetailActivity;
 import com.kaora.anunciosapp.models.Publication;
@@ -52,7 +53,9 @@ public class PublicationListAdapter extends RecyclerView.Adapter<PublicationList
         if (publication.hasImages()) {
             String firstImage = publication.images.get(0);
             if (!firstImage.equals("")) {
-                holder.draweeView.setImageURI(Uri.parse(ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + firstImage));
+                String imageUri = ApiRestAdapter.PUBLICATIONS_IMAGE_PATH + firstImage;
+                String proxiedImageUri = BuildConfig.IMG_PROXY + "/200x,q90/" + imageUri;
+                holder.draweeView.setImageURI(Uri.parse(proxiedImageUri));
             } else {
                 holder.draweeView.setImageResource(R.drawable.photo_gray);
             }

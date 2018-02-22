@@ -14,13 +14,17 @@ android {
     }
     buildTypes {
         debug {
-//            buildConfigField 'String', 'API_URL', '"http://10.1.1.103:8080"'
-            buildConfigField 'String', 'API_URL', '"http://45.55.73.76:8080"'
+//            buildConfigField 'String', 'API_HOST', '"http://10.1.1.103:8080"'
+            buildConfigField 'String', 'IMG_PROXY', '"http://45.55.73.76:9090"'
+            buildConfigField 'String', 'API_HOST', '"http://45.55.73.76:8080"'
+            buildConfigField 'String', 'API_URL', '"http://45.55.73.76:8080/api/v1/"'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'API_URL', '"http://45.55.73.76:8080"'
+            buildConfigField 'String', 'IMG_PROXY', '"http://45.55.73.76:9090"'
+            buildConfigField 'String', 'API_HOST', '"http://45.55.73.76:8080"'
+            buildConfigField 'String', 'API_URL', '"http://45.55.73.76:8080/api/v1/"'
         }
     }
 }
