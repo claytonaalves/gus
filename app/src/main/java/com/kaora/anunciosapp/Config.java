@@ -2,7 +2,7 @@ package com.kaora.anunciosapp;
 
 public class Config {
 
-    public static final String TOPIC_GLOBAL = "teste";
+    public static final String TOPIC_GLOBAL = "global";
 
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String PUSH_NOTIFICATION = "pushNotification";
