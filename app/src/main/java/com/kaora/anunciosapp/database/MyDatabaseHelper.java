@@ -130,8 +130,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private boolean advertiserExists(Advertiser advertiser) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(
-            "SELECT * FROM advertiser " +
-            "WHERE advertiser_guid='" + advertiser.advertiserGuid + "'", null);
+                "SELECT * FROM advertiser " +
+                        "WHERE advertiser_guid='" + advertiser.advertiserGuid + "'", null);
         boolean result = cursor.getCount() > 0;
         cursor.close();
         return result;
@@ -140,7 +140,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private int updateAdvertiser(Advertiser advertiser) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = createAdvertiserContentValues(advertiser);
-        return db.update("advertiser", values, "advertiser_guid=?", new String[] {advertiser.advertiserGuid});
+        return db.update("advertiser", values, "advertiser_guid=?", new String[]{advertiser.advertiserGuid});
     }
 
     private void insertAdvertiser(Advertiser advertiser) {
@@ -195,7 +195,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public Advertiser getAdvertiserByGuid(String advertiserGuid) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM advertiser " +
-                                    "WHERE advertiser_guid='" + advertiserGuid + "'", null);
+                "WHERE advertiser_guid='" + advertiserGuid + "'", null);
         cursor.moveToNext();
         Advertiser advertiser = extractAdvertiserFromCursor(cursor);
         cursor.close();
@@ -216,7 +216,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         advertiser.neighbourhood = cursor.getString(cursor.getColumnIndex("neighbourhood"));
         advertiser.cityId = cursor.getInt(cursor.getColumnIndex("city_id"));
         advertiser.imageFile = cursor.getString(cursor.getColumnIndex("image_file"));
-        advertiser.localProfile = (cursor.getInt(cursor.getColumnIndex("local_profile"))==1);
+        advertiser.localProfile = (cursor.getInt(cursor.getColumnIndex("local_profile")) == 1);
         return advertiser;
     }
 
@@ -299,7 +299,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private int updatePublication(Publication publication, SQLiteDatabase db) {
         ContentValues values = createPublicationContentValues(publication);
-        return db.update("publication", values, "publication_guid=?", new String[] {publication.publicationGuid});
+        return db.update("publication", values, "publication_guid=?", new String[]{publication.publicationGuid});
     }
 
     private void updatePublicationImages(Publication publication, SQLiteDatabase db) {
@@ -362,10 +362,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private void loadImagesForPublication(Publication publication, SQLiteDatabase db) {
         Cursor cursor = db.query("publication_image",
-                                 new String[] {"filename"},
-                                 "publication_guid=?",
-                                 new String[] {publication.publicationGuid},
-                                 null, null, null, null);
+                new String[]{"filename"},
+                "publication_guid=?",
+                new String[]{publication.publicationGuid},
+                null, null, null, null);
         while (cursor.moveToNext()) {
             publication.images.add(cursor.getString(0));
         }
@@ -374,6 +374,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public void removeOverduePublications() {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM publication WHERE due_date<'" + DateUtils.dateToString(new Date()) + "'");
+        String date = DateUtils.dateToString(DateUtils.subtractDayFromDate(new Date(), 1));
+        db.execSQL("DELETE FROM publication WHERE due_date<'" + date + "'");
     }
 }
