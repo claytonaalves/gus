@@ -78,6 +78,14 @@ public class PublicationListActivity extends AppCompatActivity {
         initializeBroadcastManager();
         setupPublicationList();
         initializeRemoveOverduePublicationsSchedule();
+
+        Intent intent;
+
+        if (!database.getPreferences()) {
+            intent = new Intent(this, CidadesActivity.class);
+            intent.putExtra("configuracaoInicial", true);
+            startActivity(intent);
+        }
     }
 
     @Override

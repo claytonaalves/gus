@@ -16,8 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.LaunchActivity"
-            android:noHistory="true">
+            android:name=".activities.PublicationListActivity"
+            android:label="Publicações">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activities.AdvertiserListActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,13 +30,6 @@
         <activity
             android:name=".activities.CidadesActivity"
             android:label="Anúncios App" />
-        <activity
-            android:name=".activities.PublicationListActivity"
-            android:label="Publicações">
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".activities.AdvertiserListActivity" />
-        </activity>
         <activity
             android:name=".activities.CategoriasActivity"
             android:label="Categorias" />
@@ -94,8 +90,9 @@
             android:name=".receivers.MyAlarmReceiver"
             android:process=":remote" />
 
-        <activity android:name=".activities.PublicationImage"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.PublicationImage"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
