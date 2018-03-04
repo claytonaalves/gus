@@ -3,13 +3,16 @@ package com.kaora.anunciosapp.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AdvertiserProfileActivity extends AppCompatActivity {
+public class AdvertiserProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int IMG_REQUEST = 1;
 
@@ -95,6 +98,9 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
     }
 
     private void initializeInterface() {
+        AppCompatButton btConfirm = (AppCompatButton) findViewById(R.id.btConfirmar);
+        btConfirm.setOnClickListener(this);
+
         profileImage = (ImageView) findViewById(R.id.imagem);
         tradingNameEditText = (EditText) findViewById(R.id.etNome);
         phoneNumberEditText = (EditText) findViewById(R.id.etTelefone);
@@ -264,7 +270,16 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        saveAdvertiserProfile(v);
+    }
+
     public void saveAdvertiserProfile(View view) {
+        if (tradingNameEditText.getText().toString().equals("")) {
+            showWarnings();
+            return;
+        }
         progress = ProgressDialog.show(AdvertiserProfileActivity.this,
                 "Atualizando Perfil", "Aguarde...", false, false);
         loadDataFromInterface();
@@ -275,6 +290,24 @@ public class AdvertiserProfileActivity extends AppCompatActivity {
         } else {
             startNewPublicationActivity(advertiser.advertiserGuid);
         }
+    }
+
+    private void showWarnings() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Atenção")
+                .setMessage("É necessário informar o seu nome de Anunciante")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // does nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void postCurrentUserProfile() {

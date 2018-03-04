@@ -1,178 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="16dp"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     tools:context="com.kaora.anunciosapp.activities.AdvertiserProfileActivity">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:scrollbars="none">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/imagem"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                fresco:actualImageScaleType="centerInside"
-                fresco:placeholderImage="@drawable/camera"
-                android:onClick="startImageSelectionActivity" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E0E0E0"
-                android:gravity="center"
-                android:text="Dados principais"
-                android:textSize="20dp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="3dp"
-                android:text="Cidade" />
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/imagem"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:onClick="startImageSelectionActivity"
+                    fresco:actualImageScaleType="centerInside"
+                    fresco:placeholderImage="@drawable/camera" />
 
-            <Spinner
-                android:id="@+id/spCidade"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                style="@android:style/Widget.Spinner"
-                android:prompt="@string/selecione_cidade"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="Categoria" />
-
-            <Spinner
-                android:id="@+id/spCategoria"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                style="@android:style/Widget.Spinner"
-                android:prompt="@string/selecione_categoria"/>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etNome"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nome"
-                    android:inputType="textCapWords"
-                    android:imeOptions="actionNext" />
-            </android.support.design.widget.TextInputLayout>
+                    android:background="#E0E0E0"
+                    android:gravity="center"
+                    android:text="Dados principais"
+                    android:textSize="20dp" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etTelefone"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Telefone"
-                    android:inputType="phone"
-                    android:imeOptions="actionNext" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Cidade" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <Spinner
+                    android:id="@+id/spCidade"
+                    style="@android:style/Widget.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:prompt="@string/selecione_cidade" />
 
-                <EditText
-                    android:id="@+id/etCelular"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Celular"
-                    android:inputType="phone"
-                    android:imeOptions="actionNext" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginLeft="3dp"
+                    android:text="Categoria" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <Spinner
+                    android:id="@+id/spCategoria"
+                    style="@android:style/Widget.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:prompt="@string/selecione_categoria" />
 
-                <EditText
-                    android:id="@+id/etEmail"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etNome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nome"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etTelefone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Telefone"
+                        android:imeOptions="actionNext"
+                        android:inputType="phone" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etCelular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Celular"
+                        android:imeOptions="actionNext"
+                        android:inputType="phone" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="E-mail"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress" />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="E-mail"
-                    android:inputType="textEmailAddress"
-                    android:imeOptions="actionNext" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="25dp"
+                    android:background="#E0E0E0"
+                    android:gravity="center"
+                    android:text="Endereço"
+                    android:textSize="20dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="10dp"
-                android:background="#E0E0E0"
-                android:gravity="center"
-                android:text="Endereço"
-                android:textSize="20dp" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etEndereco"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Endereço"
-                    android:inputType="textCapWords"
-                    android:imeOptions="actionNext" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/etEndereco"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Endereço"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/etNumero"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Número"
-                    android:inputType="numberDecimal"
-                    android:imeOptions="actionNext" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/etNumero"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Número"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/etBairro"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Bairro"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapWords" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="match_parent">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="Confirmar"
-                android:onClick="saveAdvertiserProfile"/>
+                    <EditText
+                        android:id="@+id/etBairro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="50dp"
+                        android:hint="Bairro"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Confirmar"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@color/colorPrimary" />
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
